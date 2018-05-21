@@ -1,0 +1,8 @@
+README.md
+setup.py
+hydraseq/__init__.py
+hydraseq/hydraseq.py
+hydraseq.egg-info/PKG-INFO
+hydraseq.egg-info/SOURCES.txt
+hydraseq.egg-info/dependency_links.txt
+hydraseq.egg-info/top_level.txt
