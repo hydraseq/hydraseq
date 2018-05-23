@@ -36,9 +36,21 @@ class Node:
         """
         self.nexts.append(n_next)
         self.nexts = list(set(self.nexts))
+        n_next.link_last(self)
 
     def link_last(self, n_last):
-        self.last.append(n_last)
+        self.lasts.append(n_last)
+
+    def get_sequence(self):
+        if len(self.lasts) > 1:
+            past = "(" + "|".join([n_last.get_sequence() for n_last in self.lasts]) + ")"
+            return ">".join([past, self.key])
+        elif len(self.lasts) == 1:
+            past = "|".join([n_last.get_sequence() for n_last in self.lasts])
+            return ">".join([past, self.key])
+        else:
+            return self.key
+
 
     def __repr__(self):
         return "<node: {},{}>".format(self.key,self.sequence)
@@ -48,24 +60,39 @@ class Hydraseq:
     def __init__(self, uuid):
         self.uuid = uuid
         self.columns = defaultdict(list)
-        self.n_init = Node('<start>', '<start>')
+        self.n_init = Node('(*)', '(*)')
 
-        self.active = []
-        self.predicted = []
-        self.sdr_active = []
-        self.sdr_predicted = []
+        self.active_nodes = []
+        self.active_sequences = []
+        self.active_values = []
+        self.next_nodes = []
+        self.next_sequences = []
+        self.next_values = []
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
-        self.predicted = []
-        self.active = []
-        self.sdr_predicted = []
-        self.sdr_active = []
-        self.predicted.extend(self.n_init.nexts)
-        self.active.append(self.n_init)
+        self.next_nodes = []
+        self.active_nodes = []
+        self.next_values = []
+        self.active_sequences = []
+        self.next_nodes.extend(self.n_init.nexts)
+        self.active_nodes.append(self.n_init)
         return self
 
-    def predict(self, str_sentence, is_learning=False):
+
+    def get_active_sequences(self):
+        return sorted([node.get_sequence() for node in self.active_nodes])
+
+    def get_active_values(self):
+        return sorted([node.key for node in self.active_nodes])
+
+    def get_next_sequences(self):
+        return sorted([node.get_sequence() for node in self.next_nodes])
+
+    def get_next_values(self):
+        return sorted(list(set([node.key for node in self.next_nodes])))
+
+    def insert(self, str_sentence, is_learning=True):
         """Generate sdr for what comes next in sequence if we know.  Internally set sdr of actives
         Arguments:
             str_sentence:       Either a list of words, or a single space separated sentence
@@ -79,10 +106,10 @@ class Hydraseq:
 
         [self.hit(word, self._hist(words, idx), is_learning) for idx, word in enumerate(words)]
 
-        self.sdr_active    = sorted([node.sequence for node in self.active])
-        self.sdr_predicted = sorted(list(set([node.key for node in self.predicted])))
-
         return self
+
+    def look_ahead(self, arr_sequence):
+        return self.insert(arr_sequence, is_learning=False)
 
     def _get_word_array(self, str_sentence):
         return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
@@ -100,28 +127,27 @@ class Hydraseq:
         Returns
             self        so we can chain query for active or predicted
         """
-        last_active, last_predicted = self.active[:], self.predicted[:]
-        self.active, self.predicted = [], []
+        last_active, last_predicted = self.active_nodes[:], self.next_nodes[:]
+        self.active_nodes, self.next_nodes = [], []
 
-        self.active = [node for node in last_predicted if node.key in word]
-        self.predicted = list(set([nextn for node in self.active for nextn in node.nexts]))
+        self.active_nodes = [node for node in last_predicted if node.key in word]
+        self.next_nodes = list(set([nextn for node in self.active_nodes for nextn in node.nexts]))
 
 
-        if not self.active and is_learning:
+        if not self.active_nodes and is_learning:
             for letter in word:
                 node =  Node(letter, seq_hist)
                 self.columns[letter].append(node)
-                self.active.append(node)
+                self.active_nodes.append(node)
 
                 [n.link_nexts(node) for n in last_active]
 
-        if is_learning: assert self.active
+        if is_learning: assert self.active_nodes
         return self
 
-    def get_sdrs(self):
-        return [self.sdr_active, self.sdr_predicted]
 
-    def get_counts(self):
+
+    def get_node_count(self):
         count = 0
         for lst_nrns in self.columns:
             count += len(lst_nrns)
@@ -131,8 +157,8 @@ class Hydraseq:
         return "uuid: {}\nn_init: {}\npredicted: {}\nactive: {}\nsdr_active: {}\nsdr_predicted: {}".format(
             self.uuid,
             self.n_init,
-            self.predicted,
-            self.active,
-            self.sdr_active,
-            self.sdr_predicted
+            self.next_nodes,
+            self.active_nodes,
+            self.active_sequences,
+            self.next_values
         )
