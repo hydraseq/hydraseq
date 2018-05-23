@@ -1,5 +1,4 @@
 """
-180426-1346
 Basic Memory Data Structure
 """
 
@@ -14,7 +13,7 @@ class Node:
         next        list of nodes this points to and are upstream in sequence
         last        list of nodes this is pointed to, and who are downstream in sequence
     """
-    def __init__(self, key, sequence):
+    def __init__(self, key):
         """Single node of forward looking linked list
         Arguments:
             key:        string, should be the key of the dictionary whose list this will be part of
@@ -23,7 +22,6 @@ class Node:
             None
         """
         self.key = key
-        self.sequence = sequence
         self.nexts = []
         self.lasts = []
 
@@ -53,14 +51,14 @@ class Node:
 
 
     def __repr__(self):
-        return "<node: {},{}>".format(self.key,self.sequence)
+        return "<node: {},{}>".format(self.key,self.get_sequence())
 
 
 class Hydraseq:
     def __init__(self, uuid):
         self.uuid = uuid
         self.columns = defaultdict(list)
-        self.n_init = Node('(*)', '(*)')
+        self.n_init = Node('(*)')
 
         self.active_nodes = []
         self.active_sequences = []
@@ -136,7 +134,7 @@ class Hydraseq:
 
         if not self.active_nodes and is_learning:
             for letter in word:
-                node =  Node(letter, seq_hist)
+                node =  Node(letter)
                 self.columns[letter].append(node)
                 self.active_nodes.append(node)
 
@@ -154,11 +152,9 @@ class Hydraseq:
         return len(self.columns), count + 1
 
     def __repr__(self):
-        return "uuid: {}\nn_init: {}\npredicted: {}\nactive: {}\nsdr_active: {}\nsdr_predicted: {}".format(
+        return "uuid: {}\nn_init: {}:\nactive values: {}\nnext values: {}".format(
             self.uuid,
             self.n_init,
-            self.next_nodes,
-            self.active_nodes,
-            self.active_sequences,
+            self.active_values,
             self.next_values
         )
