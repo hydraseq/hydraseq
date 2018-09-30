@@ -66,6 +66,7 @@ class Hydraseq:
         self.next_nodes = []
         self.next_sequences = []
         self.next_values = []
+        self.surprise = False
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
@@ -75,6 +76,7 @@ class Hydraseq:
         self.active_sequences = []
         self.next_nodes.extend(self.n_init.nexts)
         self.active_nodes.append(self.n_init)
+        self.surprise = False
         return self
 
 
@@ -133,6 +135,7 @@ class Hydraseq:
 
 
         if not self.active_nodes and is_learning:
+            self.surprise = True
             for letter in word:
                 node =  Node(letter)
                 self.columns[letter].append(node)

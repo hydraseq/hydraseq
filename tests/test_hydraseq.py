@@ -145,3 +145,26 @@ def test_multi_paths():
     check_next(hdr, 2, [
         '(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>g',
         '(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>t'], ['g', 't'])
+
+
+def test_surpise_flag():
+    hdr = Hydraseq('main')
+
+    assert hdr.surprise == False
+
+    hdr.insert("This is a test")
+
+    assert hdr.surprise == True
+
+    hdr.insert("This is a test")
+
+    assert hdr.surprise == False
+
+    hdr.insert("This is NOT a test")
+
+    assert hdr.surprise == True
+
+    hdr.insert("This is a test")
+
+    assert hdr.surprise == False
+
