@@ -1,7 +1,7 @@
 import re
 import sys
-sys.path.append('.')
-from hydraseq.hydraseq import Hydraseq
+sys.path.append('./hydraseq')
+from hydraseq import Hydraseq
 import pytest
 
 def w(str_sentence):
@@ -27,7 +27,7 @@ def test_01_01_sequence():
 
     hdr.look_ahead([['a']])
     check_active( hdr, 1, ['(*)>a'],   ['a'])
-    check_next(   hdr, 1, ['(*)>a>b'], ['b'])
+    check_next(hdr, 1, ['(*)>a>b'], ['b'])
 
 def test_01_02_sequence():
     hdr = Hydraseq('main')
