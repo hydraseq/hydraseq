@@ -1,4 +1,5 @@
-# hydraseq
+hydraseq
+--------
 Simple data structure to remember sequences
 
 Data structure composed of a trie embedded in dictiories for easy lookup.  Keep track of sequences given and then return the next expected in a sequence if already seen.
