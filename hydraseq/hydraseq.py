@@ -104,7 +104,7 @@ class Hydraseq:
         assert isinstance(words[0], list), "{}=>{} is a list of lists and must be non empty".format(str_sentence, words)
         self.reset()
 
-        [self.hit(word, self._hist(words, idx), is_learning) for idx, word in enumerate(words)]
+        [self.hit(word, is_learning) for idx, word in enumerate(words)]
 
         return self
 
@@ -114,16 +114,10 @@ class Hydraseq:
     def _get_word_array(self, str_sentence):
         return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
 
-    def _hist(self, words, idx):
-        """Return a # concatenated history up to the current passed index"""
-        arr_str_words = [ "-".join(word) for word in words[:(idx+1)] ]
-        return "|".join(arr_str_words)
-
-    def hit(self, word, seq_hist, is_learning=True):
+    def hit(self, word, is_learning=True):
         """Process one word in the sequence
         Arguments:
-            word        string, current word being processed
-            seq_hist    string, represents word history up to how, # separated concatenation
+            word        string, current word being processedƒ
         Returns
             self        so we can chain query for active or predicted
         """

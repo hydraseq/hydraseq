@@ -168,3 +168,15 @@ def test_surpise_flag():
 
     assert hdr.surprise == False
 
+def test_streaming():
+    hdr = Hydraseq('streaming')
+
+    hdr.insert("the quick brown fox")
+
+    assert hdr.look_ahead("the quick").get_next_values() == ["brown"]
+
+    hdr.reset()
+
+    assert hdr.look_ahead("the").get_next_values() == ["quick"]
+    assert hdr.hit("quick", None).get_next_values() == ["brown"]
+
