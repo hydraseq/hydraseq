@@ -42,10 +42,10 @@ class Node:
     def get_sequence(self):
         if len(self.lasts) > 1:
             past = "(" + "|".join([n_last.get_sequence() for n_last in self.lasts]) + ")"
-            return ">".join([past, self.key])
+            return " ".join([past, self.key])
         elif len(self.lasts) == 1:
             past = "|".join([n_last.get_sequence() for n_last in self.lasts])
-            return ">".join([past, self.key])
+            return " ".join([past, self.key])
         else:
             return self.key
 

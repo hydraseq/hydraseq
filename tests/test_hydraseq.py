@@ -22,92 +22,92 @@ def test_01_01_sequence():
     hdr = Hydraseq('main')
 
     hdr.insert([['a'], ['b']])
-    check_active( hdr, 1, ['(*)>a>b'], ['b'])
+    check_active( hdr, 1, ['(*) a b'], ['b'])
     check_next(   hdr, 0, [], [])
 
     hdr.look_ahead([['a']])
-    check_active( hdr, 1, ['(*)>a'],   ['a'])
-    check_next(hdr, 1, ['(*)>a>b'], ['b'])
+    check_active( hdr, 1, ['(*) a'],   ['a'])
+    check_next(hdr, 1, ['(*) a b'], ['b'])
 
 def test_01_02_sequence():
     hdr = Hydraseq('main')
 
     hdr.insert([['a'], ['b', 'c']])
-    check_active(hdr, 2, ['(*)>a>b', '(*)>a>c'], ['b', 'c'])
+    check_active(hdr, 2, ['(*) a b', '(*) a c'], ['b', 'c'])
     check_next(  hdr, 0, [],                 [])
 
     hdr.look_ahead([['a']])
-    check_active(hdr, 1, ['(*)>a'], ['a'])
-    check_next(hdr, 2, ['(*)>a>b', '(*)>a>c'], ['b', 'c'])
+    check_active(hdr, 1, ['(*) a'], ['a'])
+    check_next(hdr, 2, ['(*) a b', '(*) a c'], ['b', 'c'])
 
     hdr.look_ahead([['a'], ['b', 'c']])
-    check_active(hdr, 2, ['(*)>a>b','(*)>a>c'], ['b','c'])
+    check_active(hdr, 2, ['(*) a b','(*) a c'], ['b','c'])
     check_next(hdr, 0, [], [])
 
 def test_01_02_01_sequence():
     hdr = Hydraseq('main')
 
     hdr.insert([['a'], ['b', 'c'], ['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
     check_next(hdr, 0, [], [])
 
     hdr.look_ahead([['a'],['b','c']])
-    check_active(hdr, 2, ['(*)>a>b', '(*)>a>c'], ['b', 'c'])
-    check_next(  hdr, 1, ['((*)>a>b|(*)>a>c)>d'],        ['d'])
+    check_active(hdr, 2, ['(*) a b', '(*) a c'], ['b', 'c'])
+    check_next(  hdr, 1, ['((*) a b|(*) a c) d'],        ['d'])
 
     hdr.look_ahead([['a']])
-    check_active(hdr, 1, ['(*)>a'], ['a'])
-    check_next(hdr, 2, ['(*)>a>b', '(*)>a>c'], ['b', 'c'])
+    check_active(hdr, 1, ['(*) a'], ['a'])
+    check_next(hdr, 2, ['(*) a b', '(*) a c'], ['b', 'c'])
 
     hdr.look_ahead([['a'],['b','c'],['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
     check_next(hdr, 0, [], [])
 
 def test_01_02_01_B_sequence():
     hdr = Hydraseq('main')
 
     hdr.insert([['a'], ['b', 'c'], ['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
     check_next(hdr, 0, [], [])
 
     hdr.look_ahead([['a'],['b']])
-    check_active(hdr, 1, ['(*)>a>b'], ['b'])
-    check_next(  hdr, 1, ['((*)>a>b|(*)>a>c)>d'],        ['d'])
+    check_active(hdr, 1, ['(*) a b'], ['b'])
+    check_next(  hdr, 1, ['((*) a b|(*) a c) d'],        ['d'])
 
     hdr.look_ahead([['a'],['c']])
-    check_active(hdr, 1, ['(*)>a>c'], ['c'])
-    check_next(  hdr, 1, ['((*)>a>b|(*)>a>c)>d'],        ['d'])
+    check_active(hdr, 1, ['(*) a c'], ['c'])
+    check_next(  hdr, 1, ['((*) a b|(*) a c) d'],        ['d'])
 
     hdr.look_ahead([['a'],['b','c'],['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
     check_next(  hdr, 0, [], [])
 
 def test_01_02_01_01_sequence():
     hdr = Hydraseq('main')
 
     hdr.insert([['a'], ['b', 'c'], ['d'], ['e']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d>e'], ['e'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d e'], ['e'])
     check_next(hdr, 0, [], [])
 
     hdr.look_ahead([['a']])
-    check_active(hdr, 1, ['(*)>a'], ['a'])
-    check_next(hdr, 2, ['(*)>a>b', '(*)>a>c'], ['b', 'c'])
+    check_active(hdr, 1, ['(*) a'], ['a'])
+    check_next(hdr, 2, ['(*) a b', '(*) a c'], ['b', 'c'])
 
     hdr.look_ahead([['a'], ['b', 'f']])
-    check_active(hdr, 1, ['(*)>a>b'], ['b'])
-    check_next(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['(*) a b'], ['b'])
+    check_next(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
 
     hdr.look_ahead([['a'], ['b', 'c'],['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
-    check_next(hdr, 1, ['((*)>a>b|(*)>a>c)>d>e'], ['e'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
+    check_next(hdr, 1, ['((*) a b|(*) a c) d e'], ['e'])
 
     hdr.look_ahead([['a'], ['b'],['d']])
-    check_active(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
-    check_next(hdr, 1, ['((*)>a>b|(*)>a>c)>d>e'], ['e'])
+    check_active(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
+    check_next(hdr, 1, ['((*) a b|(*) a c) d e'], ['e'])
 
     hdr.look_ahead([['a'], ['b']])
-    check_active(hdr, 1, ['(*)>a>b'], ['b'])
-    check_next(hdr, 1, ['((*)>a>b|(*)>a>c)>d'], ['d'])
+    check_active(hdr, 1, ['(*) a b'], ['b'])
+    check_next(hdr, 1, ['((*) a b|(*) a c) d'], ['d'])
 
 def test_sentence():
     hdr = Hydraseq('main')
@@ -122,8 +122,8 @@ def test_sentence():
     assert hdr.look_ahead("The quick brown").get_next_values() == ['cat', 'fox']
 
     hdr.look_ahead([['The'],['quick'],['brown'],['fox','cat']])
-    check_active(hdr, 2, ['(*)>The>quick>brown>cat', '(*)>The>quick>brown>fox'], ['cat', 'fox'])
-    check_next(  hdr, 2, ['(*)>The>quick>brown>cat>jumped','(*)>The>quick>brown>fox>jumped'],['jumped'] )
+    check_active(hdr, 2, ['(*) The quick brown cat', '(*) The quick brown fox'], ['cat', 'fox'])
+    check_next(  hdr, 2, ['(*) The quick brown cat jumped','(*) The quick brown fox jumped'],['jumped'] )
 
 def test_multi_paths():
     hdr = Hydraseq('main')
@@ -132,19 +132,19 @@ def test_multi_paths():
                 ['a', 'o'],
                 ['t', 'g']])
 
-    check_active(hdr, 2, ['(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>g',
-     '(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>t'], ['g','t'] )
+    check_active(hdr, 2, ['(((*) c|(*) d) a|((*) c|(*) d) o) g',
+     '(((*) c|(*) d) a|((*) c|(*) d) o) t'], ['g','t'] )
     check_next(  hdr , 0, [],[])
 
     hdr.look_ahead([['c'], ['o'], ['t']])
-    check_active(hdr, 1, ['(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>t'], ['t'])
+    check_active(hdr, 1, ['(((*) c|(*) d) a|((*) c|(*) d) o) t'], ['t'])
     check_next(  hdr , 0, [],[])
 
     hdr.look_ahead([['c'], ['o']])
-    check_active(hdr, 1, ['((*)>c|(*)>d)>o'], ['o'])
+    check_active(hdr, 1, ['((*) c|(*) d) o'], ['o'])
     check_next(hdr, 2, [
-        '(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>g',
-        '(((*)>c|(*)>d)>a|((*)>c|(*)>d)>o)>t'], ['g', 't'])
+        '(((*) c|(*) d) a|((*) c|(*) d) o) g',
+        '(((*) c|(*) d) a|((*) c|(*) d) o) t'], ['g', 't'])
 
 
 def test_surpise_flag():
