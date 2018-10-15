@@ -55,24 +55,27 @@ class Node:
 
 
 class Hydraseq:
-    def __init__(self, uuid):
+    def __init__(self, uuid, hydraseq=None):
         self.uuid = uuid
-        self.columns = defaultdict(list)
         self.n_init = Node('(*)')
-
         self.active_nodes = []
         self.active_sequences = []
-        self.active_values = []
         self.next_nodes = []
         self.next_sequences = []
-        self.next_values = []
         self.surprise = False
+
+        if hydraseq:
+            self.columns = hydraseq.columns
+            self.n_init.nexts = hydraseq.n_init.nexts
+            self.reset()
+        else:
+            self.columns = defaultdict(list)
+
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
         self.next_nodes = []
         self.active_nodes = []
-        self.next_values = []
         self.active_sequences = []
         self.next_nodes.extend(self.n_init.nexts)
         self.active_nodes.append(self.n_init)
@@ -163,6 +166,6 @@ class Hydraseq:
         return "uuid: {}\nn_init: {}:\nactive values: {}\nnext values: {}".format(
             self.uuid,
             self.n_init,
-            self.active_values,
-            self.next_values
+            self.get_active_values(),
+            self.get_next_values()
         )

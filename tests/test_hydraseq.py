@@ -180,3 +180,17 @@ def test_streaming():
     assert hdr.look_ahead("the").get_next_values() == ["quick"]
     assert hdr.hit("quick", None).get_next_values() == ["brown"]
 
+def test_cloning_hydra():
+    hdr0 = Hydraseq('zero')
+
+    hdr0.insert("the quick brown fox")
+
+    hdr1 = Hydraseq('one', hdr0)
+
+    assert hdr1.look_ahead("the quick").get_next_values() == ["brown"]
+
+    hdr1.reset()
+
+    assert hdr1.look_ahead("the").get_next_values() == ["quick"]
+    assert hdr1.hit("quick", None).get_next_values() == ["brown"]
+
