@@ -114,11 +114,10 @@ class Hydraseq:
 
         return self
 
-    def hit(self, lst_words, seq_hist, is_learning=True):
+    def hit(self, lst_words, is_learning=True):
         """Process one word in the sequence
         Arguments:
             lst_words   list<strings>, current word being processed
-            seq_hist    string, represents word history up to how, # separated concatenation
         Returns
             self        so we can chain query for active or predicted
         """
