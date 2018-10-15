@@ -92,6 +92,9 @@ class Hydraseq:
     def get_next_values(self):
         return sorted(list(set([node.key for node in self.next_nodes])))
 
+    def look_ahead(self, arr_sequence):
+        return self.insert(arr_sequence, is_learning=False)
+
     def insert(self, str_sentence, is_learning=True):
         """Generate sdr for what comes next in sequence if we know.  Internally set sdr of actives
         Arguments:
@@ -108,29 +111,22 @@ class Hydraseq:
 
         return self
 
-    def look_ahead(self, arr_sequence):
-        return self.insert(arr_sequence, is_learning=False)
-
-    def _get_word_array(self, str_sentence):
-        return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
-
-    def hit(self, word, is_learning=True):
+    def hit(self, lst_words, seq_hist, is_learning=True):
         """Process one word in the sequence
         Arguments:
-            word        string, current word being processedƒ
+            lst_words   list<strings>, current word being processed
+            seq_hist    string, represents word history up to how, # separated concatenation
         Returns
             self        so we can chain query for active or predicted
         """
-        last_active, last_predicted = self.active_nodes[:], self.next_nodes[:]
-        self.active_nodes, self.next_nodes = [], []
+        last_active, last_predicted = self._save_current_state()
 
-        self.active_nodes = [node for node in last_predicted if node.key in word]
-        self.next_nodes = list(set([nextn for node in self.active_nodes for nextn in node.nexts]))
-
+        self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
+        self.next_nodes   = self._set_nexts_from_current_actives(self.active_nodes)
 
         if not self.active_nodes and is_learning:
             self.surprise = True
-            for letter in word:
+            for letter in lst_words:
                 node =  Node(letter)
                 self.columns[letter].append(node)
                 self.active_nodes.append(node)
@@ -139,6 +135,21 @@ class Hydraseq:
 
         if is_learning: assert self.active_nodes
         return self
+
+    def _save_current_state(self):
+        return self.active_nodes[:], self.next_nodes[:]
+    def _set_actives_from_last_predicted(self, last_predicted, lst_words):
+        return [node for node in last_predicted if node.key in lst_words]
+    def _set_nexts_from_current_actives(self, active_nodes):
+        return list({nextn for node in active_nodes for nextn in node.nexts})
+
+    def _get_word_array(self, str_sentence):
+        return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
+
+    def _hist(self, words, idx):
+        """Return a # concatenated history up to the current passed index"""
+        arr_str_words = [ "-".join(word) for word in words[:(idx+1)] ]
+        return "|".join(arr_str_words)
 
 
 
