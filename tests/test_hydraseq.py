@@ -2,6 +2,7 @@ import re
 import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
+from hydraseq import run_convolutions
 import pytest
 
 def w(str_sentence):
@@ -194,3 +195,24 @@ def test_cloning_hydra():
     assert hdr1.look_ahead("the").get_next_values() == ["quick"]
     assert hdr1.hit("quick", None).get_next_values() == ["brown"]
 
+def test_run_convolutions():
+    hdr = Hydraseq('convo')
+
+    hdr.insert("a b c _ALPHA")
+    hdr.insert("1 2 3 _DIGIT")
+
+    assert run_convolutions(hdr, "a b c 1 2 3".split()) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
+    assert run_convolutions(hdr, "a b 1 2 3 a b".split()) == [[2, 5, ['_DIGIT']]]
+
+def test_run_convolutions():
+    hdr = Hydraseq('convo')
+
+    hdr.insert("b a d _1")
+    hdr.insert("a n d _2")
+    hdr.insert("a d a _3")
+    hdr.insert("a n d y _4")
+    hdr.insert("a d a n _5")
+
+    tester = "b a d a n d y".split()
+    expected = [[0, 3, ['_1']], [1, 4, ['_3']], [1, 5, ['_5']], [3, 6, ['_2']], [3, 7, ['_4']]]
+    assert run_convolutions(hdr, tester) == expected
