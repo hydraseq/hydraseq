@@ -6,3 +6,5 @@ build/
 .cache/
 env/
 **/*.ipynb_checkpoints/
+**/*.pytest_cache/
+Untitled.ipynb
