@@ -168,3 +168,17 @@ class Hydraseq:
             self.get_active_values(),
             self.get_next_values()
         )
+
+
+def run_convolutions(seq, words, nxt="_"):
+    hydras = []
+    results = []
+    
+    for idx, word in enumerate(words):
+        word_results = []
+        hydras.append(Hydraseq(idx, seq))
+        for depth, hydra in enumerate(hydras):
+            next_hits = [word for word in hydra.hit([word]).get_next_values() if word.startswith(nxt)]
+            if next_hits: word_results.append([depth, idx+1, next_hits])
+        results.extend(word_results)
+    return results
