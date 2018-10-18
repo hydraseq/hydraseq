@@ -105,6 +105,7 @@ class Hydraseq:
         Returns:
             self                This can be used by calling .sdr_predicted or .sdr_active to get outputs
         """
+        if not str_sentence: return self
         words = str_sentence if isinstance(str_sentence, list) else self._get_word_array(str_sentence)
         assert isinstance(words, list), "words must be a list"
         assert isinstance(words[0], list), "{}=>{} is a list of lists and must be non empty".format(str_sentence, words)
