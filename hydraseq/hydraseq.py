@@ -106,9 +106,9 @@ class Hydraseq:
             self                This can be used by calling .sdr_predicted or .sdr_active to get outputs
         """
         if not str_sentence: return self
-        words = str_sentence if isinstance(str_sentence, list) else self._get_word_array(str_sentence)
+        words = str_sentence if isinstance(str_sentence, list) else self.get_word_array(str_sentence)
         assert isinstance(words, list), "words must be a list"
-        assert isinstance(words[0], list), "{}=>{} is a list of lists and must be non empty".format(str_sentence, words)
+        assert isinstance(words[0], list), "{}=>{} s.b. a list of lists and must be non empty".format(str_sentence, words)
         self.reset()
 
         [self.hit(word, is_learning) for idx, word in enumerate(words)]
@@ -146,7 +146,7 @@ class Hydraseq:
     def _set_nexts_from_current_actives(self, active_nodes):
         return list({nextn for node in active_nodes for nextn in node.nexts})
 
-    def _get_word_array(self, str_sentence):
+    def get_word_array(self, str_sentence):
         return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
 
     def _hist(self, words, idx):
@@ -183,3 +183,13 @@ def run_convolutions(seq, words, nxt="_"):
             if next_hits: word_results.append([depth, idx+1, next_hits])
         results.extend(word_results)
     return results
+
+class Pattern:
+    """pattern is a list of [start[<int>, end)<int>, pattern<str>]"""
+    def __init__(self, lst_pattern):
+        self.start, self.end, self.key = lst_pattern
+
+
+    def run_sequence(self, sentence):
+        print("Activating {}".format(self.key))
+        print(" ".join(sentence[self.start:self.end]))
