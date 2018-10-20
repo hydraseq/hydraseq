@@ -370,3 +370,25 @@ def reverse_convo(hydras, init_word):
             fringe = list(set(fringe))
             print(fringe, " : ", word, " : ", successors)
     return sorted(bottoms)
+def run_convolutions(seq, words, nxt="_"):
+    hydras = []
+    results = []
+
+    for idx, word in enumerate(words):
+        word_results = []
+        hydras.append(Hydraseq(idx, seq))
+        for depth, hydra in enumerate(hydras):
+            next_hits = [word for word in hydra.hit([word], is_learning=False).get_next_values() if word.startswith(nxt)]
+            if next_hits: word_results.append([depth, idx+1, next_hits])
+        results.extend(word_results)
+    return results
+
+class Pattern:
+    """pattern is a list of [start[<int>, end)<int>, pattern<str>]"""
+    def __init__(self, lst_pattern):
+        self.start, self.end, self.key = lst_pattern
+
+
+    def run_sequence(self, sentence):
+        print("Activating {}".format(self.key))
+        print(" ".join(sentence[self.start:self.end]))
