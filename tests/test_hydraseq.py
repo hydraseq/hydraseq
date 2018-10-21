@@ -195,16 +195,16 @@ def test_cloning_hydra():
     assert hdr1.look_ahead("the").get_next_values() == ["quick"]
     assert hdr1.hit("quick", None).get_next_values() == ["brown"]
 
-def test_run_convolutions():
+def test_run_convolutions_smoke():
     hdr = Hydraseq('convo')
 
     hdr.insert("a b c _ALPHA")
     hdr.insert("1 2 3 _DIGIT")
 
-    assert run_convolutions(hdr, "a b c 1 2 3".split()) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
-    assert run_convolutions(hdr, "a b 1 2 3 a b".split()) == [[2, 5, ['_DIGIT']]]
+    assert run_convolutions("a b c 1 2 3".split(), hdr) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
+    assert run_convolutions("a b 1 2 3 a b".split(), hdr) == [[2, 5, ['_DIGIT']]]
 
-def test_run_convolutions():
+def test_run_convolutions_overlap():
     hdr = Hydraseq('convo')
 
     hdr.insert("b a d _1")
@@ -215,4 +215,54 @@ def test_run_convolutions():
 
     tester = "b a d a n d y".split()
     expected = [[0, 3, ['_1']], [1, 4, ['_3']], [1, 5, ['_5']], [3, 6, ['_2']], [3, 7, ['_4']]]
-    assert run_convolutions(hdr, tester) == expected
+    assert run_convolutions(tester, hdr) == expected
+
+def test_stack():
+    sentence = "the quick brown fox jumped over the lazy dog"
+
+    hdq1 = Hydraseq('one')
+    for pattern in [
+        "the 0_A",
+        "quick 0_ADJ",
+        "brown 0_ADJ",
+        "fox 0_N",
+        "fox 0_V",
+        "jumped 0_V",
+        "over 0_PR",
+        "lazy 0_ADJ",
+        "dog 0_N"
+    ]:
+        hdq1.insert(pattern)
+
+    hdq2 = Hydraseq('two')
+    for pattern in [
+        "0_N _NP_",
+        "0_ADJ 0_N _NP_",
+        "0_V _VP_",
+        "0_ADV 0_V _VP_",
+        "0_A 0_N _NP_",
+        "0_A 0_ADJ 0_ADJ 0_N _NP_",
+
+    ]:
+        hdq2.insert(pattern)
+    hdq3 = Hydraseq('three')
+    for pattern in [
+        "_NP_ _VP_ 3_BINGO"
+    ]:
+        hdq3.insert(pattern)
+
+
+    result = [[0, 1, ['0_A']], [1, 2, ['0_ADJ']], [2, 3, ['0_ADJ']], [3, 4, ['0_N', '0_V']], [4, 5, ['0_V']], [5, 6, ['0_PR']], [6, 7, ['0_A']], [7, 8, ['0_ADJ']], [8, 9, ['0_N']]]
+    assert run_convolutions(sentence.split(), hdq1, "0_") == result
+
+    encoded = [code[2] for code in run_convolutions(sentence.split(), hdq1, "0_")]
+    assert encoded == [['0_A'], ['0_ADJ'], ['0_ADJ'], ['0_N', '0_V'], ['0_V'], ['0_PR'], ['0_A'], ['0_ADJ'], ['0_N']]
+
+    result = [[0, 4, ['_NP_']], [2, 4, ['_NP_']], [3, 4, ['_NP_', '_VP_']], [4, 5, ['_VP_']], [7, 9, ['_NP_']], [8, 9, ['_NP_']]]
+    assert run_convolutions(encoded, hdq2, "_") == result
+
+    encoded2 = [code[2] for code in run_convolutions(encoded, hdq2, "_")]
+    assert encoded2 == [['_NP_'], ['_NP_'], ['_NP_', '_VP_'], ['_VP_'], ['_NP_'], ['_NP_']]
+
+    result = [[1, 3, ['3_BINGO']], [2, 4, ['3_BINGO']]]
+    assert run_convolutions(encoded2, hdq3, "3_") == result
