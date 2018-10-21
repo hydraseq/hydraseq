@@ -266,3 +266,58 @@ def test_stack():
 
     result = [[1, 3, ['3_BINGO']], [2, 4, ['3_BINGO']]]
     assert run_convolutions(encoded2, hdq3, "3_") == result
+
+def test_face():
+    sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
+
+    hdq1 = Hydraseq('one')
+    for pattern in [
+        "o 0_eye",
+        "db 0_nose",
+        "v 0_left_mouth",
+        "u 0_mid_mouth",
+        "v 0_right_mouth",
+    ]:
+        hdq1.insert(pattern)
+
+    hdq2 = Hydraseq('two')
+    for pattern in [
+        "0_eye 0_eye 1_eyes",
+        "0_nose 1_nose",
+        "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
+    ]:
+        hdq2.insert(pattern)
+    hdq3 = Hydraseq('three')
+    for pattern in [
+        "1_eyes 1_nose 1_mouth 2_FACE"
+    ]:
+        hdq3.insert(pattern)
+
+    result = [
+        [5, 6, ['0_eye']],
+        [6, 7, ['0_eye']],
+        [7, 8, ['0_nose']],
+        [8, 9, ['0_left_mouth', '0_right_mouth']],
+        [9, 10, ['0_mid_mouth']],
+        [10, 11, ['0_left_mouth', '0_right_mouth']]
+        ]
+    assert run_convolutions(sentence, hdq1, "0_") == result
+
+    encoded = [code[2] for code in run_convolutions(sentence, hdq1, "0_")]
+    assert encoded == [
+        ['0_eye'],
+        ['0_eye'],
+        ['0_nose'],
+        ['0_left_mouth', '0_right_mouth'],
+        ['0_mid_mouth'],
+        ['0_left_mouth', '0_right_mouth']
+        ]
+
+    result = [[0, 2, ['1_eyes']], [2, 3, ['1_nose']], [3, 6, ['1_mouth']]]
+    assert run_convolutions(encoded, hdq2, "1_") == result
+
+    encoded2 = [code[2] for code in run_convolutions(encoded, hdq2, "1_")]
+    assert encoded2 == [['1_eyes'], ['1_nose'], ['1_mouth']]
+
+    result = [[0, 3, ['2_FACE']]]
+    assert run_convolutions(encoded2, hdq3, "2_") == result
