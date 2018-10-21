@@ -370,15 +370,17 @@ def reverse_convo(hydras, init_word):
             fringe = list(set(fringe))
             print(fringe, " : ", word, " : ", successors)
     return sorted(bottoms)
-def run_convolutions(seq, words, nxt="_"):
+
+def run_convolutions(words, seq, nxt="_"):
+    words = words if isinstance(words, list) else seq.get_word_array(words)
     hydras = []
     results = []
 
-    for idx, word in enumerate(words):
+    for idx, word0 in enumerate(words):
         word_results = []
         hydras.append(Hydraseq(idx, seq))
         for depth, hydra in enumerate(hydras):
-            next_hits = [word for word in hydra.hit([word], is_learning=False).get_next_values() if word.startswith(nxt)]
+            next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
             if next_hits: word_results.append([depth, idx+1, next_hits])
         results.extend(word_results)
     return results
