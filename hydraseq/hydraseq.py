@@ -185,12 +185,13 @@ def run_convolutions(words, seq, nxt="_"):
         results.extend(word_results)
     return results
 
-class Pattern:
-    """pattern is a list of [start[<int>, end)<int>, pattern<str>]"""
-    def __init__(self, lst_pattern):
-        self.start, self.end, self.key = lst_pattern
+def get_encoding_only(results):
+    """resunt is [left<int>, right<int>, encoding<list<strings>>"""
+    return [code[2] for code in results]
 
-
-    def run_sequence(self, sentence):
-        print("Activating {}".format(self.key))
-        print(" ".join(sentence[self.start:self.end]))
+def parse(sequemems, sentence):
+    for sequemem in sequemems:
+        results = run_convolutions(sentence, sequemem, sequemem.uuid)
+        sentence = get_encoding_only(results)
+        print(results)
+    return results

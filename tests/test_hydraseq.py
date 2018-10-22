@@ -2,7 +2,7 @@ import re
 import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
-from hydraseq import run_convolutions
+from hydraseq import *
 import pytest
 
 def w(str_sentence):
@@ -293,7 +293,9 @@ def test_face():
     ]:
         hdq3.insert(pattern)
 
-    result = [
+    # First Round
+    results = run_convolutions(sentence, hdq1, "0_")
+    assert results == [
         [5, 6, ['0_eye']],
         [6, 7, ['0_eye']],
         [7, 8, ['0_nose']],
@@ -301,9 +303,8 @@ def test_face():
         [9, 10, ['0_mid_mouth']],
         [10, 11, ['0_left_mouth', '0_right_mouth']]
         ]
-    assert run_convolutions(sentence, hdq1, "0_") == result
 
-    encoded = [code[2] for code in run_convolutions(sentence, hdq1, "0_")]
+    encoded = [code[2] for code in results]
     assert encoded == [
         ['0_eye'],
         ['0_eye'],
@@ -312,12 +313,41 @@ def test_face():
         ['0_mid_mouth'],
         ['0_left_mouth', '0_right_mouth']
         ]
+    # Secount Round
+    results = run_convolutions(encoded, hdq2, "1_")
+    assert results == [[0, 2, ['1_eyes']], [2, 3, ['1_nose']], [3, 6, ['1_mouth']]]
 
-    result = [[0, 2, ['1_eyes']], [2, 3, ['1_nose']], [3, 6, ['1_mouth']]]
-    assert run_convolutions(encoded, hdq2, "1_") == result
-
-    encoded2 = [code[2] for code in run_convolutions(encoded, hdq2, "1_")]
+    encoded2 = [code[2] for code in results]
     assert encoded2 == [['1_eyes'], ['1_nose'], ['1_mouth']]
+    # Third Round
+    results = run_convolutions(encoded2, hdq3, "2_")
+    assert results == [[0, 3, ['2_FACE']]]
 
-    result = [[0, 3, ['2_FACE']]]
-    assert run_convolutions(encoded2, hdq3, "2_") == result
+
+def test_face_compact():
+    sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
+
+    hdq1 = Hydraseq('0_')
+    for pattern in [
+        "o 0_eye",
+        "db 0_nose",
+        "v 0_left_mouth",
+        "u 0_mid_mouth",
+        "v 0_right_mouth",
+    ]:
+        hdq1.insert(pattern)
+
+    hdq2 = Hydraseq('1_')
+    for pattern in [
+        "0_eye 0_eye 1_eyes",
+        "0_nose 1_nose",
+        "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
+    ]:
+        hdq2.insert(pattern)
+    hdq3 = Hydraseq('2_')
+    for pattern in [
+        "1_eyes 1_nose 1_mouth 2_FACE"
+    ]:
+        hdq3.insert(pattern)
+
+    assert parse([hdq1, hdq2, hdq3], sentence) == [[0, 3, ['2_FACE']]]
