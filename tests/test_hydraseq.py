@@ -351,3 +351,45 @@ def test_face_compact():
         hdq3.insert(pattern)
 
     assert parse([hdq1, hdq2, hdq3], sentence) == [[0, 3, ['2_FACE']]]
+
+def test_double_meaning():
+    sentence = "spring leaves spring"
+
+    hdr0 = Hydraseq('0_')
+    hdr1 = Hydraseq('1_')
+    hdr2 = Hydraseq('2_')
+
+    for pattern in [
+        "spring 0_A_",
+        "spring 0_V_",
+        "leaves 0_N_",
+        "leaves 0_V_",
+        "fall 0_A_",
+        "fall 0_V_"
+    ]:
+        hdr0.insert(pattern)
+    
+    for pattern in [
+        "0_N_ 1_NP_",
+        "0_A_ 0_N_ 1_NP_",
+        "0_V_ 1_VP_",
+        "0_V_ 0_N_ 1_VP_"
+    ]:
+        hdr1.insert(pattern)
+
+    for pattern in [
+        "1_NP_ 1_VP_ 2_S_"
+    ]:
+        hdr2.insert(pattern)
+
+    # assert parse([hdr0], sentence) == [
+    #     [0, 1, ['0_A_', '0_V_']],
+    #     [1, 2, ['0_N_', '0_V_']],
+    #     [2, 3, ['0_A_', '0_V_']]]
+    # assert parse([hdr0, hdr1], sentence) == [
+    #     [0, 1, ['1_VP_']],
+    #     [0, 2, ['1_NP_', '1_VP_']],
+    #     [1, 2, ['1_NP_', '1_VP_']],
+    #     [2, 3, ['1_VP_']]]
+    assert parse([hdr0, hdr1, hdr2], sentence) == []
+    assert False

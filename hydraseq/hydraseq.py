@@ -2,7 +2,7 @@
 Basic Memory Data Structure
 """
 
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 import re
 
 class Node:
@@ -170,7 +170,7 @@ class Hydraseq:
             self.get_next_values()
         )
 
-
+ThalaNode = namedtuple('ThalaNode',  ['start', 'end', 'keys', 'lst_nexts', 'lst_lasts'])
 def run_convolutions(words, seq, nxt="_"):
     words = words if isinstance(words, list) else seq.get_word_array(words)
     hydras = []
@@ -181,7 +181,9 @@ def run_convolutions(words, seq, nxt="_"):
         hydras.append(Hydraseq(idx, seq))
         for depth, hydra in enumerate(hydras):
             next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
-            if next_hits: word_results.append([depth, idx+1, next_hits])
+            if next_hits:
+                print("HIT: ", depth, idx+1, next_hits) 
+                word_results.append(ThalaNode(depth, idx+1, next_hits, None, None))
         results.extend(word_results)
     return results
 
@@ -189,9 +191,9 @@ def get_encoding_only(results):
     """resunt is [left<int>, right<int>, encoding<list<strings>>"""
     return [code[2] for code in results]
 
-def parse(sequemems, sentence):
-    for sequemem in sequemems:
-        results = run_convolutions(sentence, sequemem, sequemem.uuid)
+def parse(hydras, sentence):
+    for hydra in hydras:
+        results = run_convolutions(sentence, hydra, hydra.uuid)
         sentence = get_encoding_only(results)
         print(results)
     return results
