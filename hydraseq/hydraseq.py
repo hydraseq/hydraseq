@@ -45,7 +45,7 @@ class Node:
             return " ".join([past, self.key])
         elif len(self.lasts) == 1:
             past = "|".join([n_last.get_sequence() for n_last in self.lasts])
-            return " ".join([past, self.key])
+            return " ".join([past, str(self.key)])
         else:
             return self.key
 
@@ -182,8 +182,13 @@ def run_convolutions(words, seq, nxt="_"):
         for depth, hydra in enumerate(hydras):
             next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
             if next_hits:
-                print("HIT: ", depth, idx+1, next_hits) 
-                word_results.append(ThalaNode(depth, idx+1, next_hits, None, None))
+                print("HIT: ", depth, idx+1, next_hits)
+                if word_results:
+                    for node in word_results:
+                        if node.end == idx+1:
+                            node.next_hits.append(Thalanode(depth, idx_1))
+                else:
+                    word_results.append(ThalaNode(depth, idx+1, next_hits, None, None))
         results.extend(word_results)
     return results
 
