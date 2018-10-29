@@ -170,30 +170,25 @@ class Hydraseq:
             self.get_next_values()
         )
 
-ThalaNode = namedtuple('ThalaNode',  ['start', 'end', 'keys', 'lst_nexts', 'lst_lasts'])
-def run_convolutions(words, seq, nxt="_"):
+def run_convolutions(words, seq, debug=False):
     words = words if isinstance(words, list) else seq.get_word_array(words)
+    if debug: print(words)
     hydras = []
     results = []
 
     for idx, word0 in enumerate(words):
+        if debug: print(word0)
         word_results = []
         hydras.append(Hydraseq(idx, seq))
         for depth, hydra in enumerate(hydras):
-            next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
-            if next_hits:
-                print("HIT: ", depth, idx+1, next_hits)
-                if word_results:
-                    for node in word_results:
-                        if node.end == idx+1:
-                            node.next_hits.append(Thalanode(depth, idx_1))
-                else:
-                    word_results.append(ThalaNode(depth, idx+1, next_hits, None, None))
+            next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(seq.uuid)]
+            if debug: print(next_hits)
+            if next_hits: word_results.append([depth, idx+1, next_hits])
         results.extend(word_results)
     return results
 
 def get_encoding_only(results):
-    """resunt is [left<int>, right<int>, encoding<list<strings>>"""
+    """result is [left<int>, right<int>, encoding<list<strings>>"""
     return [code[2] for code in results]
 
 def parse(hydras, sentence):
@@ -202,3 +197,23 @@ def parse(hydras, sentence):
         sentence = get_encoding_only(results)
         print(results)
     return results
+
+def generate_tree(lst_nods):
+    seq = Hydraseq("_")
+    seq.insert("0")
+
+    for idx, nod in enumerate(lst_nods):
+        for nd in seq.columns[str(nod[0])]:
+            node = Node(nod[2])
+            nd.nexts.append(node)
+            node.lasts.append(nd)
+            seq.columns[str(nod[1])].append(node)
+    return seq
+
+def flatten_tree(seq):
+    sequences = []
+    for node in [node for _, lst_nodes in seq.columns.items() for node in lst_nodes if not node.nexts]:
+        outcome = " ".join(node.get_sequence().split()[2:])
+        found_list = list(eval(outcome.replace("] [", "], [")))
+        sequences.append(found_list)
+    return sequences
