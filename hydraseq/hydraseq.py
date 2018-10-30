@@ -210,10 +210,13 @@ def generate_tree(lst_nods):
             seq.columns[str(nod[1])].append(node)
     return seq
 
-def flatten_tree(seq):
+def flatten_tree(seq, debug=False):
+    print("WTH?")
     sequences = []
     for node in [node for _, lst_nodes in seq.columns.items() for node in lst_nodes if not node.nexts]:
+        if debug: print("node.get_sequences(): ", node.get_sequence())
         outcome = " ".join(node.get_sequence().split()[2:])
+        if debug: print("outcome: ", outcome)
         found_list = list(eval(outcome.replace("] [", "], [")))
         sequences.append(found_list)
     return sequences
