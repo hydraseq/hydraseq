@@ -196,7 +196,7 @@ def test_cloning_hydra():
     assert hdr1.hit("quick", None).get_next_values() == ["brown"]
 
 def test_run_convolutions_smoke():
-    hdr = Hydraseq('convo')
+    hdr = Hydraseq('_')
 
     hdr.insert("a b c _ALPHA")
     hdr.insert("1 2 3 _DIGIT")
@@ -205,7 +205,7 @@ def test_run_convolutions_smoke():
     assert run_convolutions("a b 1 2 3 a b".split(), hdr) == [[2, 5, ['_DIGIT']]]
 
 def test_run_convolutions_overlap():
-    hdr = Hydraseq('convo')
+    hdr = Hydraseq('_')
 
     hdr.insert("b a d _1")
     hdr.insert("a n d _2")
@@ -220,7 +220,7 @@ def test_run_convolutions_overlap():
 def test_stack():
     sentence = "the quick brown fox jumped over the lazy dog"
 
-    hdq1 = Hydraseq('one')
+    hdq1 = Hydraseq('0_')
     for pattern in [
         "the 0_A",
         "quick 0_ADJ",
@@ -246,7 +246,7 @@ def test_stack():
     ]:
         hdq2.insert(pattern)
 
-    hdq3 = Hydraseq('three')
+    hdq3 = Hydraseq('3_')
     for pattern in [
         "_NP_ _VP_ 3_BINGO"
     ]:
@@ -262,7 +262,7 @@ def test_stack():
     assert encodeds[0] == [['0_A'], ['0_ADJ'], ['0_ADJ'], ['0_N', '0_V'], ['0_V'], ['0_PR'], ['0_A'], ['0_ADJ'], ['0_N']]
 
     result = [[0, 4, ['_NP_']], [2, 4, ['_NP_']], [3, 4, ['_NP_', '_VP_']], [4, 5, ['_VP_']], [7, 9, ['_NP_']], [8, 9, ['_NP_']]]
-    assert run_convolutions(encodeds[0], hdq2, "_", debug=True) == result
+    assert run_convolutions(encodeds[0], hdq2) == result
 
     # encoded2 = [code[2] for code in run_convolutions(encoded, hdq2, "_")]
     # assert encoded2 == [['_NP_'], ['_NP_'], ['_NP_', '_VP_'], ['_VP_'], ['_NP_'], ['_NP_']]
@@ -273,7 +273,7 @@ def test_stack():
 def test_face():
     sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
 
-    hdq1 = Hydraseq('one')
+    hdq1 = Hydraseq('0_')
     for pattern in [
         "o 0_eye",
         "db 0_nose",
@@ -283,21 +283,21 @@ def test_face():
     ]:
         hdq1.insert(pattern)
 
-    hdq2 = Hydraseq('two')
+    hdq2 = Hydraseq('1_')
     for pattern in [
         "0_eye 0_eye 1_eyes",
         "0_nose 1_nose",
         "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
     ]:
         hdq2.insert(pattern)
-    hdq3 = Hydraseq('three')
+    hdq3 = Hydraseq('2_')
     for pattern in [
         "1_eyes 1_nose 1_mouth 2_FACE"
     ]:
         hdq3.insert(pattern)
 
     # First Round
-    results = run_convolutions(sentence, hdq1, "0_")
+    results = run_convolutions(sentence, hdq1)
     assert results == [
         [5, 6, ['0_eye']],
         [6, 7, ['0_eye']],
@@ -385,14 +385,84 @@ def test_double_meaning():
     ]:
         hdr2.insert(pattern)
 
-    # assert parse([hdr0], sentence) == [
-    #     [0, 1, ['0_A_', '0_V_']],
-    #     [1, 2, ['0_N_', '0_V_']],
-    #     [2, 3, ['0_A_', '0_V_']]]
-    # assert parse([hdr0, hdr1], sentence) == [
-    #     [0, 1, ['1_VP_']],
-    #     [0, 2, ['1_NP_', '1_VP_']],
-    #     [1, 2, ['1_NP_', '1_VP_']],
-    #     [2, 3, ['1_VP_']]]
-    assert parse([hdr0, hdr1, hdr2], sentence) == []
-    assert False
+
+    assert parse([hdr0, hdr1, hdr2], sentence) == [[1, 3, ['2_S_']], [2, 4, ['2_S_']]]
+
+
+def test_think():
+    hd1 = Hydraseq('1_')
+    for pattern in [
+        "o 1_eye",
+        "L 1_nose",
+        "m 1_mouth",
+        "sdfg 1_keys",
+    ]:
+        hd1.insert(pattern)
+
+    hd2 = Hydraseq('2_')
+    for pattern in [
+        "1_eye 1_eye 2_eyes",
+        "1_nose 2_nose",
+        "1_mouth 2_mouth",
+        "1_keys 1_keys 1_keys 2_row"
+    ]:
+        hd2.insert(pattern)
+
+    hd3 = Hydraseq('3_')
+    for pattern in [
+        "2_eyes 2_nose 2_mouth 3_face",
+        "2_row 3_homerow"
+    ]:
+        hd3.insert(pattern)
+
+    hd0 = Hydraseq("_")
+    hd0.insert("x x o o L m end sdfg sdfg sdfg _period") # NB: the last entry has to be a next_node, i.e. _x
+    thoughts = think([hd0, hd1, hd2, hd3])
+
+    assert thoughts == [
+        [
+            [
+                [0, 1, ['x']],
+                [1, 2, ['x']],
+                [2, 3, ['o']],
+                [3, 4, ['o']],
+                [4, 5, ['L']],
+                [5, 6, ['m']],
+                [6, 7, ['end']],
+                [7, 8, ['sdfg']],
+                [8, 9, ['sdfg']],
+                [9, 10, ['sdfg']]
+            ]
+        ],
+        [
+            [
+                [2, 3, ['1_eye']],
+                [3, 4, ['1_eye']],
+                [4, 5, ['1_nose']],
+                [5, 6, ['1_mouth']]
+            ],
+            [
+                [7, 8, ['1_keys']],
+                [8, 9, ['1_keys']],
+                [9, 10, ['1_keys']]
+            ]
+        ],
+        [
+            [
+                [0, 2, ['2_eyes']],
+                [2, 3, ['2_nose']],
+                [3, 4, ['2_mouth']]
+            ],
+            [
+                [0, 3, ['2_row']]
+            ]
+        ],
+        [
+            [
+                [0, 3, ['3_face']]
+            ],
+            [
+                [0, 1, ['3_homerow']]
+            ]
+        ]
+    ]

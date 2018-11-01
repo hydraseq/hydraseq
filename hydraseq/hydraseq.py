@@ -220,3 +220,74 @@ def flatten_tree(seq, debug=False):
         found_list = list(eval(outcome.replace("] [", "], [")))
         sequences.append(found_list)
     return sequences
+
+#######################################################################################################################
+#             NEW THINK STACK!
+#######################################################################################################################
+
+Convo = namedtuple('Convo', ['start', 'end', 'pattern', 'lasts', 'nexts'])
+endcap = Convo(-1,-1,['end'], [],[])
+def to_convo_node(lst_stuff):
+    return Convo(lst_stuff[0], lst_stuff[1], lst_stuff[2], [], [])
+
+def link(conv1, conv2):
+    conv1.nexts.append(conv2)
+    conv2.lasts.append(conv1)
+
+def stackem(lst_convos):
+    frame = defaultdict(list)
+    ends = []
+    for convo in lst_convos:
+        if frame[convo[0]]:
+            for cnode in frame[convo[0]]:
+                convo_node = to_convo_node(convo)
+                link(cnode, convo_node)
+                ends.append(convo_node)
+                if cnode in ends: ends.remove(cnode)
+                frame[convo_node.end].append(convo_node)
+        else:
+            convo_node = to_convo_node(convo)
+            ends.append(convo_node)
+            frame[convo_node.end].append(convo_node)
+    return ends
+
+def recon(end_nodes):
+    stack = []
+    for node in end_nodes:
+        sentence = []
+        sentence.append([node.start, node.end, node.pattern])
+        while node.lasts:
+            node = node.lasts[0]
+            sentence.append([node.start, node.end, node.pattern])
+        sentence.reverse()
+        stack.append(sentence)
+    return stack
+
+def pats_only(sentence):
+    return [sent[2] for sent in sentence]
+
+def get_init_sentence_from_hydra(hd0):
+    sentence = []
+    node = hd0.n_init.nexts[0]
+    idx = 0
+    while node.nexts:
+        sentence.append([idx, idx+1, [node.key]])
+        node = node.nexts[0]
+        idx+=1
+    return [sentence]
+
+
+def run_them_all(sentences, hd1):
+    next_sentences = []
+    for sent in sentences:
+        conv = run_convolutions(pats_only(sent), hd1)
+        for item in recon(stackem(conv)):
+            next_sentences.append(item)
+    return next_sentences
+
+def think(lst_hydras):
+    active_layers = []
+    for idx, hydra in enumerate(lst_hydras):
+        sentences = run_them_all(sentences, hydra) if idx != 0 else get_init_sentence_from_hydra(hydra)
+        active_layers.append(sentences)
+    return active_layers
