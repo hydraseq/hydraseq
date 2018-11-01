@@ -291,3 +291,40 @@ def think(lst_hydras):
         sentences = run_them_all(sentences, hydra) if idx != 0 else get_init_sentence_from_hydra(hydra)
         active_layers.append(sentences)
     return active_layers
+
+#######################################################################################################################
+#  REVERSO!
+#######################################################################################################################
+def get_downwards(seq, downwords):
+    seq.reset()
+    downs = []
+    for downword in downwords:
+        for node in seq.columns[downword]:
+            downs.extend(node.get_sequence().split()[1:-1])
+    return downs
+
+def reverse_convo(stack_seqs, init_word):
+    downwords = [init_word]
+    for seq in stack_seqs:
+        downwords = get_downwards(seq, downwords)
+        if not downwords: downwords = [init_word]
+    return downwords
+
+#>  hd3.look_ahead("3_face")
+def get_downwards(seq, downwords):
+    seq.reset()
+    downs = []
+    for downword in downwords:
+        for node in seq.columns[downword]:
+            downs.extend(node.get_sequence().split()[1:-1])
+    return downs
+
+def reverse_convo(stack_seqs, init_word):
+    downwords = [init_word]
+    for seq in stack_seqs:
+        downwords = get_downwards(seq, downwords)
+        if not downwords: downwords = [init_word]
+    return downwords
+
+#> reverse_convo([hd3, hd2, hd1], '3_face')
+#> ['o', 'o', 'L', 'm']
