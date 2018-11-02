@@ -466,3 +466,60 @@ def test_think():
             ]
         ]
     ]
+
+def test_single_layer_recursive():
+    """This is test is a negative test, in the sense that it shows that recursive won't work right out of the box.
+        More importantly, it shows there is a distinction to be dealt with next predicted, versus next as in 'isa'
+        The 'eyes nose mouth' sequence 'isa' face, for example, but 'eyes nose' predict a 'mouth', not 'isa' mouth.
+        The distinction causes noise when you recurse.  This is solved by the layer approach because in this case
+        'eyes nose mouth' would be in a lower layer pointing to face in the next, while 'eyes nose' point to 'mouth'
+        but in the SAME layer, as a predicted value not as identification.
+    """
+    hd0 = Hydraseq('_')
+    for pattern in [
+        "x _null",
+        "o _eye",
+        "L _nose",
+        "m _mouth",
+        "sdfg _keys",
+        "_eye _eye _eyes",
+        "_nose _nose",
+        "_mouth _mouth",
+        "_keys _keys _keys _row",
+        "_eyes _nose _mouth _face",
+        "_row _homerow",
+        "_face _face",
+    ]:
+        hd0.insert(pattern)
+    hdS = Hydraseq('_')
+    hdS.insert("o o L m x x _y") # NB: the last entry has to be a next_node, i.e. _x
+    thoughts = think([hdS, hd0, hd0, hd0, hd0])
+
+    assert thoughts == \
+        [[[[0, 1, ['o']],
+           [1, 2, ['o']],
+           [2, 3, ['L']],
+           [3, 4, ['m']],
+           [4, 5, ['x']],
+           [5, 6, ['x']]]],
+         [[[0, 1, ['_eye']],
+           [1, 2, ['_eye']],
+           [2, 3, ['_nose']],
+           [3, 4, ['_mouth']],
+           [4, 5, ['_null']],
+           [5, 6, ['_null']]]],
+         [[[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
+         [[[0, 3, ['_face']]],
+          [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
+          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+          [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
+         [[[0, 1, ['_face']]],
+          [[0, 1, ['_mouth']], [1, 2, ['_mouth']]],
+          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+          [[0, 3, ['_face']]],
+          [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
+          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+          [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]]]

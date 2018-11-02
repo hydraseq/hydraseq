@@ -234,7 +234,7 @@ def link(conv1, conv2):
     conv1.nexts.append(conv2)
     conv2.lasts.append(conv1)
 
-def stackem(lst_convos):
+def to_tree_nodes(lst_convos):
     frame = defaultdict(list)
     ends = []
     for convo in lst_convos:
@@ -251,7 +251,7 @@ def stackem(lst_convos):
             frame[convo_node.end].append(convo_node)
     return ends
 
-def recon(end_nodes):
+def reconstruct(end_nodes):
     stack = []
     for node in end_nodes:
         sentence = []
@@ -263,7 +263,7 @@ def recon(end_nodes):
         stack.append(sentence)
     return stack
 
-def pats_only(sentence):
+def patterns_only(sentence):
     return [sent[2] for sent in sentence]
 
 def get_init_sentence_from_hydra(hd0):
@@ -277,11 +277,11 @@ def get_init_sentence_from_hydra(hd0):
     return [sentence]
 
 
-def run_them_all(sentences, hd1):
+def run_them_all(sentences, hds):
     next_sentences = []
     for sent in sentences:
-        conv = run_convolutions(pats_only(sent), hd1)
-        for item in recon(stackem(conv)):
+        conv = run_convolutions(patterns_only(sent), hds)
+        for item in reconstruct(to_tree_nodes(conv)):
             next_sentences.append(item)
     return next_sentences
 
@@ -290,6 +290,7 @@ def think(lst_hydras):
     for idx, hydra in enumerate(lst_hydras):
         sentences = run_them_all(sentences, hydra) if idx != 0 else get_init_sentence_from_hydra(hydra)
         active_layers.append(sentences)
+
     return active_layers
 
 #######################################################################################################################
