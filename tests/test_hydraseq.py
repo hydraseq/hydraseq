@@ -252,23 +252,70 @@ def test_stack():
     ]:
         hdq3.insert(pattern)
 
+    hdq0 = Hydraseq('_')
+    hdq0.insert(sentence + " _exit")
+    thoughts = think([hdq0, hdq1, hdq2, hdq3])
 
-    result = [[0, 1, ['0_A']], [1, 2, ['0_ADJ']], [2, 3, ['0_ADJ']], [3, 4, ['0_N', '0_V']], [4, 5, ['0_V']], [5, 6, ['0_PR']], [6, 7, ['0_A']], [7, 8, ['0_ADJ']], [8, 9, ['0_N']]]
-    assert run_convolutions(sentence.split(), hdq1, "0_") == result
+    assert thoughts == [
+        [
+            [
+                [0, 1, ['the']],
+                [1, 2, ['quick']],
+                [2, 3, ['brown']],
+                [3, 4, ['fox']],
+                [4, 5, ['jumped']],
+                [5, 6, ['over']],
+                [6, 7, ['the']],
+                [7, 8, ['lazy']],
+                [8, 9, ['dog']]
+            ]
+        ],
+        [
+            [
+                [0, 1, ['0_A']],
+                [1, 2, ['0_ADJ']],
+                [2, 3, ['0_ADJ']],
+                [3, 4, ['0_N', '0_V']],
+                [4, 5, ['0_V']],
+                [5, 6, ['0_PR']],
+                [6, 7, ['0_A']],
+                [7, 8, ['0_ADJ']],
+                [8, 9, ['0_N']]
+            ]
+        ],
+        [
+            [
+                [0, 4, ['_NP_']],
+                [4, 5, ['_VP_']]
+            ],
+            [
+                [2, 4, ['_NP_']],
+                [4, 5, ['_VP_']]
+            ],
+            [
+                [3, 4, ['_NP_', '_VP_']],
+                [4, 5, ['_VP_']]
+            ],
+            [
+                [7, 9, ['_NP_']]
+            ],
+            [
+                [8, 9, ['_NP_']]
+            ]
+        ],
+        [
+            [
+                [0, 2, ['3_BINGO']]
+            ],
+            [
+                [0, 2, ['3_BINGO']]
+            ],
+            [
+                [0, 2, ['3_BINGO']]
+            ]
+        ]
+    ]
 
-    s = generate_tree(result)
-    encodeds = flatten_tree(s)
-
-    assert encodeds[0] == [['0_A'], ['0_ADJ'], ['0_ADJ'], ['0_N', '0_V'], ['0_V'], ['0_PR'], ['0_A'], ['0_ADJ'], ['0_N']]
-
-    result = [[0, 4, ['_NP_']], [2, 4, ['_NP_']], [3, 4, ['_NP_', '_VP_']], [4, 5, ['_VP_']], [7, 9, ['_NP_']], [8, 9, ['_NP_']]]
-    assert run_convolutions(encodeds[0], hdq2) == result
-
-    # encoded2 = [code[2] for code in run_convolutions(encoded, hdq2, "_")]
-    # assert encoded2 == [['_NP_'], ['_NP_'], ['_NP_', '_VP_'], ['_VP_'], ['_NP_'], ['_NP_']]
-
-    # result = [[1, 3, ['3_BINGO']], [2, 4, ['3_BINGO']]]
-    # assert run_convolutions(encoded2, hdq3, "3_") == result
 
 def test_face():
     sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
@@ -353,14 +400,19 @@ def test_face_compact():
     ]:
         hdq3.insert(pattern)
 
-    assert parse([hdq1, hdq2, hdq3], sentence) == [[0, 3, ['2_FACE']]]
+    hdq0 = Hydraseq('_')
+    hdq0.insert(sentence + " _exit")
+    thoughts = think([hdq0, hdq1, hdq2, hdq3])
+
+    assert thoughts[3][0] == [[0, 3, ['2_FACE']]]
+
 
 def test_double_meaning():
     sentence = "spring leaves spring"
 
-    hdr0 = Hydraseq('0_')
-    hdr1 = Hydraseq('1_')
-    hdr2 = Hydraseq('2_')
+    hdq1 = Hydraseq('0_')
+    hdq2 = Hydraseq('1_')
+    hdq3 = Hydraseq('2_')
 
     for pattern in [
         "spring 0_A_",
@@ -370,7 +422,7 @@ def test_double_meaning():
         "fall 0_A_",
         "fall 0_V_"
     ]:
-        hdr0.insert(pattern)
+        hdq1.insert(pattern)
 
     for pattern in [
         "0_N_ 1_NP_",
@@ -378,16 +430,17 @@ def test_double_meaning():
         "0_V_ 1_VP_",
         "0_V_ 0_N_ 1_VP_"
     ]:
-        hdr1.insert(pattern)
+        hdq2.insert(pattern)
 
     for pattern in [
         "1_NP_ 1_VP_ 2_S_"
     ]:
-        hdr2.insert(pattern)
+        hdq3.insert(pattern)
 
-
-    assert parse([hdr0, hdr1, hdr2], sentence) == [[1, 3, ['2_S_']], [2, 4, ['2_S_']]]
-
+    hdq0 = Hydraseq('_')
+    hdq0.insert(sentence + " _exit")
+    thoughts = think([hdq0, hdq1, hdq2, hdq3])
+    assert thoughts[3] == [[[0, 2, ['2_S_']]], [[1, 3, ['2_S_']]]]
 
 def test_think():
     hd1 = Hydraseq('1_')

@@ -170,6 +170,10 @@ class Hydraseq:
             self.get_next_values()
         )
 
+###################################################################################################
+# END HYDRA BEGIN CONVOLUTION NETWORK
+###################################################################################################
+
 def run_convolutions(words, seq, debug=False):
     words = words if isinstance(words, list) else seq.get_word_array(words)
     if debug: print(words)
@@ -187,28 +191,16 @@ def run_convolutions(words, seq, debug=False):
         results.extend(word_results)
     return results
 
-def get_encoding_only(results):
-    """result is [left<int>, right<int>, encoding<list<strings>>"""
-    return [code[2] for code in results]
+# def get_encoding_only(results):
+#     """result is [left<int>, right<int>, encoding<list<strings>>"""
+#     return [code[2] for code in results]
 
-def parse(hydras, sentence):
-    for hydra in hydras:
-        results = run_convolutions(sentence, hydra, hydra.uuid)
-        sentence = get_encoding_only(results)
-        print(results)
-    return results
-
-def generate_tree(lst_nods):
-    seq = Hydraseq("_")
-    seq.insert("0")
-
-    for idx, nod in enumerate(lst_nods):
-        for nd in seq.columns[str(nod[0])]:
-            node = Node(nod[2])
-            nd.nexts.append(node)
-            node.lasts.append(nd)
-            seq.columns[str(nod[1])].append(node)
-    return seq
+# def parse(hydras, sentence):
+#     for hydra in hydras:
+#         results = run_convolutions(sentence, hydra, hydra.uuid)
+#         sentence = get_encoding_only(results)
+#         print(results)
+#     return results
 
 def flatten_tree(seq, debug=False):
     print("WTH?")
