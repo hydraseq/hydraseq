@@ -183,6 +183,7 @@ def run_convolutions(words, hydra, debug=False):
     Returns:
         a list of convolutions, where each convolution is [start, end, [words]]
     """
+    print("START CONVO ", words, " ", hydra.uuid)
     words = words if isinstance(words, list) else hydra.get_word_array(words)
     if debug: print(words)
     hydras = []
@@ -193,7 +194,12 @@ def run_convolutions(words, hydra, debug=False):
         word_results = []
         hydras.append(Hydraseq(idx, hydra))
         for depth, _hydra in enumerate(hydras):
-            next_hits = [next_word for next_word in _hydra.hit(word, is_learning=False).get_next_values() if next_word.startswith(hydra.uuid)]
+            #next_hits = [next_word for next_word in _hydra.hit(word, is_learning=False).get_next_values() if next_word.startswith(hydra.uuid)]
+            next_hits = []
+            for next_word in _hydra.hit(word, is_learning=False).get_next_values():
+                if next_word.startswith(hydra.uuid):
+                    next_hits.append(next_word)
+                    print("WORD=",word,"idx=",idx,"depth=",depth," ACTIVE SEQ: ",[sequ for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word], " next_word=", next_word)
             if debug: print(next_hits)
             if next_hits: word_results.append([depth, idx+1, next_hits])
         results.extend(word_results)
