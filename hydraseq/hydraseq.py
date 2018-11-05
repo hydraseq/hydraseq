@@ -199,7 +199,7 @@ def run_convolutions(words, hydra, debug=False):
             for next_word in _hydra.hit(word, is_learning=False).get_next_values():
                 if next_word.startswith(hydra.uuid):
                     next_hits.append(next_word)
-                    print("WORD=",word,"idx=",idx,"depth=",depth," ACTIVE SEQ: ",[sequ for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word], " next_word=", next_word)
+                    print("WORD=",word,"depth=",depth,"idx=",idx+1," ACTIVE SEQ: ",[sequ.split()[1:-1] for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word], " next_word=", next_word)
             if debug: print(next_hits)
             if next_hits: word_results.append([depth, idx+1, next_hits])
         results.extend(word_results)
