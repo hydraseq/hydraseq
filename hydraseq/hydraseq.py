@@ -162,6 +162,41 @@ class Hydraseq:
             count += len(lst_nrns)
         return len(self.columns), count + 1
 
+    def convolutions(self, words):
+        """Run convolution on words using the hydra provided.
+        Args:
+            words, list<list<strings>>, the words, usually representing a coherent sentence or phrase
+            hydra, hydraseq, a trained hydra usually trained on the set of words used in sentence.
+            debug, output intermediate steps to console
+        Returns:
+            a list of convolutions, where each convolution is [start, end, [words]]
+        """
+        print("START CONVO ", words, " ", self.uuid)
+        words = words if isinstance(words, list) else self.get_word_array(words)
+
+        hydras = []
+        results = []
+
+        for idx, word in enumerate(words):
+            word_results = []
+            hydras.append(Hydraseq(idx, self))
+            for depth, _hydra in enumerate(hydras):
+                next_hits = []
+                for next_word in _hydra.hit(word, is_learning=False).get_next_values():
+                    if next_word.startswith(self.uuid):
+                        next_hits.append(next_word)
+                        print(
+                            "WORD=",word,
+                            "depth=",depth,
+                            "idx=",idx+1,
+                            " ACTIVE SEQ: ",[sequ.split()[1:-1] for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word],
+                            " next_word=", next_word
+                            )
+                if next_hits: word_results.append([depth, idx+1, next_hits])
+            results.extend(word_results)
+        return results
+
+
     def __repr__(self):
         return "uuid: {}\nn_init: {}:\nactive values: {}\nnext values: {}".format(
             self.uuid,
@@ -174,41 +209,6 @@ class Hydraseq:
 # END HYDRA BEGIN CONVOLUTION NETWORK
 ###################################################################################################
 
-def run_convolutions(words, hydra, debug=False):
-    """Run convolution on words using the hydra provided.
-    Args:
-        words, list<list<strings>>, the words, usually representing a coherent sentence or phrase
-        hydra, hydraseq, a trained hydra usually trained on the set of words used in sentence.
-        debug, output intermediate steps to console
-    Returns:
-        a list of convolutions, where each convolution is [start, end, [words]]
-    """
-    print("START CONVO ", words, " ", hydra.uuid)
-    words = words if isinstance(words, list) else hydra.get_word_array(words)
-    if debug: print(words)
-    hydras = []
-    results = []
-
-    for idx, word in enumerate(words):
-        if debug: print(word)
-        word_results = []
-        hydras.append(Hydraseq(idx, hydra))
-        for depth, _hydra in enumerate(hydras):
-            next_hits = []
-            for next_word in _hydra.hit(word, is_learning=False).get_next_values():
-                if next_word.startswith(hydra.uuid):
-                    next_hits.append(next_word)
-                    print(
-                        "WORD=",word,
-                        "depth=",depth,
-                        "idx=",idx+1,
-                        " ACTIVE SEQ: ",[sequ.split()[1:-1] for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word],
-                        " next_word=", next_word
-                        )
-            if debug: print(next_hits)
-            if next_hits: word_results.append([depth, idx+1, next_hits])
-        results.extend(word_results)
-    return results
 
 
 #######################################################################################################################
@@ -252,7 +252,7 @@ def reconstruct(end_nodes):
     Args:
         end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
     Returns:
-        list of [start, end, [words]] where each is validly linked with start=end 
+        list of [start, end, [words]] where each is validly linked with start=end
     """
     stack = []
     for node in end_nodes:
@@ -303,7 +303,7 @@ def run_them_all(sentences, hydra):
     """
     next_sentences = []
     for sent in sentences:
-        conv = run_convolutions(patterns_only(sent), hydra)
+        conv = hydra.convolutions(patterns_only(sent))
         for item in reconstruct(to_tree_nodes(conv)):
             next_sentences.append(item)
     return next_sentences
@@ -327,7 +327,7 @@ def think(lst_hydras):
 #######################################################################################################################
 #  REVERSO!
 #######################################################################################################################
-def get_downwards(hydra, downwords):
+def get_downwards(hydra, words):
     """Get the words associated with a given output word in a hydra.
     Args:
         hydra, a trained hydra
@@ -335,12 +335,11 @@ def get_downwards(hydra, downwords):
     Returns:
         a list of words related to the activation of the words given in downwords
     """
+    words = words if isinstance(words, list) else hydra.get_word_array(words)
     hydra.reset()
-    downs = []
-    for downword in downwords:
-        for node in hydra.columns[downword]:
-            downs.extend(node.get_sequence().split()[1:-1])
-    return downs
+    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split()[1:-1]]
+
+    return sorted(list(set(downs)))
 
 def reverse_convo(hydras, init_word):
     """Take init_word and drive downwards through stack of hydras and return the lowest level valid combination
@@ -349,11 +348,25 @@ def reverse_convo(hydras, init_word):
     Returns:
         The lowest level list of words that trigger the end word provided (init_word)
     """
-    downwords = [init_word]
-    for hydra in hydras:
-        downwords = get_downwards(hydra, downwords)
-        if not downwords: downwords = [init_word]
-    return downwords
+    def get_successors(word):
+        successors = []
+        for hydra in hydras:
+            successors.extend(get_downwards(hydra, [word]))
+        return successors
 
-#> reverse_convo([hd3, hd2, hd1], '3_face')
-#> ['o', 'o', 'L', 'm']
+
+    hydras.reverse()
+    bottoms = []
+    fringe = [init_word]
+    dejavu = []
+    while fringe:
+        word = fringe.pop()
+        dejavu.append(word)
+        successors = get_successors(word)
+        if not successors:
+            bottoms.append(word)
+        else:
+            fringe = fringe + [word for word in successors if word not in dejavu]
+            fringe = list(set(fringe))
+            print(fringe, " : ", word, " : ", successors)
+    return sorted(bottoms)

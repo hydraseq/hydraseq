@@ -3,6 +3,8 @@ import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
 from hydraseq import *
+sys.path.append('./tests/data/')
+import shapes as shapes
 import pytest
 
 def w(str_sentence):
@@ -201,8 +203,8 @@ def test_run_convolutions_smoke():
     hdr.insert("a b c _ALPHA")
     hdr.insert("1 2 3 _DIGIT")
 
-    assert run_convolutions("a b c 1 2 3".split(), hdr) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
-    assert run_convolutions("a b 1 2 3 a b".split(), hdr) == [[2, 5, ['_DIGIT']]]
+    assert hdr.convolutions("a b c 1 2 3".split()) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
+    assert hdr.convolutions("a b 1 2 3 a b".split()) == [[2, 5, ['_DIGIT']]]
 
 def test_run_convolutions_overlap():
     hdr = Hydraseq('_')
@@ -215,7 +217,7 @@ def test_run_convolutions_overlap():
 
     tester = "b a d a n d y".split()
     expected = [[0, 3, ['_1']], [1, 4, ['_3']], [1, 5, ['_5']], [3, 6, ['_2']], [3, 7, ['_4']]]
-    assert run_convolutions(tester, hdr) == expected
+    assert hdr.convolutions(tester) == expected
 
 def test_stack():
     sentence = "the quick brown fox jumped over the lazy dog"
@@ -344,7 +346,7 @@ def test_face():
         hdq3.insert(pattern)
 
     # First Round
-    results = run_convolutions(sentence, hdq1)
+    results = hdq1.convolutions(sentence)
     assert results == [
         [5, 6, ['0_eye']],
         [6, 7, ['0_eye']],
@@ -364,13 +366,13 @@ def test_face():
         ['0_left_mouth', '0_right_mouth']
         ]
     # Secount Round
-    results = run_convolutions(encoded, hdq2, "1_")
+    results = hdq2.convolutions(encoded)
     assert results == [[0, 2, ['1_eyes']], [2, 3, ['1_nose']], [3, 6, ['1_mouth']]]
 
     encoded2 = [code[2] for code in results]
     assert encoded2 == [['1_eyes'], ['1_nose'], ['1_mouth']]
     # Third Round
-    results = run_convolutions(encoded2, hdq3, "2_")
+    results = hdq3.convolutions(encoded2)
     assert results == [[0, 3, ['2_FACE']]]
 
 
@@ -576,3 +578,55 @@ def test_single_layer_recursive():
           [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
           [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
           [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]]]
+
+def test_get_downwards():
+    hds = Hydraseq("_")
+
+    hds.insert("a b c _D")
+    hds.insert("e f g _D")
+    hds.insert("c e f _D")
+
+    assert get_downwards(hds, ["_D"]) == ['a', 'b', 'c', 'e', 'f', 'g']
+
+def test_reverse_convo():
+    hdq1 = Hydraseq('0_')
+    for pattern in [
+        "o 0_eye",
+        "db 0_nose",
+        "v 0_left_mouth",
+        "u 0_mid_mouth",
+        "v 0_right_mouth",
+    ]:
+        hdq1.insert(pattern)
+
+    hdq2 = Hydraseq('1_')
+    for pattern in [
+        "0_eye 0_eye 1_eyes",
+        "0_nose 1_nose",
+        "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
+    ]:
+        hdq2.insert(pattern)
+    hdq3 = Hydraseq('2_')
+    for pattern in [
+        "1_eyes 1_nose 1_mouth 2_FACE"
+    ]:
+        hdq3.insert(pattern)
+
+    assert reverse_convo([hdq1, hdq2, hdq3], "2_FACE") == ['db', 'o', 'u', 'v']
+
+
+def test_shapes_cortex_face():
+    cortex = shapes.cortex
+    hys = Hydraseq("_")
+    cortex[0].insert(hys.get_word_array(shapes.face))
+
+    assert think(cortex)[-1][0][0][2] == ['2_FACE']
+
+def test_shapes_cortex_face_spaced():
+    cortex = shapes.cortex
+    hys = Hydraseq("_")
+    cortex[0] = Hydraseq("_")
+    cortex[0].insert(hys.get_word_array(shapes.face_spaced))
+
+    #assert think(cortex)[-1][0][0][2] == ['2_FACE']
+    assert think(cortex) == ['2_FACE']
