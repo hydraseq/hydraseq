@@ -628,5 +628,4 @@ def test_shapes_cortex_face_spaced():
     cortex[0] = Hydraseq("_")
     cortex[0].insert(hys.get_word_array(shapes.face_spaced))
 
-    #assert think(cortex)[-1][0][0][2] == ['2_FACE']
-    assert think(cortex) == ['2_FACE']
+    assert think(cortex)[2] == [[[0, 2, ['1_eyes']]], [[0, 1, ['1_nose']]], [[0, 3, ['1_mouth']]]]
