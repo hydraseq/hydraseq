@@ -1,7 +1,8 @@
 name = "hydraseq"
 
 from hydraseq.hydraseq import Hydraseq
-from hydraseq.hydraseq import run_convolutions
+from hydraseq.hydraseq import Node
+from hydraseq.hydraseq import Convo
 from hydraseq.hydraseq import to_convo_node
 from hydraseq.hydraseq import link
 from hydraseq.hydraseq import to_tree_nodes
