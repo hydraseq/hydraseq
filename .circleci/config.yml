@@ -17,6 +17,10 @@ jobs:
 
     working_directory: ~/hydraseq
 
+    branches:
+      only:
+        - version_9
+
     steps:
       - checkout
 
