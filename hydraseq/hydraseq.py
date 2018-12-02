@@ -49,6 +49,18 @@ class Node:
         else:
             return self.key
 
+    def get_sequence_nodes(self):
+        fringe = [self.lasts]
+        sequence = []
+        while fringe:
+            current_list = fringe.pop()
+            sequence.insert(0, current_list)
+            for node in current_list:
+                if node.lasts:
+                    fringe.append(node.lasts)
+        return sequence
+
+
 
     def __repr__(self):
         return "<node: {},{}>".format(self.key,self.get_sequence())
@@ -87,7 +99,7 @@ class Hydraseq:
         return sorted([node.get_sequence() for node in self.active_nodes])
 
     def get_active_values(self):
-        return sorted([node.key for node in self.active_nodes])
+        return sorted(list(set([node.key for node in self.active_nodes])))
 
     def get_next_sequences(self):
         return sorted([node.get_sequence() for node in self.next_nodes])
@@ -122,6 +134,8 @@ class Hydraseq:
         Returns
             self        so we can chain query for active or predicted
         """
+        if is_learning:
+            assert len(lst_words) == 1, "lst_words must be singulre if is_learning"
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
