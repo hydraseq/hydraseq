@@ -40,14 +40,9 @@ class Node:
         self.lasts.append(n_last)
 
     def get_sequence(self):
-        if len(self.lasts) > 1:
-            past = "(" + "|".join([n_last.get_sequence() for n_last in self.lasts]) + ")"
-            return " ".join([past, self.key])
-        elif len(self.lasts) == 1:
-            past = "|".join([n_last.get_sequence() for n_last in self.lasts])
-            return " ".join([past, str(self.key)])
-        else:
-            return self.key
+        assert len(self.lasts) <= 1, "Node lasts count should always be 1 or 0"
+        past = "|".join([n_last.get_sequence() for n_last in self.lasts])
+        return " ".join([past.strip(), str(self.key)]).strip()
 
     def get_sequence_nodes(self):
         fringe = [self.lasts]
@@ -58,18 +53,18 @@ class Node:
             for node in current_list:
                 if node.lasts:
                     fringe.append(node.lasts)
-        return sequence
+        return sequence[1:]
 
 
 
     def __repr__(self):
-        return "<node: {},{}>".format(self.key,self.get_sequence())
+        return str(self.key)
 
 
 class Hydraseq:
     def __init__(self, uuid, hydraseq=None):
         self.uuid = uuid
-        self.n_init = Node('(*)')
+        self.n_init = Node('')
         self.active_nodes = []
         self.active_sequences = []
         self.next_nodes = []
@@ -351,7 +346,7 @@ def get_downwards(hydra, words):
     """
     words = words if isinstance(words, list) else hydra.get_word_array(words)
     hydra.reset()
-    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split()[1:-1]]
+    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split() if w not in words]
 
     return sorted(list(set(downs)))
 
