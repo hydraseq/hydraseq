@@ -19,7 +19,6 @@ jobs:
 
     branches:
       only:
-        - version_9
 
     steps:
       - checkout
