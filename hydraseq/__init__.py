@@ -14,4 +14,3 @@ from hydraseq.hydraseq import think
 from hydraseq.hydraseq import get_downwards
 from hydraseq.hydraseq import reverse_convo
 from hydraseq.hydraseq import run_convolutions
-from hydraseq.hydraseq import Pattern

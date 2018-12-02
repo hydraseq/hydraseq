@@ -40,24 +40,29 @@ class Node:
         self.lasts.append(n_last)
 
     def get_sequence(self):
-        if len(self.lasts) > 1:
-            past = "(" + "|".join([n_last.get_sequence() for n_last in self.lasts]) + ")"
-            return " ".join([past, self.key])
-        elif len(self.lasts) == 1:
-            past = "|".join([n_last.get_sequence() for n_last in self.lasts])
-            return " ".join([past, str(self.key)])
-        else:
-            return self.key
+        assert len(self.lasts) <= 1, "Node lasts count should always be 1 or 0"
+        past = "|".join([n_last.get_sequence() for n_last in self.lasts])
+        return " ".join([past.strip(), str(self.key)]).strip()
 
+    def get_sequence_nodes(self):
+        fringe = [self.lasts]
+        sequence = []
+        while fringe:
+            current_list = fringe.pop()
+            sequence.insert(0, current_list)
+            for node in current_list:
+                if node.lasts:
+                    fringe.append(node.lasts)
+        return sequence[1:]
 
     def __repr__(self):
-        return "<node: {},{}>".format(self.key,self.get_sequence())
+        return str(self.key)
 
 
 class Hydraseq:
     def __init__(self, uuid, hydraseq=None):
         self.uuid = uuid
-        self.n_init = Node('(*)')
+        self.n_init = Node('')
         self.active_nodes = []
         self.active_sequences = []
         self.next_nodes = []
@@ -87,7 +92,7 @@ class Hydraseq:
         return sorted([node.get_sequence() for node in self.active_nodes])
 
     def get_active_values(self):
-        return sorted([node.key for node in self.active_nodes])
+        return sorted(list(set([node.key for node in self.active_nodes])))
 
     def get_next_sequences(self):
         return sorted([node.get_sequence() for node in self.next_nodes])
@@ -122,6 +127,8 @@ class Hydraseq:
         Returns
             self        so we can chain query for active or predicted
         """
+        if is_learning:
+            assert len(lst_words) == 1, "lst_words must be singulre if is_learning"
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
@@ -171,7 +178,6 @@ class Hydraseq:
         Returns:
             a list of convolutions, where each convolution is [start, end, [words]]
         """
-        print("START CONVO ", words, " ", self.uuid)
         words = words if isinstance(words, list) else self.get_word_array(words)
 
         hydras = []
@@ -185,24 +191,15 @@ class Hydraseq:
                 for next_word in _hydra.hit(word, is_learning=False).get_next_values():
                     if next_word.startswith(self.uuid):
                         next_hits.append(next_word)
-                        print(
-                            "WORD=",word,
-                            "depth=",depth,
-                            "idx=",idx+1,
-                            " ACTIVE SEQ: ",[sequ.split()[1:-1] for sequ in _hydra.get_next_sequences() if sequ.split()[-1] == next_word],
-                            " next_word=", next_word
-                            )
                 if next_hits: word_results.append([depth, idx+1, next_hits])
             results.extend(word_results)
         return results
 
 
     def __repr__(self):
-        return "uuid: {}\nn_init: {}:\nactive values: {}\nnext values: {}".format(
-            self.uuid,
-            self.n_init,
-            self.get_active_values(),
-            self.get_next_values()
+        return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
+            self.active_nodes,
+            self.next_nodes
         )
 
 ###################################################################################################
@@ -337,7 +334,7 @@ def get_downwards(hydra, words):
     """
     words = words if isinstance(words, list) else hydra.get_word_array(words)
     hydra.reset()
-    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split()[1:-1]]
+    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split() if w not in words]
 
     return sorted(list(set(downs)))
 
