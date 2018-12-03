@@ -127,8 +127,7 @@ class Hydraseq:
         Returns
             self        so we can chain query for active or predicted
         """
-        if is_learning:
-            assert len(lst_words) == 1, "lst_words must be singulre if is_learning"
+        if is_learning: assert len(lst_words) == 1, "lst_words must be singulre if is_learning"
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
@@ -142,6 +141,8 @@ class Hydraseq:
                 self.active_nodes.append(node)
 
                 [n.link_nexts(node) for n in last_active]
+        elif not self.active_nodes:
+            self.surprise = True
 
         if is_learning: assert self.active_nodes
         return self
@@ -161,13 +162,18 @@ class Hydraseq:
         arr_str_words = [ "-".join(word) for word in words[:(idx+1)] ]
         return "|".join(arr_str_words)
 
-
-
     def get_node_count(self):
         count = 0
-        for lst_nrns in self.columns:
+        for key, lst_nrns in self.columns.items():
             count += len(lst_nrns)
         return len(self.columns), count + 1
+
+    def self_insert(self, str_sentence):
+        _, current_count = hds.get_node_count()
+        for idx, word in enumerate(sentence):
+            if hds.look_ahead(word).surprise:
+                hds.insert(" ".join(sentence[:idx])+' _'+str(current_count))
+                current_count += 1
 
     def convolutions(self, words):
         """Run convolution on words using the hydra provided.
