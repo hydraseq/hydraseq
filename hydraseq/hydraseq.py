@@ -157,11 +157,6 @@ class Hydraseq:
     def get_word_array(self, str_sentence):
         return [[word] for word in re.findall(r"[\w'/-:]+|[.,!?;]", str_sentence)]
 
-    def _hist(self, words, idx):
-        """Return a # concatenated history up to the current passed index"""
-        arr_str_words = [ "-".join(word) for word in words[:(idx+1)] ]
-        return "|".join(arr_str_words)
-
     def get_node_count(self):
         count = 0
         for key, lst_nrns in self.columns.items():
@@ -169,6 +164,7 @@ class Hydraseq:
         return len(self.columns), count + 1
 
     def self_insert(self, str_sentence):
+        """Generate labels for each seuqential sequence. Ex a, ab, abc, abcd..."""
         _, current_count = hds.get_node_count()
         for idx, word in enumerate(sentence):
             if hds.look_ahead(word).surprise:
