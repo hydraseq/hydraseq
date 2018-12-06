@@ -3,6 +3,7 @@ import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
 from hydraseq import *
+from columns import *
 sys.path.append('./tests/data/')
 import shapes as shapes
 import pytest
@@ -636,3 +637,10 @@ def test_get_sequence_multiple():
 
     nxts = hds2.look_ahead([['a'], ['b','B']]).next_nodes
     assert sorted([str(nxt.get_sequence_nodes()) for nxt in nxts]) == ['[[a], [B]]', '[[a], [b]]']
+
+def test_self_insert():
+    hdq = Hydraseq('_')
+    hdq.self_insert("Burger King wants people to download its app. So it's sending them to McDonald's for access to a one-cent Whopper.")
+    assert len(hdq.columns) == 38
+    assert sorted(hdq.look_ahead("Burger King wants").get_next_values()) == sorted(['people', '_3'])
+    assert sorted(hdq.look_ahead("Burger King wants").get_active_values()) == sorted(['wants'])
