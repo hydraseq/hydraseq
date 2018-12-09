@@ -172,7 +172,7 @@ class Hydraseq:
         words = str_sentence if isinstance(str_sentence, list) else self.get_word_array(str_sentence)
         assert isinstance(words, list), "words must be a list"
         assert isinstance(words[0], list), "{}=>{} s.b. a list of lists and must be non empty".format(str_sentence, words)
-        
+
         _, current_count = self.get_node_count()
         for idx, word in enumerate(words):
             if self.look_ahead([word]).surprise:
@@ -180,6 +180,11 @@ class Hydraseq:
                 lst_word.extend([['_'+str(current_count)]])
                 self.insert(lst_word)
                 current_count += 1
+
+    def full_insert(self, sent):
+        words = sent.split()
+        for idx in range(len(words)):
+            self.self_insert(" ".join(words[idx:-1]))
 
     def convolutions(self, words):
         """Run convolution on words using the hydra provided.
