@@ -1,5 +1,5 @@
 name = "hydraseq"
-__version__ = '0.0.13'
+__version__ = '0.0.14'
 from hydraseq.hydraseq import Hydraseq
 from hydraseq.hydraseq import Node
 from hydraseq.columns import Convo
@@ -14,3 +14,4 @@ from hydraseq.columns import think
 from hydraseq.columns import get_downwards
 from hydraseq.columns import reverse_convo
 from hydraseq.columns import run_convolutions
+from hydraseq.automata import DFAstate
