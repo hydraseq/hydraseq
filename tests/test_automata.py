@@ -88,3 +88,61 @@ def test_tri_state_automata():
         assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
     for reject in rejects:
         assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
+
+def test_deterministic_b_is_third_from_start_70():
+    """Accept any length string as long as third character is a b"""
+    transitions = [
+        "s1 a,b ^s2",
+        "s2 a,b ^s3",
+        "s3 a ^s4",
+        "s3 b ^s5",
+        "s4 a,b ^s4",
+        "s5 a,b ^s5"
+    ]
+
+    dfa = DFAstate(transitions, 's1', accepting_states=['s5'])
+    print(dfa.convert_to_mermaid())
+
+    accepts = [
+        "aabaa",
+        "aabaaba",
+        "aabaaaab"
+    ]
+    rejects = [
+        "aaaaa",
+        "aaaaaaa",
+        "baaaa"
+    ]
+    for accept in accepts:
+        assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
+    for reject in rejects:
+        assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
+
+def test_non_deterministic_b_is_third_from_last_70():
+    """Accept any length string as long as third character is a b"""
+    transitions = [
+        "s1 a,b ^s1",
+        "s1 b ^s2",
+        "s2 a,b ^s3",
+        "s3 a,b ^s4",
+        "s4"
+    ]
+
+    dfa = DFAstate(transitions, 's1', accepting_states=['s4'])
+    print(dfa.convert_to_mermaid())
+
+    accepts = [
+        "aaabaa",
+        "aaaabba",
+        "aaaaabab"
+    ]
+    rejects = [
+        "aaaaa",
+        "aaaaaaa",
+        "baaaa"
+    ]
+    for accept in accepts:
+        assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
+    for reject in rejects:
+        assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
+    #assert False

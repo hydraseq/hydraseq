@@ -12,7 +12,7 @@ class DFAstate:
         self.init_state = init_state
         self.acceptings = accepting_states
         self.transitions = transitions
-        [self.states.insert(transition) for transition in transitions]
+        [self.states.insert(transition) for transition in self.expand_transitions(transitions)]
         self.reset()
 
     def get_active_states(self):
@@ -28,22 +28,36 @@ class DFAstate:
 
     def event(self, e):
         self.states.hit([e], is_learning=False)
-        for action in self.states.get_next_values():
-            self.states.look_ahead(action.replace('^', ''))
+        self.states.look_ahead([[action.replace('^', '') for action in self.states.get_next_values()]])
         return self
-
+ 
     def read_string(self, str):
         self.reset()
         [self.event(char) for char in str]
         return self
 
+    def expand_transitions(self, transitions):
+        expanded = []
+        for transition in transitions:
+            trans_tup = transition.split()
+            if len(trans_tup) == 3 and ',' in trans_tup[1]:
+                for elem in trans_tup[1].split(','):
+                    expanded.append("{} {} {}".format(trans_tup[0], elem, trans_tup[2]))
+            else:
+                expanded.append(transition)
+        return expanded
+    
     def convert_to_mermaid(self):
         """Takes a 'st1 a st2' list of transitions and generates a mermaid compatible
             string like 'st1((st1)) --a--> st2((st2))' """
         def _convert_line(str_line):
-            start, action, final = str_line.split()
-            final = final.replace('^', '')
-            return "{}(({})) --{}--> {}(({}))".format(start, start, action, final, final)
+            line_tuple = str_line.split()
+            if len(line_tuple) == 1:
+                return "{}(({}))".format(line_tuple[0], line_tuple[0])
+            else:
+                start, action, final = line_tuple
+                final = final.replace('^', '')
+                return "{}(({})) --{}--> {}(({}))".format(start, start, action, final, final)
 
         return "\n".join([_convert_line(line) for line in self.transitions])
 
