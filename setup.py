@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hydraseq",
-    version="0.0.14",
+    version="0.0.15",
     author="Efrain Olivares",
     author_email="efrain.olivares@gmail.com",
     description="Simple data structure for sequence memory",
