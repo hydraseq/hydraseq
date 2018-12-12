@@ -145,4 +145,64 @@ def test_non_deterministic_b_is_third_from_last_70():
         assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
     for reject in rejects:
         assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
-    #assert False
+
+def test_non_deterministic_multiples_two_and_three_76():
+    """Accept strings that are multiples of 2 or 3 in length"""
+    transitions = [
+        "s1 a ^s2",
+        "s2 a ^s1",
+        "s1 a ^s3",
+        "s3 a ^s4",
+        "s4 a ^s1"
+    ]
+
+    dfa = DFAstate(transitions, 's1', accepting_states=['s1'])
+    print(dfa.convert_to_mermaid())
+
+    accepts = [
+        2*"a",
+        3*"a",
+        4*"a",
+        5*"a",
+        6*"a",
+        7*"a",
+        8*"a"
+    ]
+    rejects = [
+    ]
+    for accept in accepts:
+        assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
+    for reject in rejects:
+        assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
+
+def test_non_deterministic_with_free_moves_78():
+    """Accept strings that are multiples of 2 or 3 in length"""
+    transitions = [
+        "s1 n ^s2",
+        "s1 n ^s4",
+        "s2 a ^s3",
+        "s3 a ^s2",
+        "s4 a ^s5",
+        "s5 a ^s6",
+        "s6 a ^s4"
+    ]
+
+    dfa = DFAstate(transitions, 's1', accepting_states=['s2','s4'])
+    print(dfa.convert_to_mermaid())
+
+    # use n to mean a free move, triggers both states 2 and 4 from the get go simultaneous
+    accepts = [ # accepts multiples of 2 or 3, 2,3,4,6,8 etc..
+        "naa",
+        "naaa",
+        "naaaa",
+        "naaaaaa",
+        "naaaaaaaa"
+    ]
+    rejects = [ # should reject non-multiples of 2,3, such as 5, 7 etc
+        "naaaaa",
+        "naaaaaaa",
+    ]
+    for accept in accepts:
+        assert dfa.read_string(accept).in_accepting() == True, accept + " should be accepted"
+    for reject in rejects:
+        assert dfa.read_string(reject).in_accepting() == False, reject+" should be rejected"
