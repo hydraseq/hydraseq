@@ -1,6 +1,7 @@
 name = "hydraseq"
-__version__ = '0.0.15'
+__version__ = '0.0.17'
 from hydraseq.hydraseq import Hydraseq
+from hydraseq.hydra import Hydra
 from hydraseq.hydraseq import Node
 from hydraseq.columns import Convo
 from hydraseq.columns import to_convo_node
