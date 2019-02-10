@@ -127,7 +127,7 @@ class Hydraseq:
         Returns
             self        so we can chain query for active or predicted
         """
-        if is_learning: assert len(lst_words) == 1, "lst_words must be singulre if is_learning"
+        if is_learning: assert len(lst_words) == 1, "lst_words must be singular if is_learning"
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)

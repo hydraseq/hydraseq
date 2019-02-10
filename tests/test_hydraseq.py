@@ -2,6 +2,7 @@ import re
 import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
+from hydra import Hydra
 from hydraseq import *
 from columns import *
 sys.path.append('./tests/data/')
@@ -644,3 +645,45 @@ def test_self_insert():
     assert len(hdq.columns) == 38
     assert sorted(hdq.look_ahead("Burger King wants").get_next_values()) == sorted(['people', '_3'])
     assert sorted(hdq.look_ahead("Burger King wants").get_active_values()) == sorted(['wants'])
+
+
+def test_hydra():
+    words = ['every', 'good', 'boy', 'does', 'fine', 'everything']
+
+    hh = Hydra(words)
+
+    for idx, word in enumerate(words):
+        hh.insert_word(word, idx)
+    for idx, word in enumerate(words):
+        hh.insert_word(word, idx*2)
+
+    assert hh.lookup('every') == set([0])
+    assert hh.lookup('good')  == set([1,2])
+    assert hh.lookup('boy')   == set([2,4])
+    assert hh.lookup('does')  == set([3,6])
+    assert hh.lookup('fine')  == set([4,8])
+
+def test_negative_hydra():
+    hh = Hydra([])
+
+    hh.insert_word('someword', 'marker')
+
+    assert hh.lookup('anotherword') == None
+
+
+def test_coordinate_hydra():
+    hx = Hydra([])
+    hy = Hydra([])
+
+    points = {
+        'a': [0.123456, 0.56789],
+        'b': [0.1234, 0.5678]
+    }
+
+    for point, xy in points.items():
+        hx.insert_word(str(xy[0]), point)
+        hy.insert_word(str(xy[1]), point)
+        
+
+    assert sorted(hx.get_level(str(0.1234)).keys()) == sorted(['_', '5'])
+
