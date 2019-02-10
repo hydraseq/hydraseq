@@ -1,0 +1,15 @@
+the _ART
+quick _ADJ
+brown _ADJ
+fox _NOU
+jumped _VER
+over _PRO
+lazy _ADJ
+dog _NOU
+_NOU *NP*
+_ADJ _NOU *NP*
+_VER *VP*
+_ADV _VER *VP*
+_ART _NOU *NP*
+_ART _ADJ _ADJ _NOU *NP*
+*NP* *VP* #BINGO#

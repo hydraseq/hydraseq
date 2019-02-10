@@ -1,7 +1,7 @@
 """
 Basic Memory Data Structure
 """
-
+from hydraseq import Hydraseq
 from collections import defaultdict, namedtuple
 import re
 
