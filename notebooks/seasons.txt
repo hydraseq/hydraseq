@@ -1,0 +1,9 @@
+spring _ADJ
+spring _VER
+spring _NOU
+leaves _VER
+leaves _NOU
+_ADJ _NOU *NP*
+_VER _NOU *VP*
+*NP* *VP* #SENT
+*VP* *NP* #SENT
