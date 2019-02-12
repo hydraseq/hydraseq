@@ -2,6 +2,7 @@
 Basic Memory Data Structure
 """
 from hydraseq import Hydraseq
+import hydraseq
 from collections import defaultdict, namedtuple
 import re
 
@@ -11,6 +12,93 @@ import re
 
 Convo = namedtuple('Convo', ['start', 'end', 'pattern', 'lasts', 'nexts'])
 endcap = Convo(-1,-1,['end'], [],[])
+
+class MiniColumn:
+    """A stack of trained hydras which can get layers of convolutions
+    Initialize this with a set of training files, one per hydra.
+
+        run_convolutions: Insert a sentence and get back the stack of convolutions
+        get_state: Returns the collective state of active and predicted nodes in hydras
+    """
+    def __init__(self, source_files=[], dir_root='.'):
+        """Initialize hydras from files.
+        Args
+            source_files: list<str> a list of filenames with name formated in triplets.
+                                filename.uuid.ext, uuid should be the internal end marker
+            dir_root: str, a directory base if the files are not located in script dir
+        Returns
+            None
+        """
+        self.base_hydra = hydraseq.Hydraseq('_')
+        self.hydras = []
+        for fname in source_files:
+            base, uuid, ext = fname.split('.')
+            h = hydraseq.Hydraseq(uuid+'_')
+            with open("{}/{}".format(dir_root, fname), 'r') as source:
+                for line in source:
+                    h.insert(line.strip())
+            self.hydras.append(h)
+        self.depth = len(self.hydras)
+        self.convolutions = []
+
+    def reset(self):
+        """reset all hydras, and set convolutions, active and predicted arrays to empty"""
+        [hydra.reset() for hydra in self.hydras]
+        self.convolutions = []
+        self.active = []
+        self.predicted = []
+
+    def compute_convolutions(self, sentence):
+        """Generate the stack of convolutions using this sentence
+        Internally calculates the convolution and saves them in self.convolutions.
+        Each convolution is then forward fed to the next hydra.
+
+        Args:
+            sentence: str, A sentence in plain separated words
+        Returns:
+            self
+        """
+        self.reset()
+        convos = self.hydras[0].convolutions(sentence)
+        self.convolutions.append(convos)
+        for hydra in self.hydras[1:]:
+            convos = self.run_convolutions(patterns_only(convos), hydra, hydra.uuid)
+            self.convolutions.append(convos)
+
+        return self
+
+    def get_state(self):
+        """Return the states of the internal hydras
+        Args:
+            None
+        Returns:
+            list<list<active nodes>, list<next nodes>>
+        """
+        self.active = []
+        self.predicted = []
+        for hydra in self.hydras:
+            self.active.append(hydra.active_nodes)
+            self.predicted.append(hydra.next_nodes)
+        return [self.active, self.predicted]
+
+    def run_convolutions(self, words, seq, nxt="_"):
+        """Run convolutions for this specific words, hydra combination"""
+        words = words if isinstance(words, list) else seq.get_word_array(words)
+        hydras = []
+        results = []
+
+        for idx, word0 in enumerate(words):
+            word_results = []
+            hydras.append(Hydraseq(idx, seq))
+            for depth, hydra in enumerate(hydras):
+                next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
+                if next_hits: word_results.append([depth, idx+1, next_hits])
+            results.extend(word_results)
+        return results
+######################################################################################
+# END MiniColumn ^^
+######################################################################################
+
 def to_convo_node(lst_stuff):
     return Convo(lst_stuff[0], lst_stuff[1], lst_stuff[2], [], [])
 
@@ -165,19 +253,7 @@ def reverse_convo(hydras, init_word):
             print(fringe, " : ", word, " : ", successors)
     return sorted(bottoms)
 
-def run_convolutions(words, seq, nxt="_"):
-    words = words if isinstance(words, list) else seq.get_word_array(words)
-    hydras = []
-    results = []
 
-    for idx, word0 in enumerate(words):
-        word_results = []
-        hydras.append(Hydraseq(idx, seq))
-        for depth, hydra in enumerate(hydras):
-            next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
-            if next_hits: word_results.append([depth, idx+1, next_hits])
-        results.extend(word_results)
-    return results
 
 def get_encoding_only(results):
     """resunt is [left<int>, right<int>, encoding<list<strings>>"""
