@@ -87,6 +87,11 @@ class Hydraseq:
         self.surprise = False
         return self
 
+    def load_from_file(self, fpath):
+        with open(fpath, 'r') as source:
+            for line in source:
+                self.insert(self.get_word_array(line))
+        return self
 
     def get_active_sequences(self):
         return sorted([node.get_sequence() for node in self.active_nodes])

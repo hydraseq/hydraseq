@@ -59,14 +59,14 @@ def reconstruct(end_nodes):
         stack.append(sentence)
     return stack
 
-def patterns_only(sentence):
+def patterns_only(convos):
     """Return a list of the valid [words] to use in a hydra seqeunce
     Args:
         sentence, a list of [start, end, [words]]
     Returns:
         a list of [words], which in effect are a sentence that can be processed by a hydra
     """
-    return [sent[2] for sent in sentence]
+    return [convo[2] for convo in convos]
 
 def get_init_sentence_from_hydra(hd0):
     """Return a list of [start, end, [words]] for initial hydra.
