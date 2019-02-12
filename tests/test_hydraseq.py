@@ -204,104 +204,104 @@ def test_run_convolutions_overlap():
     expected = [[0, 3, ['_1']], [1, 4, ['_3']], [1, 5, ['_5']], [3, 6, ['_2']], [3, 7, ['_4']]]
     assert hdr.convolutions(tester) == expected
 
-def test_stack():
-    sentence = "the quick brown fox jumped over the lazy dog"
+# def test_stack():
+#     sentence = "the quick brown fox jumped over the lazy dog"
 
-    hdq1 = Hydraseq('0_')
-    for pattern in [
-        "the 0_A",
-        "quick 0_ADJ",
-        "brown 0_ADJ",
-        "fox 0_N",
-        "fox 0_V",
-        "jumped 0_V",
-        "over 0_PR",
-        "lazy 0_ADJ",
-        "dog 0_N"
-    ]:
-        hdq1.insert(pattern)
+#     hdq1 = Hydraseq('0_')
+#     for pattern in [
+#         "the 0_A",
+#         "quick 0_ADJ",
+#         "brown 0_ADJ",
+#         "fox 0_N",
+#         "fox 0_V",
+#         "jumped 0_V",
+#         "over 0_PR",
+#         "lazy 0_ADJ",
+#         "dog 0_N"
+#     ]:
+#         hdq1.insert(pattern)
 
-    hdq2 = Hydraseq('_')
-    for pattern in [
-        "0_N _NP_",
-        "0_ADJ 0_N _NP_",
-        "0_V _VP_",
-        "0_ADV 0_V _VP_",
-        "0_A 0_N _NP_",
-        "0_A 0_ADJ 0_ADJ 0_N _NP_",
+#     hdq2 = Hydraseq('_')
+#     for pattern in [
+#         "0_N _NP_",
+#         "0_ADJ 0_N _NP_",
+#         "0_V _VP_",
+#         "0_ADV 0_V _VP_",
+#         "0_A 0_N _NP_",
+#         "0_A 0_ADJ 0_ADJ 0_N _NP_",
 
-    ]:
-        hdq2.insert(pattern)
+#     ]:
+#         hdq2.insert(pattern)
 
-    hdq3 = Hydraseq('3_')
-    for pattern in [
-        "_NP_ _VP_ 3_BINGO"
-    ]:
-        hdq3.insert(pattern)
+#     hdq3 = Hydraseq('3_')
+#     for pattern in [
+#         "_NP_ _VP_ 3_BINGO"
+#     ]:
+#         hdq3.insert(pattern)
 
-    hdq0 = Hydraseq('_')
-    hdq0.insert(sentence + " _exit")
-    thoughts = think([hdq0, hdq1, hdq2, hdq3])
+#     hdq0 = Hydraseq('_')
+#     hdq0.insert(sentence + " _exit")
+#     thoughts = think([hdq0, hdq1, hdq2, hdq3])
 
-    assert thoughts == [
-        [
-            [
-                [0, 1, ['the']],
-                [1, 2, ['quick']],
-                [2, 3, ['brown']],
-                [3, 4, ['fox']],
-                [4, 5, ['jumped']],
-                [5, 6, ['over']],
-                [6, 7, ['the']],
-                [7, 8, ['lazy']],
-                [8, 9, ['dog']]
-            ]
-        ],
-        [
-            [
-                [0, 1, ['0_A']],
-                [1, 2, ['0_ADJ']],
-                [2, 3, ['0_ADJ']],
-                [3, 4, ['0_N', '0_V']],
-                [4, 5, ['0_V']],
-                [5, 6, ['0_PR']],
-                [6, 7, ['0_A']],
-                [7, 8, ['0_ADJ']],
-                [8, 9, ['0_N']]
-            ]
-        ],
-        [
-            [
-                [0, 4, ['_NP_']],
-                [4, 5, ['_VP_']]
-            ],
-            [
-                [2, 4, ['_NP_']],
-                [4, 5, ['_VP_']]
-            ],
-            [
-                [3, 4, ['_NP_', '_VP_']],
-                [4, 5, ['_VP_']]
-            ],
-            [
-                [7, 9, ['_NP_']]
-            ],
-            [
-                [8, 9, ['_NP_']]
-            ]
-        ],
-        [
-            [
-                [0, 2, ['3_BINGO']]
-            ],
-            [
-                [0, 2, ['3_BINGO']]
-            ],
-            [
-                [0, 2, ['3_BINGO']]
-            ]
-        ]
-    ]
+#     assert thoughts == [
+#         [
+#             [
+#                 [0, 1, ['the']],
+#                 [1, 2, ['quick']],
+#                 [2, 3, ['brown']],
+#                 [3, 4, ['fox']],
+#                 [4, 5, ['jumped']],
+#                 [5, 6, ['over']],
+#                 [6, 7, ['the']],
+#                 [7, 8, ['lazy']],
+#                 [8, 9, ['dog']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [0, 1, ['0_A']],
+#                 [1, 2, ['0_ADJ']],
+#                 [2, 3, ['0_ADJ']],
+#                 [3, 4, ['0_N', '0_V']],
+#                 [4, 5, ['0_V']],
+#                 [5, 6, ['0_PR']],
+#                 [6, 7, ['0_A']],
+#                 [7, 8, ['0_ADJ']],
+#                 [8, 9, ['0_N']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [0, 4, ['_NP_']],
+#                 [4, 5, ['_VP_']]
+#             ],
+#             [
+#                 [2, 4, ['_NP_']],
+#                 [4, 5, ['_VP_']]
+#             ],
+#             [
+#                 [3, 4, ['_NP_', '_VP_']],
+#                 [4, 5, ['_VP_']]
+#             ],
+#             [
+#                 [7, 9, ['_NP_']]
+#             ],
+#             [
+#                 [8, 9, ['_NP_']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [0, 2, ['3_BINGO']]
+#             ],
+#             [
+#                 [0, 2, ['3_BINGO']]
+#             ],
+#             [
+#                 [0, 2, ['3_BINGO']]
+#             ]
+#         ]
+#     ]
 
 
 def test_face():
@@ -361,208 +361,208 @@ def test_face():
     assert results == [[0, 3, ['2_FACE']]]
 
 
-def test_face_compact():
-    sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
+# def test_face_compact():
+#     sentence = "bule bule ndad de hule o o db v u v junk junk other stuff"
 
-    hdq1 = Hydraseq('0_')
-    for pattern in [
-        "o 0_eye",
-        "db 0_nose",
-        "v 0_left_mouth",
-        "u 0_mid_mouth",
-        "v 0_right_mouth",
-    ]:
-        hdq1.insert(pattern)
+#     hdq1 = Hydraseq('0_')
+#     for pattern in [
+#         "o 0_eye",
+#         "db 0_nose",
+#         "v 0_left_mouth",
+#         "u 0_mid_mouth",
+#         "v 0_right_mouth",
+#     ]:
+#         hdq1.insert(pattern)
 
-    hdq2 = Hydraseq('1_')
-    for pattern in [
-        "0_eye 0_eye 1_eyes",
-        "0_nose 1_nose",
-        "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
-    ]:
-        hdq2.insert(pattern)
-    hdq3 = Hydraseq('2_')
-    for pattern in [
-        "1_eyes 1_nose 1_mouth 2_FACE"
-    ]:
-        hdq3.insert(pattern)
+#     hdq2 = Hydraseq('1_')
+#     for pattern in [
+#         "0_eye 0_eye 1_eyes",
+#         "0_nose 1_nose",
+#         "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
+#     ]:
+#         hdq2.insert(pattern)
+#     hdq3 = Hydraseq('2_')
+#     for pattern in [
+#         "1_eyes 1_nose 1_mouth 2_FACE"
+#     ]:
+#         hdq3.insert(pattern)
 
-    hdq0 = Hydraseq('_')
-    hdq0.insert(sentence + " _exit")
-    thoughts = think([hdq0, hdq1, hdq2, hdq3])
+#     hdq0 = Hydraseq('_')
+#     hdq0.insert(sentence + " _exit")
+#     thoughts = think([hdq0, hdq1, hdq2, hdq3])
 
-    assert thoughts[3][0] == [[0, 3, ['2_FACE']]]
+#     assert thoughts[3][0] == [[0, 3, ['2_FACE']]]
 
 
-def test_double_meaning():
-    sentence = "spring leaves spring"
+# def test_double_meaning():
+#     sentence = "spring leaves spring"
 
-    hdq1 = Hydraseq('0_')
-    hdq2 = Hydraseq('1_')
-    hdq3 = Hydraseq('2_')
+#     hdq1 = Hydraseq('0_')
+#     hdq2 = Hydraseq('1_')
+#     hdq3 = Hydraseq('2_')
 
-    for pattern in [
-        "spring 0_A_",
-        "spring 0_V_",
-        "leaves 0_N_",
-        "leaves 0_V_",
-        "fall 0_A_",
-        "fall 0_V_"
-    ]:
-        hdq1.insert(pattern)
+#     for pattern in [
+#         "spring 0_A_",
+#         "spring 0_V_",
+#         "leaves 0_N_",
+#         "leaves 0_V_",
+#         "fall 0_A_",
+#         "fall 0_V_"
+#     ]:
+#         hdq1.insert(pattern)
 
-    for pattern in [
-        "0_N_ 1_NP_",
-        "0_A_ 0_N_ 1_NP_",
-        "0_V_ 1_VP_",
-        "0_V_ 0_N_ 1_VP_"
-    ]:
-        hdq2.insert(pattern)
+#     for pattern in [
+#         "0_N_ 1_NP_",
+#         "0_A_ 0_N_ 1_NP_",
+#         "0_V_ 1_VP_",
+#         "0_V_ 0_N_ 1_VP_"
+#     ]:
+#         hdq2.insert(pattern)
 
-    for pattern in [
-        "1_NP_ 1_VP_ 2_S_"
-    ]:
-        hdq3.insert(pattern)
+#     for pattern in [
+#         "1_NP_ 1_VP_ 2_S_"
+#     ]:
+#         hdq3.insert(pattern)
 
-    hdq0 = Hydraseq('_')
-    hdq0.insert(sentence + " _exit")
-    thoughts = think([hdq0, hdq1, hdq2, hdq3])
-    assert thoughts[3] == [[[0, 2, ['2_S_']]], [[1, 3, ['2_S_']]]]
+#     hdq0 = Hydraseq('_')
+#     hdq0.insert(sentence + " _exit")
+#     thoughts = think([hdq0, hdq1, hdq2, hdq3])
+#     assert thoughts[3] == [[[0, 2, ['2_S_']]], [[1, 3, ['2_S_']]]]
 
-def test_think():
-    hd1 = Hydraseq('1_')
-    for pattern in [
-        "o 1_eye",
-        "L 1_nose",
-        "m 1_mouth",
-        "sdfg 1_keys",
-    ]:
-        hd1.insert(pattern)
+# def test_think():
+#     hd1 = Hydraseq('1_')
+#     for pattern in [
+#         "o 1_eye",
+#         "L 1_nose",
+#         "m 1_mouth",
+#         "sdfg 1_keys",
+#     ]:
+#         hd1.insert(pattern)
 
-    hd2 = Hydraseq('2_')
-    for pattern in [
-        "1_eye 1_eye 2_eyes",
-        "1_nose 2_nose",
-        "1_mouth 2_mouth",
-        "1_keys 1_keys 1_keys 2_row"
-    ]:
-        hd2.insert(pattern)
+#     hd2 = Hydraseq('2_')
+#     for pattern in [
+#         "1_eye 1_eye 2_eyes",
+#         "1_nose 2_nose",
+#         "1_mouth 2_mouth",
+#         "1_keys 1_keys 1_keys 2_row"
+#     ]:
+#         hd2.insert(pattern)
 
-    hd3 = Hydraseq('3_')
-    for pattern in [
-        "2_eyes 2_nose 2_mouth 3_face",
-        "2_row 3_homerow"
-    ]:
-        hd3.insert(pattern)
+#     hd3 = Hydraseq('3_')
+#     for pattern in [
+#         "2_eyes 2_nose 2_mouth 3_face",
+#         "2_row 3_homerow"
+#     ]:
+#         hd3.insert(pattern)
 
-    hd0 = Hydraseq("_")
-    hd0.insert("x x o o L m end sdfg sdfg sdfg _period") # NB: the last entry has to be a next_node, i.e. _x
-    thoughts = think([hd0, hd1, hd2, hd3])
+#     hd0 = Hydraseq("_")
+#     hd0.insert("x x o o L m end sdfg sdfg sdfg _period") # NB: the last entry has to be a next_node, i.e. _x
+#     thoughts = think([hd0, hd1, hd2, hd3])
 
-    assert thoughts == [
-        [
-            [
-                [0, 1, ['x']],
-                [1, 2, ['x']],
-                [2, 3, ['o']],
-                [3, 4, ['o']],
-                [4, 5, ['L']],
-                [5, 6, ['m']],
-                [6, 7, ['end']],
-                [7, 8, ['sdfg']],
-                [8, 9, ['sdfg']],
-                [9, 10, ['sdfg']]
-            ]
-        ],
-        [
-            [
-                [2, 3, ['1_eye']],
-                [3, 4, ['1_eye']],
-                [4, 5, ['1_nose']],
-                [5, 6, ['1_mouth']]
-            ],
-            [
-                [7, 8, ['1_keys']],
-                [8, 9, ['1_keys']],
-                [9, 10, ['1_keys']]
-            ]
-        ],
-        [
-            [
-                [0, 2, ['2_eyes']],
-                [2, 3, ['2_nose']],
-                [3, 4, ['2_mouth']]
-            ],
-            [
-                [0, 3, ['2_row']]
-            ]
-        ],
-        [
-            [
-                [0, 3, ['3_face']]
-            ],
-            [
-                [0, 1, ['3_homerow']]
-            ]
-        ]
-    ]
+#     assert thoughts == [
+#         [
+#             [
+#                 [0, 1, ['x']],
+#                 [1, 2, ['x']],
+#                 [2, 3, ['o']],
+#                 [3, 4, ['o']],
+#                 [4, 5, ['L']],
+#                 [5, 6, ['m']],
+#                 [6, 7, ['end']],
+#                 [7, 8, ['sdfg']],
+#                 [8, 9, ['sdfg']],
+#                 [9, 10, ['sdfg']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [2, 3, ['1_eye']],
+#                 [3, 4, ['1_eye']],
+#                 [4, 5, ['1_nose']],
+#                 [5, 6, ['1_mouth']]
+#             ],
+#             [
+#                 [7, 8, ['1_keys']],
+#                 [8, 9, ['1_keys']],
+#                 [9, 10, ['1_keys']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [0, 2, ['2_eyes']],
+#                 [2, 3, ['2_nose']],
+#                 [3, 4, ['2_mouth']]
+#             ],
+#             [
+#                 [0, 3, ['2_row']]
+#             ]
+#         ],
+#         [
+#             [
+#                 [0, 3, ['3_face']]
+#             ],
+#             [
+#                 [0, 1, ['3_homerow']]
+#             ]
+#         ]
+#     ]
 
-def test_single_layer_recursive():
-    """This is test is a negative test, in the sense that it shows that recursive won't work right out of the box.
-        More importantly, it shows there is a distinction to be dealt with next predicted, versus next as in 'isa'
-        The 'eyes nose mouth' sequence 'isa' face, for example, but 'eyes nose' predict a 'mouth', not 'isa' mouth.
-        The distinction causes noise when you recurse.  This is solved by the layer approach because in this case
-        'eyes nose mouth' would be in a lower layer pointing to face in the next, while 'eyes nose' point to 'mouth'
-        but in the SAME layer, as a predicted value not as identification.
-    """
-    hd0 = Hydraseq('_')
-    for pattern in [
-        "x _null",
-        "o _eye",
-        "L _nose",
-        "m _mouth",
-        "sdfg _keys",
-        "_eye _eye _eyes",
-        "_nose _nose",
-        "_mouth _mouth",
-        "_keys _keys _keys _row",
-        "_eyes _nose _mouth _face",
-        "_row _homerow",
-        "_face _face",
-    ]:
-        hd0.insert(pattern)
-    hdS = Hydraseq('_')
-    hdS.insert("o o L m x x _y") # NB: the last entry has to be a next_node, i.e. _x
-    thoughts = think([hdS, hd0, hd0, hd0, hd0])
+# def test_single_layer_recursive():
+#     """This is test is a negative test, in the sense that it shows that recursive won't work right out of the box.
+#         More importantly, it shows there is a distinction to be dealt with next predicted, versus next as in 'isa'
+#         The 'eyes nose mouth' sequence 'isa' face, for example, but 'eyes nose' predict a 'mouth', not 'isa' mouth.
+#         The distinction causes noise when you recurse.  This is solved by the layer approach because in this case
+#         'eyes nose mouth' would be in a lower layer pointing to face in the next, while 'eyes nose' point to 'mouth'
+#         but in the SAME layer, as a predicted value not as identification.
+#     """
+#     hd0 = Hydraseq('_')
+#     for pattern in [
+#         "x _null",
+#         "o _eye",
+#         "L _nose",
+#         "m _mouth",
+#         "sdfg _keys",
+#         "_eye _eye _eyes",
+#         "_nose _nose",
+#         "_mouth _mouth",
+#         "_keys _keys _keys _row",
+#         "_eyes _nose _mouth _face",
+#         "_row _homerow",
+#         "_face _face",
+#     ]:
+#         hd0.insert(pattern)
+#     hdS = Hydraseq('_')
+#     hdS.insert("o o L m x x _y") # NB: the last entry has to be a next_node, i.e. _x
+#     thoughts = think([hdS, hd0, hd0, hd0, hd0])
 
-    assert thoughts == \
-        [[[[0, 1, ['o']],
-           [1, 2, ['o']],
-           [2, 3, ['L']],
-           [3, 4, ['m']],
-           [4, 5, ['x']],
-           [5, 6, ['x']]]],
-         [[[0, 1, ['_eye']],
-           [1, 2, ['_eye']],
-           [2, 3, ['_nose']],
-           [3, 4, ['_mouth']],
-           [4, 5, ['_null']],
-           [5, 6, ['_null']]]],
-         [[[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
-          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
-         [[[0, 3, ['_face']]],
-          [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
-          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
-          [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
-          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
-         [[[0, 1, ['_face']]],
-          [[0, 1, ['_mouth']], [1, 2, ['_mouth']]],
-          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
-          [[0, 3, ['_face']]],
-          [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
-          [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
-          [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
-          [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]]]
+#     assert thoughts == \
+#         [[[[0, 1, ['o']],
+#            [1, 2, ['o']],
+#            [2, 3, ['L']],
+#            [3, 4, ['m']],
+#            [4, 5, ['x']],
+#            [5, 6, ['x']]]],
+#          [[[0, 1, ['_eye']],
+#            [1, 2, ['_eye']],
+#            [2, 3, ['_nose']],
+#            [3, 4, ['_mouth']],
+#            [4, 5, ['_null']],
+#            [5, 6, ['_null']]]],
+#          [[[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+#           [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
+#          [[[0, 3, ['_face']]],
+#           [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
+#           [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+#           [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+#           [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]],
+#          [[[0, 1, ['_face']]],
+#           [[0, 1, ['_mouth']], [1, 2, ['_mouth']]],
+#           [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+#           [[0, 3, ['_face']]],
+#           [[0, 2, ['_mouth']], [2, 3, ['_mouth']]],
+#           [[0, 1, ['_nose']], [1, 2, ['_nose']], [2, 3, ['_mouth']]],
+#           [[0, 2, ['_eyes']], [2, 3, ['_nose']], [3, 4, ['_mouth']]],
+#           [[0, 1, ['_eye']], [1, 2, ['_eye']], [2, 3, ['_nose']], [3, 4, ['_mouth']]]]]
 
 def test_get_downwards():
     hds = Hydraseq("_")
@@ -600,20 +600,20 @@ def test_reverse_convo():
     assert reverse_convo([hdq1, hdq2, hdq3], "2_FACE") == ['db', 'o', 'u', 'v']
 
 
-def test_shapes_cortex_face():
-    cortex = shapes.cortex
-    hys = Hydraseq("_")
-    cortex[0].insert(hys.get_word_array(shapes.face))
+# def test_shapes_cortex_face():
+#     cortex = shapes.cortex
+#     hys = Hydraseq("_")
+#     cortex[0].insert(hys.get_word_array(shapes.face))
 
-    assert think(cortex)[-1][0][0][2] == ['2_FACE']
+#     assert think(cortex)[-1][0][0][2] == ['2_FACE']
 
-def test_shapes_cortex_face_spaced():
-    cortex = shapes.cortex
-    hys = Hydraseq("_")
-    cortex[0] = Hydraseq("_")
-    cortex[0].insert(hys.get_word_array(shapes.face_spaced))
+# def test_shapes_cortex_face_spaced():
+#     cortex = shapes.cortex
+#     hys = Hydraseq("_")
+#     cortex[0] = Hydraseq("_")
+#     cortex[0].insert(hys.get_word_array(shapes.face_spaced))
 
-    assert think(cortex)[2] == [[[0, 2, ['1_eyes']]], [[0, 1, ['1_nose']]], [[0, 3, ['1_mouth']]]]
+#     assert think(cortex)[2] == [[[0, 2, ['1_eyes']]], [[0, 1, ['1_nose']]], [[0, 3, ['1_mouth']]]]
 
 def test_get_sequence_nodes():
     hds = Hydraseq('_')
@@ -683,7 +683,7 @@ def test_coordinate_hydra():
     for point, xy in points.items():
         hx.insert_word(str(xy[0]), point)
         hy.insert_word(str(xy[1]), point)
-        
+
 
     assert sorted(hx.get_level(str(0.1234)).keys()) == sorted(['_', '5'])
 

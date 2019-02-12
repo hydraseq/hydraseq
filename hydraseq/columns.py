@@ -67,6 +67,9 @@ class MiniColumn:
 
         return self
 
+    def resolve_convolutions(self):
+        return [self.reconstruct(self.to_tree_nodes(mcol)) for mcol in self.convolutions]
+
     def get_state(self):
         """Return the states of the internal hydras
         Args:
@@ -80,6 +83,47 @@ class MiniColumn:
             self.active.append(hydra.active_nodes)
             self.predicted.append(hydra.next_nodes)
         return [self.active, self.predicted]
+
+    def to_tree_nodes(self, lst_convos):
+        """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
+        Args:
+            lst_convos, a list of convolutions to link end to end.
+        Returns:
+            a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
+        """
+        frame = defaultdict(list)
+        end_nodes = []
+        for convo in lst_convos:
+            if frame[convo[0]]:
+                for current_node in frame[convo[0]]:
+                    convo_node = to_convo_node(convo)
+                    link(current_node, convo_node)
+                    end_nodes.append(convo_node)
+                    if current_node in end_nodes: end_nodes.remove(current_node)
+                    frame[convo_node.end].append(convo_node)
+            else:
+                convo_node = to_convo_node(convo)
+                end_nodes.append(convo_node)
+                frame[convo_node.end].append(convo_node)
+        return end_nodes
+
+    def reconstruct(self, end_nodes):
+        """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
+        Args:
+            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
+        Returns:
+            list of [start, end, [words]] where each is validly linked with start=end
+        """
+        stack = []
+        for node in end_nodes:
+            sentence = []
+            sentence.append([node.start, node.end, node.pattern])
+            while node.lasts:
+                node = node.lasts[0]
+                sentence.append([node.start, node.end, node.pattern])
+            sentence.reverse()
+            stack.append(sentence)
+        return stack
 
     def run_convolutions(self, words, seq, nxt="_"):
         """Run convolutions for this specific words, hydra combination"""
@@ -106,46 +150,46 @@ def link(conv1, conv2):
     conv1.nexts.append(conv2)
     conv2.lasts.append(conv1)
 
-def to_tree_nodes(lst_convos):
-    """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
-    Args:
-        lst_convos, a list of convolutions to link end to end.
-    Returns:
-        a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
-    """
-    frame = defaultdict(list)
-    end_nodes = []
-    for convo in lst_convos:
-        if frame[convo[0]]:
-            for current_node in frame[convo[0]]:
-                convo_node = to_convo_node(convo)
-                link(current_node, convo_node)
-                end_nodes.append(convo_node)
-                if current_node in end_nodes: end_nodes.remove(current_node)
-                frame[convo_node.end].append(convo_node)
-        else:
-            convo_node = to_convo_node(convo)
-            end_nodes.append(convo_node)
-            frame[convo_node.end].append(convo_node)
-    return end_nodes
+# def to_tree_nodes(lst_convos):
+#     """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
+#     Args:
+#         lst_convos, a list of convolutions to link end to end.
+#     Returns:
+#         a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
+#     """
+#     frame = defaultdict(list)
+#     end_nodes = []
+#     for convo in lst_convos:
+#         if frame[convo[0]]:
+#             for current_node in frame[convo[0]]:
+#                 convo_node = to_convo_node(convo)
+#                 link(current_node, convo_node)
+#                 end_nodes.append(convo_node)
+#                 if current_node in end_nodes: end_nodes.remove(current_node)
+#                 frame[convo_node.end].append(convo_node)
+#         else:
+#             convo_node = to_convo_node(convo)
+#             end_nodes.append(convo_node)
+#             frame[convo_node.end].append(convo_node)
+#     return end_nodes
 
-def reconstruct(end_nodes):
-    """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
-    Args:
-        end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
-    Returns:
-        list of [start, end, [words]] where each is validly linked with start=end
-    """
-    stack = []
-    for node in end_nodes:
-        sentence = []
-        sentence.append([node.start, node.end, node.pattern])
-        while node.lasts:
-            node = node.lasts[0]
-            sentence.append([node.start, node.end, node.pattern])
-        sentence.reverse()
-        stack.append(sentence)
-    return stack
+# def reconstruct(end_nodes):
+#     """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
+#     Args:
+#         end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
+#     Returns:
+#         list of [start, end, [words]] where each is validly linked with start=end
+#     """
+#     stack = []
+#     for node in end_nodes:
+#         sentence = []
+#         sentence.append([node.start, node.end, node.pattern])
+#         while node.lasts:
+#             node = node.lasts[0]
+#             sentence.append([node.start, node.end, node.pattern])
+#         sentence.reverse()
+#         stack.append(sentence)
+#     return stack
 
 def patterns_only(convos):
     """Return a list of the valid [words] to use in a hydra seqeunce
