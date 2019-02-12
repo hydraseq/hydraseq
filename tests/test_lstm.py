@@ -9,59 +9,42 @@ def test_mini_column():
     source_files = ["seasons.0.txt", "seasons.1.txt", "seasons.2.txt"]
     mcol = MiniColumn(source_files, "tests/data")
     mcol.get_state()
-    assert mcol.compute_convolutions(sentence).convolutions == [
-        [
+
+    assert mcol.compute_convolution_tree("spring leaves spring") == [
             [0, 1, ['0_ADJ', '0_NOU', '0_VER']],
             [1, 2, ['0_NOU', '0_VER']],
-            [2, 3, ['0_ADJ', '0_NOU', '0_VER']]
-        ],
-        [
-            [0, 1, ['1_NP', '1_VP']],
-            [0, 2, ['1_NP', '1_VP']],
-            [1, 2, ['1_NP', '1_VP']],
-            [1, 3, ['1_VP']],
-            [2, 3, ['1_NP', '1_VP']]
-        ],
-        [
-            [0, 2, ['2_SENT']],
-            [1, 3, ['2_SENT']],
-            [2, 4, ['2_SENT']],
-            [3, 5, ['2_SENT']]
-        ]
-        ]
-
-    assert mcol.resolve_convolutions() == [
-        [
+            [2, 3, ['0_ADJ', '0_NOU', '0_VER']],
             [
-                [0, 1, ['0_ADJ', '0_NOU', '0_VER']],
-                [1, 2, ['0_NOU', '0_VER']],
-                [2, 3, ['0_ADJ', '0_NOU', '0_VER']]
-            ]
-        ],
-        [
-            [
-                [0, 1, ['1_NP', '1_VP']],
-                [1, 3, ['1_VP']]
-            ],
-            [
-                [0, 2, ['1_NP', '1_VP']],
-                [2, 3, ['1_NP', '1_VP']]
-            ],
-            [
-                [0, 1, ['1_NP', '1_VP']],
-                [1, 2, ['1_NP', '1_VP']],
-                [2, 3, ['1_NP', '1_VP']]
-            ]
-        ],
-        [ # TODO: This is stil messed up, but I think just need to iterate on previous
-            [
-                [0, 2, ['2_SENT']],
-                [2, 4, ['2_SENT']]
-            ],
-            [
-                [1, 3, ['2_SENT']],
-                [3, 5, ['2_SENT']]
+                [
+                    [0, 1, ['1_NP', '1_VP']],
+                    [1, 3, ['1_VP']],
+                    [
+                        [
+                            [0, 2, ['2_SENT']]
+                        ]
+                    ]
+                ],
+                [
+                    [0, 2, ['1_NP', '1_VP']],
+                    [2, 3, ['1_NP', '1_VP']],
+                    [
+                        [
+                            [0, 2, ['2_SENT']]
+                        ]
+                    ]
+                ],
+                [
+                    [0, 1, ['1_NP', '1_VP']],
+                    [1, 2, ['1_NP', '1_VP']],
+                    [2, 3, ['1_NP', '1_VP']],
+                    [
+                        [
+                            [0, 2, ['2_SENT']]
+                        ],
+                        [
+                            [1, 3, ['2_SENT']]
+                        ]
+                    ]
+                ]
             ]
         ]
-    ]
-

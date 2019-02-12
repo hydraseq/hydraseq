@@ -48,7 +48,7 @@ class MiniColumn:
         self.active = []
         self.predicted = []
 
-    def compute_convolutions(self, sentence):
+    def compute_convolution_tree(self, sentence):
         """Generate the stack of convolutions using this sentence
         Internally calculates the convolution and saves them in self.convolutions.
         Each convolution is then forward fed to the next hydra.
@@ -57,18 +57,31 @@ class MiniColumn:
             sentence: str, A sentence in plain separated words
         Returns:
             self
+        convos: A list of all unique atomic unit possible
+        convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
-        self.reset()
-        convos = self.hydras[0].convolutions(sentence)
-        self.convolutions.append(convos)
-        for hydra in self.hydras[1:]:
-            convos = self.run_convolutions(patterns_only(convos), hydra, hydra.uuid)
-            self.convolutions.append(convos)
+        def get_successors(convo_path, hydra):
+            self.reset()
+            convos = self.run_convolutions(patterns_only(convo_path), hydra, hydra.uuid)
+            convo_paths = self.resolve_convolution(convos)
+            return convo_paths
 
-        return self
+        head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence))[0]
 
-    def resolve_convolutions(self):
-        return [self.reconstruct(self.to_tree_nodes(mcol)) for mcol in self.convolutions]
+        successors = get_successors(head_node, self.hydras[1])
+        head_node.append(successors)
+
+        for node in successors:
+            subsucc = get_successors(node, self.hydras[2])
+            node.append(subsucc)
+
+        return head_node
+
+
+    def resolve_convolution(self, convos):
+        """Take a set of convolutions, and return a list of end to end possible paths"""
+        return self.reconstruct(self.to_tree_nodes(convos))
+
 
     def get_state(self):
         """Return the states of the internal hydras
@@ -126,7 +139,9 @@ class MiniColumn:
         return stack
 
     def run_convolutions(self, words, seq, nxt="_"):
-        """Run convolutions for this specific words, hydra combination"""
+        """Run convolutions for this specific words, hydra combination
+        Taks a list of lists, and returns a list of convo-units
+        """
         words = words if isinstance(words, list) else seq.get_word_array(words)
         hydras = []
         results = []
