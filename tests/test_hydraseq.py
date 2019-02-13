@@ -2,12 +2,6 @@ import re
 import sys
 sys.path.append('./hydraseq')
 from hydraseq import Hydraseq
-from hydra import Hydra
-from hydraseq import *
-from columns import *
-sys.path.append('./tests/data/')
-import shapes as shapes
-import pytest
 
 def w(str_sentence):
     return re.findall(r"[\w']+>[.,!?;]", str_sentence)
@@ -210,33 +204,9 @@ def test_get_downwards():
     hds.insert("e f g _D")
     hds.insert("c e f _D")
 
-    assert get_downwards(hds, ["_D"]) == ['a', 'b', 'c', 'e', 'f', 'g']
+    assert hds.get_downwards(["_D"]) == ['a', 'b', 'c', 'e', 'f', 'g']
 
-def test_reverse_convo():
-    hdq1 = Hydraseq('0_')
-    for pattern in [
-        "o 0_eye",
-        "db 0_nose",
-        "v 0_left_mouth",
-        "u 0_mid_mouth",
-        "v 0_right_mouth",
-    ]:
-        hdq1.insert(pattern)
 
-    hdq2 = Hydraseq('1_')
-    for pattern in [
-        "0_eye 0_eye 1_eyes",
-        "0_nose 1_nose",
-        "0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth",
-    ]:
-        hdq2.insert(pattern)
-    hdq3 = Hydraseq('2_')
-    for pattern in [
-        "1_eyes 1_nose 1_mouth 2_FACE"
-    ]:
-        hdq3.insert(pattern)
-
-    assert reverse_convo([hdq1, hdq2, hdq3], "2_FACE") == ['db', 'o', 'u', 'v']
 
 def test_get_sequence_nodes():
     hds = Hydraseq('_')
@@ -268,45 +238,4 @@ def test_self_insert():
     assert len(hdq.columns) == 38
     assert sorted(hdq.look_ahead("Burger King wants").get_next_values()) == sorted(['people', '_3'])
     assert sorted(hdq.look_ahead("Burger King wants").get_active_values()) == sorted(['wants'])
-
-
-def test_hydra():
-    words = ['every', 'good', 'boy', 'does', 'fine', 'everything']
-
-    hh = Hydra(words)
-
-    for idx, word in enumerate(words):
-        hh.insert_word(word, idx)
-    for idx, word in enumerate(words):
-        hh.insert_word(word, idx*2)
-
-    assert hh.lookup('every') == set([0])
-    assert hh.lookup('good')  == set([1,2])
-    assert hh.lookup('boy')   == set([2,4])
-    assert hh.lookup('does')  == set([3,6])
-    assert hh.lookup('fine')  == set([4,8])
-
-def test_negative_hydra():
-    hh = Hydra([])
-
-    hh.insert_word('someword', 'marker')
-
-    assert hh.lookup('anotherword') == None
-
-
-def test_coordinate_hydra():
-    hx = Hydra([])
-    hy = Hydra([])
-
-    points = {
-        'a': [0.123456, 0.56789],
-        'b': [0.1234, 0.5678]
-    }
-
-    for point, xy in points.items():
-        hx.insert_word(str(xy[0]), point)
-        hy.insert_word(str(xy[1]), point)
-
-
-    assert sorted(hx.get_level(str(0.1234)).keys()) == sorted(['_', '5'])
 

@@ -166,55 +166,37 @@ class MiniColumn:
             a list of [words], which in effect are a sentence that can be processed by a hydra
         """
         return [convo[2] for convo in convos]
+
+    def reverse_convo(self, init_word):
+        """Take init_word and drive downwards through stack of hydras and return the lowest level valid combination
+        Args:
+            hydras, a list of trained hydras
+        Returns:
+            The lowest level list of words that trigger the end word provided (init_word)
+        """
+        def get_successors(word):
+            successors = []
+            for hydra in self.hydras:
+                successors.extend(hydra.get_downwards([word]))
+            return successors
+
+
+        self.hydras.reverse()
+        bottoms = []
+        fringe = [init_word]
+        dejavu = []
+        while fringe:
+            word = fringe.pop()
+            dejavu.append(word)
+            successors = get_successors(word)
+            if not successors:
+                bottoms.append(word)
+            else:
+                fringe = fringe + [word for word in successors if word not in dejavu]
+                fringe = list(set(fringe))
+                print(fringe, " : ", word, " : ", successors)
+        return sorted(bottoms)
+
 ######################################################################################
 # END MiniColumn ^^
 ######################################################################################
-
-#######################################################################################################################
-#  REVERSO!
-#######################################################################################################################
-# TODO: This is probably a good candidate to go into hydraseq
-def get_downwards(hydra, words):
-    """Get the words associated with a given output word in a hydra.
-    Args:
-        hydra, a trained hydra
-        downwords, a list of words, whose downward words will be returned.
-    Returns:
-        a list of words related to the activation of the words given in downwords
-    """
-    words = words if isinstance(words, list) else hydra.get_word_array(words)
-    hydra.reset()
-    downs = [w for word in words for node in hydra.columns[word] for w in node.get_sequence().split() if w not in words]
-
-    return sorted(list(set(downs)))
-
-# TODO: This is a good candidate to go into MiniColumn
-def reverse_convo(hydras, init_word):
-    """Take init_word and drive downwards through stack of hydras and return the lowest level valid combination
-    Args:
-        hydras, a list of trained hydras
-    Returns:
-        The lowest level list of words that trigger the end word provided (init_word)
-    """
-    def get_successors(word):
-        successors = []
-        for hydra in hydras:
-            successors.extend(get_downwards(hydra, [word]))
-        return successors
-
-
-    hydras.reverse()
-    bottoms = []
-    fringe = [init_word]
-    dejavu = []
-    while fringe:
-        word = fringe.pop()
-        dejavu.append(word)
-        successors = get_successors(word)
-        if not successors:
-            bottoms.append(word)
-        else:
-            fringe = fringe + [word for word in successors if word not in dejavu]
-            fringe = list(set(fringe))
-            print(fringe, " : ", word, " : ", successors)
-    return sorted(bottoms)

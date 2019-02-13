@@ -2,7 +2,7 @@ import re
 import sys
 sys.path.append('./hydraseq')
 import hydraseq
-from columns import MiniColumn
+from minicolumn import MiniColumn
 
 def test_mini_column():
     sentence = "spring leaves spring"
@@ -48,3 +48,9 @@ def test_mini_column():
                 ]
             ]
         ]
+
+def test_reverse_convo():
+    source_files = ['face.0.txt', 'face.1.txt', 'face.2.txt']
+    mcol = MiniColumn(source_files, 'tests/data')
+
+    assert mcol.reverse_convo("2_FACE") == ['db', 'o', 'u', 'v']

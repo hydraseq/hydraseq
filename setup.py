@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hydraseq",
-    version="0.0.17",
+    version="0.0.18",
     author="Efrain Olivares",
     author_email="efrain.olivares@gmail.com",
     description="Simple data structure for sequence memory",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Niarfe/hydraseq",
+    url="https://github.com/hydraseq/hydraseq",
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",

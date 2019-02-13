@@ -1,0 +1,3 @@
+0_eye 0_eye 1_eyes
+0_nose 1_nose
+0_left_mouth 0_mid_mouth 0_right_mouth 1_mouth
