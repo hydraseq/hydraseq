@@ -218,7 +218,9 @@ class MiniColumn:
         stack = []
         for node in end_nodes_objs:
             sentence = []
-            sentence.append(node)
+            tmp_node = node.copy()
+            tmp_node.pop('lasts', None)
+            sentence.append(tmp_node)
             while node['lasts']:
                 node = node['lasts'][0]
                 tnode = node.copy()
@@ -237,6 +239,7 @@ class MiniColumn:
     def link_obj(self, obj1, obj2):
         #obj1['nexts'].append(obj2)
         obj2['lasts'].append(obj1)
+
 
     def patterns_only(self, convos):
         """Return a list of the valid [words] to use in a hydra seqeunce
