@@ -23,9 +23,6 @@ endcap = Convo(-1,-1,['end'], [],[])
 class MiniColumn:
     """A stack of trained hydras which can get layers of convolutions
     Initialize this with a set of training files, one per hydra.
-
-        run_convolutions: Insert a sentence and get back the stack of convolutions
-        get_state: Returns the collective state of active and predicted nodes in hydras
     """
     def __init__(self, source_files=[], dir_root='.'):
         """Initialize hydras from files.
@@ -85,11 +82,42 @@ class MiniColumn:
 
         return head_node
 
+    def compute_convolution_tree_obj(self, sentence): # -> list of convo paths
+        """Generate the stack of convolutions using this sentence
+        Internally calculates the convolution and saves them in self.convolutions.
+        Each convolution is then forward fed to the next hydra.
+
+        Args:
+            sentence: str, A sentence in plain separated words
+        Returns:
+           list of convo paths
+        convos: A list of all unique atomic unit possible
+        convo_path: A list of SEQUENTIAL atomic units filling out a path
+        """
+        def get_successors(convo_path, hydra):
+            self.reset()
+            convos = hydra.convolutions(self.patterns_only_obj(convo_path), as_json=True)
+            convo_paths = self.resolve_convolution_obj(convos)
+            return convo_paths
+
+        head_node = self.resolve_convolution_obj(self.hydras[0].convolutions(sentence, as_json=True))[0]
+        #print("HEAD_NODE: ",head_node)
+        successors = get_successors(head_node, self.hydras[1])
+        head_node.append(successors)
+
+        for node in successors:
+            subsucc = get_successors(node, self.hydras[2])
+            node.append(subsucc)
+
+        return head_node
 
     def resolve_convolution(self, convos): # list of possible thru paths
         """Take a set of convolutions, and return a list of end to end possible paths"""
         return self.reconstruct(self.to_tree_nodes(convos))
 
+    def resolve_convolution_obj(self, convos): # list of possible thru paths
+        """Take a set of convolutions, and return a list of end to end possible paths"""
+        return self.reconstruct_obj(self.to_tree_nodes_obj(convos))
 
     def get_state(self):
         """Return the states of the internal hydras
@@ -128,6 +156,40 @@ class MiniColumn:
                 frame[convo_node.end].append(convo_node)
         return end_nodes
 
+    def to_convo_node_obj(self, convo_obj):
+        return {
+            'word': convo_obj['word'],
+            'convo': convo_obj['convo'],
+            'start': convo_obj['start'],
+            'end': convo_obj['end'],
+            'lasts': [],
+            'nexts': []
+        }
+
+    def to_tree_nodes_obj(self, lst_convos_obj): # -> list of thalanodes
+        """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
+        Args:
+            lst_convos, a list of convolutions to link end to end.
+        Returns:
+            a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
+        """
+        frame = defaultdict(list)
+        end_nodes = []
+        for convo in lst_convos_obj:
+            if frame[convo['start']]:
+                for current_node in frame[convo['start']]:
+                    convo_node = self.to_convo_node_obj(convo)
+                    self.link_obj(current_node, convo_node)
+                    end_nodes.append(convo_node)
+                    if current_node in end_nodes: end_nodes.remove(current_node)
+                    frame[convo_node['end']].append(convo_node)
+            else:
+                convo_node = self.to_convo_node_obj(convo)
+                end_nodes.append(convo_node)
+                frame[convo_node['end']].append(convo_node)
+        return end_nodes
+
+
     def reconstruct(self, end_nodes):
         """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
         Args:
@@ -146,12 +208,35 @@ class MiniColumn:
             stack.append(sentence)
         return stack
 
+    def reconstruct_obj(self, end_nodes_objs):
+        """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
+        Args:
+            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
+        Returns:
+            list of [start, end, [words]] where each is validly linked with start=end
+        """
+        stack = []
+        for node in end_nodes_objs:
+            sentence = []
+            sentence.append(node)
+            while node['lasts']:
+                node = node['lasts'][0]
+                tnode = node.copy()
+                tnode.pop('lasts',None)
+                sentence.append(tnode)
+            sentence.reverse()
+            stack.append(sentence)
+        return stack
+
     def to_convo_node(self, lst_stuff):
         return Convo(lst_stuff[0], lst_stuff[1], lst_stuff[2], [], [])
 
     def link(self, conv1, conv2):
         conv1.nexts.append(conv2)
         conv2.lasts.append(conv1)
+    def link_obj(self, obj1, obj2):
+        #obj1['nexts'].append(obj2)
+        obj2['lasts'].append(obj1)
 
     def patterns_only(self, convos):
         """Return a list of the valid [words] to use in a hydra seqeunce
@@ -161,6 +246,18 @@ class MiniColumn:
             a list of [words], which in effect are a sentence that can be processed by a hydra
         """
         return [convo[2] for convo in convos]
+
+    def patterns_only_obj(self, convos):
+        """Return a list of the valid [words] to use in a hydra seqeunce
+        Args:
+            sentence, a list of [start, end, [words]]
+        Returns:
+            a list of [words], which in effect are a sentence that can be processed by a hydra
+        """
+        # print("KONVOS", convos)
+        # print("ONE KONVO: ", convos[0])
+        # print("ONE KONVO CONVO: ", convos[0]['convo'])
+        return [convo['convo'] for convo in convos]
 
     def reverse_convo(self, init_word):
         """Take init_word and drive downwards through stack of hydras and return the lowest level valid combination
@@ -189,7 +286,6 @@ class MiniColumn:
             else:
                 fringe = fringe + [word for word in successors if word not in dejavu]
                 fringe = list(set(fringe))
-                print(fringe, " : ", word, " : ", successors)
         return sorted(bottoms)
 
 ######################################################################################

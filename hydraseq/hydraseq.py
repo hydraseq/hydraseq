@@ -191,8 +191,14 @@ class Hydraseq:
         for idx in range(len(words)):
             self.self_insert(" ".join(words[idx:-1]))
 
-    def convert_list_convo_to_json(self, lst_convo):
-        pass
+    def convo_as_json(self, lst_convo, words):
+        (start, end, convo) = lst_convo
+        return {
+            'word': words[start:end],
+            'start': start,
+            'end': end,
+            'convo': convo
+        }
 
     def convolutions(self, words, as_json=False):
         """Run convolution on words using the hydra provided.
@@ -220,16 +226,7 @@ class Hydraseq:
                 if next_hits: word_results.append([depth, idx+1, next_hits])
             results.extend(word_results)
         if as_json:
-            res_json = []
-            for result in results:
-                (start, end, convo) = result
-                res_json.append({
-                    'word': words[start:end],
-                    'start': start,
-                    'end': end,
-                    'convo': convo
-                    })
-            return res_json
+            return [self.convo_as_json(convo, words) for convo in results]
         else:
             return results
 
