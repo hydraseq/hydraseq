@@ -1,5 +1,16 @@
 """
-MiniColumn: A stack of hydraseqs for hyrarchical convolutions
+class MiniColumn: A stack of hydraseqs for hyrarchical convolutions
+    def __init__(self, source_files=[], dir_root='.'):
+    def reset(self):
+    def compute_convolution_tree(self, sentence):
+    def resolve_convolution(self, convos):
+    def get_state(self):
+    def to_tree_nodes(self, lst_convos):
+    def reconstruct(self, end_nodes):
+    def to_convo_node(self, lst_stuff):
+    def link(self, conv1, conv2):
+    def patterns_only(self, convos):
+    def reverse_convo(self, init_word):
 """
 from hydraseq import Hydraseq
 import hydraseq
@@ -37,14 +48,15 @@ class MiniColumn:
         self.depth = len(self.hydras)
         self.convolutions = []
 
-    def reset(self):
+    def reset(self):  # returns self
         """reset all hydras, and set convolutions, active and predicted arrays to empty"""
         [hydra.reset() for hydra in self.hydras]
         self.convolutions = []
         self.active = []
         self.predicted = []
+        return self
 
-    def compute_convolution_tree(self, sentence):
+    def compute_convolution_tree(self, sentence): # -> list of convo paths
         """Generate the stack of convolutions using this sentence
         Internally calculates the convolution and saves them in self.convolutions.
         Each convolution is then forward fed to the next hydra.
@@ -52,13 +64,13 @@ class MiniColumn:
         Args:
             sentence: str, A sentence in plain separated words
         Returns:
-            self
+           list of convo paths
         convos: A list of all unique atomic unit possible
         convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
         def get_successors(convo_path, hydra):
             self.reset()
-            convos = self.run_convolutions(self.patterns_only(convo_path), hydra, hydra.uuid)
+            convos = hydra.convolutions(self.patterns_only(convo_path))
             convo_paths = self.resolve_convolution(convos)
             return convo_paths
 
@@ -74,7 +86,7 @@ class MiniColumn:
         return head_node
 
 
-    def resolve_convolution(self, convos):
+    def resolve_convolution(self, convos): # list of possible thru paths
         """Take a set of convolutions, and return a list of end to end possible paths"""
         return self.reconstruct(self.to_tree_nodes(convos))
 
@@ -93,7 +105,7 @@ class MiniColumn:
             self.predicted.append(hydra.next_nodes)
         return [self.active, self.predicted]
 
-    def to_tree_nodes(self, lst_convos):
+    def to_tree_nodes(self, lst_convos): # -> list of thalanodes
         """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
         Args:
             lst_convos, a list of convolutions to link end to end.
@@ -133,23 +145,6 @@ class MiniColumn:
             sentence.reverse()
             stack.append(sentence)
         return stack
-
-    def run_convolutions(self, words, seq, nxt="_"):
-        """Run convolutions for this specific words, hydra combination
-        Taks a list of lists, and returns a list of convo-units
-        """
-        words = words if isinstance(words, list) else seq.get_word_array(words)
-        hydras = []
-        results = []
-
-        for idx, word0 in enumerate(words):
-            word_results = []
-            hydras.append(Hydraseq(idx, seq))
-            for depth, hydra in enumerate(hydras):
-                next_hits = [word for word in hydra.hit(word0, is_learning=False).get_next_values() if word.startswith(nxt)]
-                if next_hits: word_results.append([depth, idx+1, next_hits])
-            results.extend(word_results)
-        return results
 
     def to_convo_node(self, lst_stuff):
         return Convo(lst_stuff[0], lst_stuff[1], lst_stuff[2], [], [])

@@ -191,7 +191,10 @@ class Hydraseq:
         for idx in range(len(words)):
             self.self_insert(" ".join(words[idx:-1]))
 
-    def convolutions(self, words):
+    def convert_list_convo_to_json(self, lst_convo):
+        pass
+
+    def convolutions(self, words, as_json=False):
         """Run convolution on words using the hydra provided.
         Args:
             words, list<list<strings>>, the words, usually representing a coherent sentence or phrase
@@ -200,6 +203,7 @@ class Hydraseq:
         Returns:
             a list of convolutions, where each convolution is [start, end, [words]]
         """
+        assert isinstance(as_json, bool), "as_json should be a bool value"
         words = words if isinstance(words, list) else self.get_word_array(words)
 
         hydras = []
@@ -215,7 +219,19 @@ class Hydraseq:
                         next_hits.append(next_word)
                 if next_hits: word_results.append([depth, idx+1, next_hits])
             results.extend(word_results)
-        return results
+        if as_json:
+            res_json = []
+            for result in results:
+                (start, end, convo) = result
+                res_json.append({
+                    'word': words[start:end],
+                    'start': start,
+                    'end': end,
+                    'convo': convo
+                    })
+            return res_json
+        else:
+            return results
 
     def get_downwards(self, words):
         """Get the words associated with a given output word in a hydra.
