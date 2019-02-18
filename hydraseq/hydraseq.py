@@ -87,6 +87,11 @@ class Hydraseq:
         self.surprise = False
         return self
 
+    def load_from_file(self, fpath):
+        with open(fpath, 'r') as source:
+            for line in source:
+                self.insert(self.get_word_array(line))
+        return self
 
     def get_active_sequences(self):
         return sorted([node.get_sequence() for node in self.active_nodes])
@@ -212,6 +217,18 @@ class Hydraseq:
             results.extend(word_results)
         return results
 
+    def get_downwards(self, words):
+        """Get the words associated with a given output word in a hydra.
+        Args:
+            downwords, a list of words, whose downward words will be returned.
+        Returns:
+            a list of words related to the activation of the words given in downwords
+        """
+        words = words if isinstance(words, list) else self.get_word_array(words)
+        self.reset()
+        downs = [w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words]
+
+        return sorted(list(set(downs)))
 
     def __repr__(self):
         return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
