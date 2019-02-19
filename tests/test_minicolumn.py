@@ -10,38 +10,38 @@ def test_mini_column():
     mcol = MiniColumn(source_files, "tests/data")
 
     assert mcol.compute_convolution_tree("spring leaves spring") == [
-        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
-        {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
-        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []},
+        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1},
+        {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2},
+        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3},
         [
             [
-                {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1, 'nexts': []},
-                {'words': [['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_VP'],         'start': 1, 'end': 3, 'nexts': []},
+                {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
+                {'words': [['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_VP'],         'start': 1, 'end': 3},
                 [
                     [
-                        {'words': [['1_NP', '1_VP'], ['1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2, 'nexts': []}
+                        {'words': [['1_NP', '1_VP'], ['1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                     ]
                 ]
            ],
            [
-               {'words': [['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 2, 'nexts': []},
-               {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3, 'nexts': []},
+               {'words': [['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 2},
+               {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
                [
                    [
-                       {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2, 'nexts': []}
+                       {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                    ]
                ]
            ],
            [
-               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1, 'nexts': []},
-               {'words': [['0_NOU', '0_VER']],          'convo': ['1_NP', '1_VP'], 'start': 1, 'end': 2, 'nexts': []},
-               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3, 'nexts': []},
+               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
+               {'words': [['0_NOU', '0_VER']],          'convo': ['1_NP', '1_VP'], 'start': 1, 'end': 2},
+               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
                [
                     [
-                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2, 'nexts': []}
+                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                     ],
                     [
-                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 1, 'end': 3, 'nexts': []}
+                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 1, 'end': 3}
                     ]
                 ]
             ]
@@ -70,13 +70,11 @@ def test_output_to_tree_nodes():
         ['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']
     ]
 
-    assert mcol.resolve_convolution(convolutions) == [
-        [
-            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
-            {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
-            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []}
+    assert mcol.resolve_convolution(convolutions)[0] == [
+            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1},
+            {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2},
+            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3}
         ]
-    ]
 
     result = mcol.to_tree_nodes(convolutions)
     assert result == [
@@ -97,21 +95,18 @@ def test_output_to_tree_nodes():
                             'convo': ['0_ADJ', '0_NOU', '0_VER'],
                             'start': 0,
                             'end': 1,
-                            'lasts': [],
-                            'nexts': []
+                            'lasts': []
                         }
-                    ],
-                    'nexts': []
+                    ]
                 }
-            ],
-            'nexts': []
+            ]
         }
     ]
 
     assert mcol.reconstruct(result) == [
         [
-            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
-            {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
-            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []}
+            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1},
+            {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2},
+            {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3}
         ]
     ]

@@ -104,7 +104,6 @@ class MiniColumn:
             'start': convo['start'],
             'end': convo['end'],
             'lasts': [],
-            'nexts': []
         }
 
     def to_tree_nodes(self, lst_convos): # -> list of thalanodes
