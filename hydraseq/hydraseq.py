@@ -200,7 +200,7 @@ class Hydraseq:
             'convo': convo
         }
 
-    def convolutions(self, words, as_json=False):
+    def convolutions(self, words, as_json=True):
         """Run convolution on words using the hydra provided.
         Args:
             words, list<list<strings>>, the words, usually representing a coherent sentence or phrase

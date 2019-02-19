@@ -111,9 +111,9 @@ class MiniColumn:
 
         return head_node
 
-    def resolve_convolution(self, convos): # list of possible thru paths
-        """Take a set of convolutions, and return a list of end to end possible paths"""
-        return self.reconstruct(self.to_tree_nodes(convos))
+    # def resolve_convolution(self, convos): # list of possible thru paths
+    #     """Take a set of convolutions, and return a list of end to end possible paths"""
+    #     return self.reconstruct(self.to_tree_nodes(convos))
 
     def resolve_convolution_obj(self, convos): # list of possible thru paths
         """Take a set of convolutions, and return a list of end to end possible paths"""
@@ -133,28 +133,28 @@ class MiniColumn:
             self.predicted.append(hydra.next_nodes)
         return [self.active, self.predicted]
 
-    def to_tree_nodes(self, lst_convos): # -> list of thalanodes
-        """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
-        Args:
-            lst_convos, a list of convolutions to link end to end.
-        Returns:
-            a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
-        """
-        frame = defaultdict(list)
-        end_nodes = []
-        for convo in lst_convos:
-            if frame[convo[0]]:
-                for current_node in frame[convo[0]]:
-                    convo_node = self.to_convo_node(convo)
-                    self.link(current_node, convo_node)
-                    end_nodes.append(convo_node)
-                    if current_node in end_nodes: end_nodes.remove(current_node)
-                    frame[convo_node.end].append(convo_node)
-            else:
-                convo_node = self.to_convo_node(convo)
-                end_nodes.append(convo_node)
-                frame[convo_node.end].append(convo_node)
-        return end_nodes
+    # def to_tree_nodes(self, lst_convos): # -> list of thalanodes
+    #     """Convert a list of convolutions, list of [start, end, [words]] to a tree and return the end nodes.
+    #     Args:
+    #         lst_convos, a list of convolutions to link end to end.
+    #     Returns:
+    #         a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
+    #     """
+    #     frame = defaultdict(list)
+    #     end_nodes = []
+    #     for convo in lst_convos:
+    #         if frame[convo[0]]:
+    #             for current_node in frame[convo[0]]:
+    #                 convo_node = self.to_convo_node(convo)
+    #                 self.link(current_node, convo_node)
+    #                 end_nodes.append(convo_node)
+    #                 if current_node in end_nodes: end_nodes.remove(current_node)
+    #                 frame[convo_node.end].append(convo_node)
+    #         else:
+    #             convo_node = self.to_convo_node(convo)
+    #             end_nodes.append(convo_node)
+    #             frame[convo_node.end].append(convo_node)
+    #     return end_nodes
 
     def to_convo_node_obj(self, convo_obj):
         return {

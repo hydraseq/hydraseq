@@ -65,11 +65,7 @@ def test_output_to_tree_nodes():
         {'convo': ['0_ADJ', '0_NOU', '0_VER'], 'end': 3, 'start': 2, 'words': [['spring']]}
     ]
 
-    assert mcol.resolve_convolution(mcol.hydras[0].convolutions(sentence))[0] == [
-        [0, 1, ['0_ADJ', '0_NOU', '0_VER']],
-        [1, 2, ['0_NOU', '0_VER']],
-        [2, 3, ['0_ADJ', '0_NOU', '0_VER']]
-    ]
+
     print("BLOWUP HERE:",mcol.resolve_convolution_obj(mcol.hydras[0].convolutions(sentence, as_json=True))[0])
     assert mcol.resolve_convolution_obj(mcol.hydras[0].convolutions(sentence, as_json=True))[0] == [
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
