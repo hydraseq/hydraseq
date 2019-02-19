@@ -175,14 +175,6 @@ def test_cloning_hydra():
     assert hdr1.look_ahead("the").get_next_values() == ["quick"]
     assert hdr1.hit("quick", None).get_next_values() == ["brown"]
 
-def test_run_convolutions_smoke():
-    hdr = Hydraseq('_')
-
-    hdr.insert("a b c _ALPHA")
-    hdr.insert("1 2 3 _DIGIT")
-
-    assert hdr.convolutions("a b c 1 2 3".split()) == [[0, 3, ['_ALPHA']], [3, 6, ['_DIGIT']]]
-    assert hdr.convolutions("a b 1 2 3 a b".split()) == [[2, 5, ['_DIGIT']]]
 
 def test_run_convolutions_json():
     hdr = Hydraseq('_')
@@ -191,11 +183,11 @@ def test_run_convolutions_json():
     hdr.insert("1 2 3 _DIGIT")
 
     assert hdr.convolutions("a b c 1 2 3".split(), as_json=True) == [
-        {'convo': ['_ALPHA'], 'end': 3, 'start': 0, 'word': ['a', 'b', 'c']},
-        {'convo': ['_DIGIT'], 'end': 6, 'start': 3, 'word': ['1', '2', '3']}
+        {'convo': ['_ALPHA'], 'end': 3, 'start': 0, 'words': ['a', 'b', 'c']},
+        {'convo': ['_DIGIT'], 'end': 6, 'start': 3, 'words': ['1', '2', '3']}
     ]
     assert hdr.convolutions("a b 1 2 3 a b".split(), as_json=True) == [
-        {'convo': ['_DIGIT'], 'end': 5, 'start': 2, 'word': ['1', '2', '3']}
+        {'convo': ['_DIGIT'], 'end': 5, 'start': 2, 'words': ['1', '2', '3']}
     ]
 
 def test_run_convolutions_overlap():
@@ -208,15 +200,13 @@ def test_run_convolutions_overlap():
     hdr.insert("a d a n _5")
 
     tester = "b a d a n d y".split()
-    expected = [[0, 3, ['_1']], [1, 4, ['_3']], [1, 5, ['_5']], [3, 6, ['_2']], [3, 7, ['_4']]]
-    assert hdr.convolutions(tester) == expected
 
     assert hdr.convolutions(tester, as_json=True) == [
-        {'convo': ['_1'], 'end': 3, 'start': 0, 'word': ['b', 'a', 'd']},
-        {'convo': ['_3'], 'end': 4, 'start': 1, 'word': ['a', 'd', 'a']},
-        {'convo': ['_5'], 'end': 5, 'start': 1, 'word': ['a', 'd', 'a', 'n']},
-        {'convo': ['_2'], 'end': 6, 'start': 3, 'word': ['a', 'n', 'd']},
-        {'convo': ['_4'], 'end': 7, 'start': 3, 'word': ['a', 'n', 'd', 'y']}
+        {'convo': ['_1'], 'end': 3, 'start': 0, 'words': ['b', 'a', 'd']},
+        {'convo': ['_3'], 'end': 4, 'start': 1, 'words': ['a', 'd', 'a']},
+        {'convo': ['_5'], 'end': 5, 'start': 1, 'words': ['a', 'd', 'a', 'n']},
+        {'convo': ['_2'], 'end': 6, 'start': 3, 'words': ['a', 'n', 'd']},
+        {'convo': ['_4'], 'end': 7, 'start': 3, 'words': ['a', 'n', 'd', 'y']}
     ]
 
 def test_get_downwards():

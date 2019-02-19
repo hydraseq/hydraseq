@@ -194,7 +194,7 @@ class Hydraseq:
     def convo_as_json(self, lst_convo, words):
         (start, end, convo) = lst_convo
         return {
-            'word': words[start:end],
+            'words': words[start:end],
             'start': start,
             'end': end,
             'convo': convo

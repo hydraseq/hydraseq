@@ -158,7 +158,7 @@ class MiniColumn:
 
     def to_convo_node_obj(self, convo_obj):
         return {
-            'word': convo_obj['word'],
+            'words': convo_obj['words'],
             'convo': convo_obj['convo'],
             'start': convo_obj['start'],
             'end': convo_obj['end'],
@@ -193,7 +193,7 @@ class MiniColumn:
     def reconstruct(self, end_nodes):
         """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
         Args:
-            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
+            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid words sequence.
         Returns:
             list of [start, end, [words]] where each is validly linked with start=end
         """
@@ -211,7 +211,7 @@ class MiniColumn:
     def reconstruct_obj(self, end_nodes_objs):
         """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
         Args:
-            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid word sequence.
+            end_nodes, a list of end point Thalanodes which when followed in reverse create a valid words sequence.
         Returns:
             list of [start, end, [words]] where each is validly linked with start=end
         """
@@ -267,12 +267,12 @@ class MiniColumn:
         Args:
             hydras, a list of trained hydras
         Returns:
-            The lowest level list of words that trigger the end word provided (init_word)
+            The lowest level list of words that trigger the end words provided (init_word)
         """
-        def get_successors(word):
+        def get_successors(words):
             successors = []
             for hydra in self.hydras:
-                successors.extend(hydra.get_downwards([word]))
+                successors.extend(hydra.get_downwards([words]))
             return successors
 
 
@@ -281,13 +281,13 @@ class MiniColumn:
         fringe = [init_word]
         dejavu = []
         while fringe:
-            word = fringe.pop()
-            dejavu.append(word)
-            successors = get_successors(word)
+            words = fringe.pop()
+            dejavu.append(words)
+            successors = get_successors(words)
             if not successors:
-                bottoms.append(word)
+                bottoms.append(words)
             else:
-                fringe = fringe + [word for word in successors if word not in dejavu]
+                fringe = fringe + [words for words in successors if words not in dejavu]
                 fringe = list(set(fringe))
         return sorted(bottoms)
 
