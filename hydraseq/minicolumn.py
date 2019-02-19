@@ -55,19 +55,20 @@ class MiniColumn:
         convos: A list of all unique atomic unit possible
         convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
-        def get_successors(convo_path, hydra):
+        def _get_successors(convo_path, hydra):
+            """Return nodes reachable from each of the given nodes in convo_path"""
             self.reset()
-            convos = hydra.convolutions(self.patterns_only(convo_path), as_json=True)
+            convos = hydra.convolutions(self.patterns_only(convo_path))
             convo_paths = self.resolve_convolution(convos)
             return convo_paths
 
-        head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence, as_json=True))[0]
+        head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence))[0]
         #print("HEAD_NODE: ",head_node)
-        successors = get_successors(head_node, self.hydras[1])
+        successors = _get_successors(head_node, self.hydras[1])
         head_node.append(successors)
 
         for node in successors:
-            subsucc = get_successors(node, self.hydras[2])
+            subsucc = _get_successors(node, self.hydras[2])
             node.append(subsucc)
 
         return head_node
