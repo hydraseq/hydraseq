@@ -70,11 +70,13 @@ def test_output_to_tree_nodes():
         ['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']
     ]
 
-    assert mcol.resolve_convolution(convolutions)[0] == [
+    assert mcol.resolve_convolution(convolutions) == [
+        [
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
             {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []}
         ]
+    ]
 
     result = mcol.to_tree_nodes(convolutions)
     assert result == [
