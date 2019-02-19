@@ -57,6 +57,7 @@ class MiniColumn:
         """
         def _get_successors(convo_path, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
+            assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
             convos = hydra.convolutions(self.patterns_only(convo_path))
             return self.resolve_convolution(convos)
@@ -66,6 +67,7 @@ class MiniColumn:
             _suc = _get_successors(node, level)
             if _suc:
                 node.append(_suc)
+                assert isinstance(_suc[0], list), "_append_successors: _suc should be list of lists"
                 [_append_successors(n, level+1) for n in _suc]
             else:
                 return
@@ -112,8 +114,10 @@ class MiniColumn:
         Returns:
             a list of the end ThalaNodes, which if followed in reverse describe valid sequences by linking ends.
         """
+        assert isinstance(lst_convos, list), "to_tree_nodes: lst_convos s.b. a list"
         frame = defaultdict(list)
         end_nodes = []
+        # TODO: this may be doing unnessacary work since we do not use this nested tree from
         for convo in lst_convos:
             if frame[convo['start']]:
                 for current_node in frame[convo['start']]:
@@ -127,9 +131,6 @@ class MiniColumn:
                 end_nodes.append(convo_node)
                 frame[convo_node['end']].append(convo_node)
         return end_nodes
-
-
-
 
     def reconstruct(self, end_nodes):
         """Take a list of end_nodes and backtrack to construct list of [start, end, [words]]
@@ -170,9 +171,7 @@ class MiniColumn:
         Returns:
             a list of [words], which in effect are a sentence that can be processed by a hydra
         """
-        # print("KONVOS", convos)
-        # print("ONE KONVO: ", convos[0])
-        # print("ONE KONVO CONVO: ", convos[0]['convo'])
+        assert isinstance(convos, list), "patterns_only: convos should be a list of convos"
         return [convo['convo'] for convo in convos]
 
     def reverse_convo(self, init_word):
