@@ -9,7 +9,7 @@ def test_mini_column():
     source_files = ["seasons.0.txt", "seasons.1.txt", "seasons.2.txt"]
     mcol = MiniColumn(source_files, "tests/data")
 
-    assert mcol.compute_convolution_tree_obj("spring leaves spring") == [
+    assert mcol.compute_convolution_tree("spring leaves spring") == [
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
         {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []},
@@ -66,15 +66,15 @@ def test_output_to_tree_nodes():
     ]
 
 
-    print("BLOWUP HERE:",mcol.resolve_convolution_obj(mcol.hydras[0].convolutions(sentence, as_json=True))[0])
-    assert mcol.resolve_convolution_obj(mcol.hydras[0].convolutions(sentence, as_json=True))[0] == [
+    print("BLOWUP HERE:",mcol.resolve_convolution(mcol.hydras[0].convolutions(sentence, as_json=True))[0])
+    assert mcol.resolve_convolution(mcol.hydras[0].convolutions(sentence, as_json=True))[0] == [
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
             {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []}
         ]
 
-    result = mcol.to_tree_nodes_obj(mcol.hydras[0].convolutions(sentence, as_json=True))
-    assert mcol.to_tree_nodes_obj(mcol.hydras[0].convolutions(sentence, as_json=True)) == [
+    result = mcol.to_tree_nodes(mcol.hydras[0].convolutions(sentence, as_json=True))
+    assert mcol.to_tree_nodes(mcol.hydras[0].convolutions(sentence, as_json=True)) == [
         {
             'words': [['spring']],
             'convo': ['0_ADJ', '0_NOU', '0_VER'],
@@ -103,9 +103,9 @@ def test_output_to_tree_nodes():
         }
     ]
 
-    final = mcol.reconstruct_obj(result)  # TODO: The fight is here, this has to not retrn lasts
+    final = mcol.reconstruct(result)  # TODO: The fight is here, this has to not retrn lasts
     print("FINAL:",final)
-    assert mcol.reconstruct_obj(result) == [
+    assert mcol.reconstruct(result) == [
         [
             {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
             {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
@@ -113,7 +113,7 @@ def test_output_to_tree_nodes():
         ]
     ]
 
-    assert mcol.compute_convolution_tree_obj("spring leaves spring") == [
+    assert mcol.compute_convolution_tree("spring leaves spring") == [
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1, 'nexts': []},
         {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2, 'nexts': []},
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3, 'nexts': []},
