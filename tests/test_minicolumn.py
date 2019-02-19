@@ -22,8 +22,8 @@ def test_mini_column():
                         {'words': [['1_NP', '1_VP'], ['1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                     ]
                 ]
-           ],
-           [
+            ],
+            [
                {'words': [['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 2},
                {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
                [
@@ -31,8 +31,8 @@ def test_mini_column():
                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                    ]
                ]
-           ],
-           [
+            ],
+            [
                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
                {'words': [['0_NOU', '0_VER']],          'convo': ['1_NP', '1_VP'], 'start': 1, 'end': 2},
                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
