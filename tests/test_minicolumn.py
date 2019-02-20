@@ -9,7 +9,9 @@ def test_mini_column():
     source_files = ["seasons.0.txt", "seasons.1.txt", "seasons.2.txt"]
     mcol = MiniColumn(source_files, "tests/data")
 
-    assert mcol.compute_convolution_tree("spring leaves spring") == [
+    ctree = mcol.compute_convolution_tree("spring leaves spring")
+    print("CTREE: ", ctree)
+    assert ctree == [
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1},
         {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2},
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3},

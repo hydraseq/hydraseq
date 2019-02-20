@@ -55,8 +55,11 @@ class MiniColumn:
         convos: A list of all unique atomic unit possible
         convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
-        def _get_successors(convo_path, level):
+        def _get_successors(node, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
+            convo_path = node[0] if isinstance(node[0], list) else node
+            print("CONVO_PATH: ",convo_path)
+
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
             convos = hydra.convolutions(self.patterns_only(convo_path))
@@ -64,15 +67,22 @@ class MiniColumn:
 
         def _append_successors(node, level):
             if level >= len(self.hydras): return
+            assert isinstance(node, list)
+
             _suc = _get_successors(node, level)
+
             if _suc:
+                #print("BEFORE: ", node)
                 node.append(_suc)
+                print("SUCC: ", _suc)
+
                 assert isinstance(_suc[0], list), "_append_successors: _suc should be list of lists"
                 [_append_successors(n, level+1) for n in _suc]
             else:
                 return
 
-        head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence))[0]
+        head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence))
+        print("HEAD_NODE: ", head_node)
         _append_successors(head_node, 1)
         return head_node
 
