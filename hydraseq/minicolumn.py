@@ -57,24 +57,22 @@ class MiniColumn:
         """
         def _get_successors(node, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
-            convo_path = node[0] if isinstance(node[0], list) else node
-            print("CONVO_PATH: ",convo_path)
+            if isinstance(node[0], list) and isinstance(node[0][1], dict):
+                convo_path = node[0]
 
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
             convos = hydra.convolutions(self.patterns_only(convo_path))
-            return self.resolve_convolution(convos)
+            return [[convo_path] for convo_path in self.resolve_convolution(convos)]
 
         def _append_successors(node, level):
             if level >= len(self.hydras): return
             assert isinstance(node, list)
-
+            assert isinstance(node[0], list) # a node is a list of at least one list of convos
             _suc = _get_successors(node, level)
 
             if _suc:
-                #print("BEFORE: ", node)
                 node.append(_suc)
-                print("SUCC: ", _suc)
 
                 assert isinstance(_suc[0], list), "_append_successors: _suc should be list of lists"
                 [_append_successors(n, level+1) for n in _suc]
@@ -82,7 +80,7 @@ class MiniColumn:
                 return
 
         head_node = self.resolve_convolution(self.hydras[0].convolutions(sentence))
-        print("HEAD_NODE: ", head_node)
+
         _append_successors(head_node, 1)
         return head_node
 

@@ -11,37 +11,53 @@ def test_mini_column():
 
     ctree = mcol.compute_convolution_tree("spring leaves spring")
     print("CTREE: ", ctree)
-    assert ctree == [
+    assert ctree == \
+[
+    [
         {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 0, 'end': 1},
-        {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'],          'start': 1, 'end': 2},
-        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3},
+        {'words': [['leaves']], 'convo': ['0_NOU', '0_VER'], 'start': 1, 'end': 2},
+        {'words': [['spring']], 'convo': ['0_ADJ', '0_NOU', '0_VER'], 'start': 2, 'end': 3}
+    ],
+    [
         [
             [
-                {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
-                {'words': [['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_VP'],         'start': 1, 'end': 3},
+                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
+                {'words': [['0_NOU', '0_VER'], ['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_VP'], 'start': 1, 'end': 3}
+            ],
+            [
                 [
                     [
                         {'words': [['1_NP', '1_VP'], ['1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
                     ]
                 ]
+            ]
+        ],
+        [
+            [
+                {'words': [['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 2},
+                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3}
             ],
             [
-               {'words': [['0_ADJ', '0_NOU', '0_VER'], ['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 2},
-               {'words': [['0_ADJ', '0_NOU', '0_VER']],                     'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
-               [
-                   [
-                       {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
-                   ]
-               ]
-            ],
-            [
-               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
-               {'words': [['0_NOU', '0_VER']],          'convo': ['1_NP', '1_VP'], 'start': 1, 'end': 2},
-               {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3},
-               [
+                [
                     [
                         {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
-                    ],
+                    ]
+                ]
+            ]
+        ],
+        [
+            [
+                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 0, 'end': 1},
+                {'words': [['0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 1, 'end': 2},
+                {'words': [['0_ADJ', '0_NOU', '0_VER']], 'convo': ['1_NP', '1_VP'], 'start': 2, 'end': 3}
+            ],
+            [
+                [
+                    [
+                        {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 0, 'end': 2}
+                    ]
+                ],
+                [
                     [
                         {'words': [['1_NP', '1_VP'], ['1_NP', '1_VP']], 'convo': ['2_SENT'], 'start': 1, 'end': 3}
                     ]
@@ -49,6 +65,7 @@ def test_mini_column():
             ]
         ]
     ]
+]
 
 def test_reverse_convo():
     source_files = ['face.0.txt', 'face.1.txt', 'face.2.txt']
