@@ -10,7 +10,6 @@ def test_mini_column():
     mcol = MiniColumn(source_files, "tests/data")
 
     ctree = mcol.compute_convolution_tree("spring leaves spring")
-    print("CTREE: ", ctree)
     assert ctree == \
 [
     [

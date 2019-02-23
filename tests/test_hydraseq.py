@@ -182,11 +182,11 @@ def test_run_convolutions_json():
     hdr.insert("a b c _ALPHA")
     hdr.insert("1 2 3 _DIGIT")
 
-    assert hdr.convolutions("a b c 1 2 3".split(), as_json=True) == [
+    assert hdr.convolutions("a b c 1 2 3".split()) == [
         {'convo': ['_ALPHA'], 'end': 3, 'start': 0, 'words': ['a', 'b', 'c']},
         {'convo': ['_DIGIT'], 'end': 6, 'start': 3, 'words': ['1', '2', '3']}
     ]
-    assert hdr.convolutions("a b 1 2 3 a b".split(), as_json=True) == [
+    assert hdr.convolutions("a b 1 2 3 a b".split()) == [
         {'convo': ['_DIGIT'], 'end': 5, 'start': 2, 'words': ['1', '2', '3']}
     ]
 
@@ -201,7 +201,7 @@ def test_run_convolutions_overlap():
 
     tester = "b a d a n d y".split()
 
-    assert hdr.convolutions(tester, as_json=True) == [
+    assert hdr.convolutions(tester) == [
         {'convo': ['_1'], 'end': 3, 'start': 0, 'words': ['b', 'a', 'd']},
         {'convo': ['_3'], 'end': 4, 'start': 1, 'words': ['a', 'd', 'a']},
         {'convo': ['_5'], 'end': 5, 'start': 1, 'words': ['a', 'd', 'a', 'n']},
