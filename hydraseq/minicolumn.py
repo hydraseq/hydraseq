@@ -6,8 +6,8 @@ import hydraseq
 from collections import defaultdict, namedtuple
 import re
 
-Convo = namedtuple('Convo', ['start', 'end', 'pattern', 'lasts', 'nexts'])
-endcap = Convo(-1,-1,['end'], [],[])
+# Convo = namedtuple('Convo', ['start', 'end', 'pattern', 'lasts', 'nexts'])
+# endcap = Convo(-1,-1,['end'], [],[])
 
 class MiniColumn:
     """A stack of trained hydras which can get layers of convolutions
@@ -59,9 +59,9 @@ class MiniColumn:
             """Return nodes reachable from each of the given nodes in convo_path"""
             if isinstance(node[0], list) and isinstance(node[0][1], dict):
                 convo_path = node[0]
-
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
+
             convos = hydra.convolutions(self.patterns_only(convo_path))
             return [[convo_path] for convo_path in self.resolve_convolution(convos)]
 
@@ -189,11 +189,7 @@ class MiniColumn:
             The lowest level list of words that trigger the end words provided (init_word)
         """
         def get_successors(words):
-            successors = []
-            for hydra in self.hydras:
-                successors.extend(hydra.get_downwards([words]))
-            return successors
-
+            return [word for hydra in self.hydras for word in hydra.get_downwards([words])]
 
         self.hydras.reverse()
         bottoms = []
