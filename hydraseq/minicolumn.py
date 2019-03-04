@@ -57,7 +57,7 @@ class MiniColumn:
         """
         def _get_successors(node, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
-            if isinstance(node[0], list) and isinstance(node[0][1], dict):
+            if isinstance(node[0], list) and isinstance(node[0][0], dict):
                 convo_path = node[0]
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
@@ -67,6 +67,8 @@ class MiniColumn:
 
         def _append_successors(node, level):
             if level >= len(self.hydras): return
+            if not node: return
+
             assert isinstance(node, list)
             assert isinstance(node[0], list) # a node is a list of at least one list of convos
             _suc = _get_successors(node, level)
