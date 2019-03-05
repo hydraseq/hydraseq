@@ -8,3 +8,4 @@ env/
 **/*.ipynb_checkpoints/
 **/*.pytest_cache/
 Untitled.ipynb
+hydraseq.egg-INFO/
