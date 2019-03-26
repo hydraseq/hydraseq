@@ -33,7 +33,7 @@ class Node:
             None
         """
         self.nexts.append(n_next)
-        self.nexts = list(set(self.nexts))
+        self.nexts = self.nexts
         n_next.link_last(self)
 
     def link_last(self, n_last):
@@ -63,10 +63,10 @@ class Hydraseq:
     def __init__(self, uuid, hydraseq=None, rex=None):
         self.uuid = uuid
         self.n_init = Node('')
-        self.active_nodes = []
-        self.active_sequences = []
-        self.next_nodes = []
-        self.next_sequences = []
+        self.active_nodes = set() 
+        self.active_sequences = set()  
+        self.next_nodes = set()
+        self.next_sequences = set()
         self.surprise = False
         self.rex = rex
         if hydraseq:
@@ -79,11 +79,11 @@ class Hydraseq:
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
-        self.next_nodes = []
-        self.active_nodes = []
+        self.next_nodes = set() 
+        self.active_nodes = set() 
         self.active_sequences = []
-        self.next_nodes.extend(self.n_init.nexts)
-        self.active_nodes.append(self.n_init)
+        self.next_nodes.update(self.n_init.nexts)
+        self.active_nodes.add(self.n_init)
         self.surprise = False
         return self
 
@@ -97,13 +97,13 @@ class Hydraseq:
         return sorted([node.get_sequence() for node in self.active_nodes])
 
     def get_active_values(self):
-        return sorted(list(set([node.key for node in self.active_nodes])))
+        return sorted({node.key for node in self.active_nodes})
 
     def get_next_sequences(self):
         return sorted([node.get_sequence() for node in self.next_nodes])
 
     def get_next_values(self):
-        return sorted(list(set([node.key for node in self.next_nodes])))
+        return sorted({node.key for node in self.next_nodes})
 
     def look_ahead(self, arr_sequence):
         return self.insert(arr_sequence, is_learning=False)
@@ -153,11 +153,11 @@ class Hydraseq:
         return self
 
     def _save_current_state(self):
-        return self.active_nodes[:], self.next_nodes[:]
+        return self.active_nodes.copy(), self.next_nodes.copy()
     def _set_actives_from_last_predicted(self, last_predicted, lst_words):
         return [node for node in last_predicted if node.key in lst_words]
     def _set_nexts_from_current_actives(self, active_nodes):
-        return list({nextn for node in active_nodes for nextn in node.nexts})
+        return {nextn for node in active_nodes for nextn in node.nexts}
 
     def get_word_array(self, str_sentence):
         if self.rex:
@@ -239,9 +239,9 @@ class Hydraseq:
         """
         words = words if isinstance(words, list) else self.get_word_array(words)
         self.reset()
-        downs = [w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words]
+        downs = {w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words}
 
-        return sorted(list(set(downs)))
+        return sorted(downs)
 
     def __repr__(self):
         return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
