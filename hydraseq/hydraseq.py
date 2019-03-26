@@ -74,7 +74,7 @@ class Hydraseq:
             self.n_init.nexts = hydraseq.n_init.nexts
             self.reset()
         else:
-            self.columns = defaultdict(list)
+            self.columns = defaultdict(set)
 
 
     def reset(self):
@@ -142,7 +142,7 @@ class Hydraseq:
             self.surprise = True
             for letter in lst_words:
                 node =  Node(letter)
-                self.columns[letter].append(node)
+                self.columns[letter].add(node)
                 self.active_nodes.append(node)
 
                 [n.link_nexts(node) for n in last_active]
