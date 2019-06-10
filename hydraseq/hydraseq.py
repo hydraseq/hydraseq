@@ -33,7 +33,6 @@ class Node:
             None
         """
         self.nexts.append(n_next)
-        self.nexts = self.nexts
         n_next.link_last(self)
 
     def link_last(self, n_last):
@@ -114,6 +113,18 @@ class Hydraseq:
 
     def get_next_values(self):
         return sorted({node.key for node in self.next_nodes})
+
+    def forward_prediction(self):
+        """Starting from current predicted, roll forward and return list of end nodes"""
+        fringe = list(self.next_nodes)
+        ends = []
+        while fringe:
+            node = fringe.pop()
+            if node.nexts:
+                fringe.extend(node.nexts)
+            else:
+                ends.append(node)
+        return ends
 
     def look_ahead(self, arr_sequence):
         return self.insert(arr_sequence, is_learning=False)
