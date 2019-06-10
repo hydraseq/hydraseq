@@ -1,11 +1,11 @@
 import setuptools
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+    long_description = "Simple data structure for sequence memory" #fh.read()
 
 setuptools.setup(
     name="hydraseq",
-    version="0.0.21",
+    version="0.0.22",
     author="Efrain Olivares",
     author_email="efrain.olivares@gmail.com",
     description="Simple data structure for sequence memory",
