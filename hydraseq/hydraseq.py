@@ -33,7 +33,6 @@ class Node:
             None
         """
         self.nexts.append(n_next)
-        self.nexts = self.nexts
         n_next.link_last(self)
 
     def link_last(self, n_last):
@@ -65,6 +64,8 @@ class Hydraseq:
         self.n_init = Node('')
         self.active_nodes = set() 
         self.active_sequences = set()  
+        self.last_active_nodes = set()
+        self.last_active_sequences = set()
         self.next_nodes = set()
         self.next_sequences = set()
         self.surprise = False
@@ -82,6 +83,8 @@ class Hydraseq:
         self.next_nodes = set() 
         self.active_nodes = set() 
         self.active_sequences = []
+        self.last_active_nodes = set()
+        self.last_active_sequences = set()
         self.next_nodes.update(self.n_init.nexts)
         self.active_nodes.add(self.n_init)
         self.surprise = False
@@ -99,11 +102,29 @@ class Hydraseq:
     def get_active_values(self):
         return sorted({node.key for node in self.active_nodes})
 
+    def get_last_active_sequences(self):
+        return sorted([node.get_sequence() for node in self.last_active_nodes])
+
+    def get_last_active_values(self):
+        return sorted({node.key for node in self.last_active_nodes})
+
     def get_next_sequences(self):
         return sorted([node.get_sequence() for node in self.next_nodes])
 
     def get_next_values(self):
         return sorted({node.key for node in self.next_nodes})
+
+    def forward_prediction(self):
+        """Starting from current predicted, roll forward and return list of end nodes"""
+        fringe = list(self.next_nodes)
+        ends = []
+        while fringe:
+            node = fringe.pop()
+            if node.nexts:
+                fringe.extend(node.nexts)
+            else:
+                ends.append(node)
+        return ends
 
     def look_ahead(self, arr_sequence):
         return self.insert(arr_sequence, is_learning=False)
@@ -153,7 +174,10 @@ class Hydraseq:
         return self
 
     def _save_current_state(self):
+        self.last_active_nodes = self.active_nodes.copy()
+        self.last_active_sequences = self.active_sequences.copy()
         return self.active_nodes.copy(), self.next_nodes.copy()
+
     def _set_actives_from_last_predicted(self, last_predicted, lst_words):
         return [node for node in last_predicted if node.key in lst_words]
     def _set_nexts_from_current_actives(self, active_nodes):
