@@ -4,6 +4,16 @@ sys.path.append('./hydraseq')
 import hydraseq
 from minicolumn import MiniColumn
 
+def test_morse_code():
+    source_files = ['linear.0.000', 'linear.1.001', 'linear.2.002']
+    data_dir = 'tests/data'
+    mcol = MiniColumn(source_files, data_dir)
+
+    print(mcol.hydras[2])
+    ctree = mcol.compute_convolution_tree(". . . - - - . . .")
+
+    assert len(ctree) == 20
+
 def test_mini_column():
     sentence = "spring leaves spring"
     source_files = ["seasons.0.txt", "seasons.1.txt", "seasons.2.txt"]

@@ -72,7 +72,7 @@ class MiniColumn:
             assert isinstance(node, list)
             assert isinstance(node[0], list) # a node is a list of at least one list of convos
             _suc = _get_successors(node, level)
-
+            if _suc: print("\nSUCCESSORS: ",_suc)
             if _suc:
                 node.append(_suc)
 
