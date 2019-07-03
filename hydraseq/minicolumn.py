@@ -63,6 +63,9 @@ class MiniColumn:
             hydra = self.hydras[level]
 
             convos = hydra.convolutions(self.patterns_only(convo_path))
+            #if convos: print("=== LEVEL: ", level)
+            #for convo in convos:
+            #    print("CONVO: ", convo)
             return [[convo_path] for convo_path in self.resolve_convolution(convos)]
 
         def _append_successors(node, level):
@@ -72,7 +75,9 @@ class MiniColumn:
             assert isinstance(node, list)
             assert isinstance(node[0], list) # a node is a list of at least one list of convos
             _suc = _get_successors(node, level)
-            if _suc: print("\nSUCCESSORS: ",_suc)
+            if _suc: print("\n=== LEVEL: ", level)
+            for suc in _suc:
+                print("SUCCESSOR: ", suc)
             if _suc:
                 node.append(_suc)
 
