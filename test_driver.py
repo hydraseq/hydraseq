@@ -1,5 +1,5 @@
 from hydraseq import MiniColumn
-
+import time
 source_files = [
         'linear.0.000',
         'linear.1.001',
@@ -14,7 +14,9 @@ mcol = MiniColumn(source_files, data_dir)
 
 efrain = ". . . - . . - . . - . . - ."
 
+now = time.time()
 ctree = mcol.compute_convolution_tree(efrain)
+print(time.time() - now)
 
 for hydra in mcol.hydras:
     print(hydra.active_nodes)

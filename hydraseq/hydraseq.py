@@ -235,10 +235,35 @@ class Hydraseq:
         """
         assert isinstance(as_json, bool), "as_json should be a bool value"
         words = words if isinstance(words, list) else self.get_word_array(words)
+        #print("DEBUG ========== WORDS: ", words)
+        # faux filter words
+        words = [word for word in words if word[0] not in [
+            '1_B',
+            '1_C',
+            '1_D',
+            '1_G',
+            '1_H',
+            '1_J',
+            '1_K',
+            '1_L',
+            '1_M',
+            '1_O',
+            '1_P',
+            '1_Q',
+            '1_S',
+            '1_T',
+            '1_U',
+            '1_V',
+            '1_W',
+            '1_X',
+            '1_Y',
+            '1_Z'
+            ]]
 
+        #print("DEBUG ========== WORDS FILTERED: ", words)
         hydras = []
         results = []
-
+         
         for idx, word in enumerate(words):
             word_results = []
             hydras.append(Hydraseq(idx, self))

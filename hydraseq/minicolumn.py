@@ -43,13 +43,14 @@ class MiniColumn:
         return self
 
 
-    def compute_convolution_tree(self, sentence): # -> list of convo paths
+    def compute_convolution_tree(self, sentence, context=None): # -> list of convo paths
         """Generate the stack of convolutions using this sentence
         Internally calculates the convolution and saves them in self.convolutions.
         Each convolution is then forward fed to the next hydra.
 
         Args:
             sentence: str, A sentence in plain separated words
+            context: lst<str>, a list of column names which are active to narrow the search
         Returns:
            list of convo paths
         convos: A list of all unique atomic unit possible
@@ -64,8 +65,7 @@ class MiniColumn:
 
             convos = hydra.convolutions(self.patterns_only(convo_path))
             #if convos: print("=== LEVEL: ", level)
-            #for convo in convos:
-            #    print("CONVO: ", convo)
+            #for convo in convos: print("CONVO: ", convo)
             return [[convo_path] for convo_path in self.resolve_convolution(convos)]
 
         def _append_successors(node, level):
