@@ -251,3 +251,21 @@ def test_self_insert():
     assert sorted(hdq.look_ahead("Burger King wants").get_next_values()) == sorted(['people', '_3'])
     assert sorted(hdq.look_ahead("Burger King wants").get_active_values()) == sorted(['wants'])
 
+def test_reverse_predict():
+    hds = Hydraseq('_')
+
+    hds.insert("a b c _D")
+    hds.insert("e f g _D")
+    hds.insert("c e f _D")
+    hds.insert("x y z _1")
+
+    assert sorted(hds.reverse_predict(["_D"]).get_next_values()) == sorted(['a', 'e', 'c'])
+
+    assert hds.get_downwards(["_D"]) == ['a', 'b', 'c', 'e', 'f', 'g']
+
+    assert hds.look_ahead("a b c").get_next_values() == ['_D']
+    assert hds.look_ahead("x", ["_1"]).get_next_values() == ['y']
+    assert hds.look_ahead("a", ["_1"]).get_next_values() == []
+    assert hds.look_ahead("a", ["_D"]).get_next_values() == ['b']
+    assert hds.look_ahead("x", ["_D"]).get_next_values() == []
+

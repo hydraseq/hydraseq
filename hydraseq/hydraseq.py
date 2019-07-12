@@ -78,7 +78,7 @@ class Hydraseq:
             self.columns = defaultdict(set)
 
 
-    def reset(self):
+    def reset(self, lst_inits=[]):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
         self.next_nodes = set() 
         self.active_nodes = set() 
@@ -88,8 +88,27 @@ class Hydraseq:
         self.next_nodes.update(self.n_init.nexts)
         self.active_nodes.add(self.n_init)
         self.surprise = False
+        self.hard_match = False
+        if lst_inits:
+            print(lst_inits)
+            self.reverse_predict(lst_inits)
+            self.hard_match = True
+        else:
+            print("no lst inits registered", lst_inits)
         return self
 
+    def reverse_predict(self, lst_patterns):
+        assert isinstance(lst_patterns, list), "reverse_predict: lst_patterns should be a list"
+        self.next_nodes = set() 
+        for pattern in lst_patterns:
+            for node in self.columns[pattern]:
+                sequence = node.get_sequence_nodes()
+                if sequence and sequence[0] and sequence[0][0]:
+                    self.next_nodes.add(sequence[0][0])
+
+        return self
+                
+                
     def load_from_file(self, fpath):
         with open(fpath, 'r') as source:
             for line in source:
@@ -126,10 +145,10 @@ class Hydraseq:
                 ends.append(node)
         return ends
 
-    def look_ahead(self, arr_sequence):
-        return self.insert(arr_sequence, is_learning=False)
+    def look_ahead(self, arr_sequence, lst_inits=[]):
+        return self.insert(arr_sequence, lst_inits, is_learning=False)
 
-    def insert(self, str_sentence, is_learning=True):
+    def insert(self, str_sentence, lst_inits=[], is_learning=True):
         """Generate sdr for what comes next in sequence if we know.  Internally set sdr of actives
         Arguments:
             str_sentence:       Either a list of words, or a single space separated sentence
@@ -138,9 +157,10 @@ class Hydraseq:
         """
         if not str_sentence: return self
         words = str_sentence if isinstance(str_sentence, list) else self.get_word_array(str_sentence)
+        if not words: return self
         assert isinstance(words, list), "words must be a list"
         assert isinstance(words[0], list), "{}=>{} s.b. a list of lists and must be non empty".format(str_sentence, words)
-        self.reset()
+        self.reset(lst_inits)
 
         [self.hit(word, is_learning) for idx, word in enumerate(words)]
 
@@ -235,32 +255,6 @@ class Hydraseq:
         """
         assert isinstance(as_json, bool), "as_json should be a bool value"
         words = words if isinstance(words, list) else self.get_word_array(words)
-        #print("DEBUG ========== WORDS: ", words)
-        # faux filter words
-        words = [word for word in words if word[0] not in [
-            '1_B',
-            '1_C',
-            '1_D',
-            '1_G',
-            '1_H',
-            '1_J',
-            '1_K',
-            '1_L',
-            '1_M',
-            '1_O',
-            '1_P',
-            '1_Q',
-            '1_S',
-            '1_T',
-            '1_U',
-            '1_V',
-            '1_W',
-            '1_X',
-            '1_Y',
-            '1_Z'
-            ]]
-
-        #print("DEBUG ========== WORDS FILTERED: ", words)
         hydras = []
         results = []
          
