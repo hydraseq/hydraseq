@@ -10,13 +10,14 @@ def test_morse_code():
     source_files = ['linear.0.000', 'linear.1.001', 'linear.2.002']
     data_dir = 'tests/data'
     mcol = MiniColumn(source_files, data_dir)
-    sentence = ". . . - - - . . ."
-    print(mcol.hydras[2])
-    mcol.set_attention(['2_HELP'])
-    for hydra in mcol.hydras:
-        print(hydra.active_synapses)
-#    ctree = mcol.compute_convolution_tree_from_word("SOS")
-    ctree = mcol.compute_convolution_tree(sentence)
+    SOS = "- . . . - - - . . . . - . - . - - "
+    EFRAIN = ". . . - . . - . . - . . - ."
+    NOISE1 = ""
+    NOISE2 = " - - - . - . . . . . -"
+    sentence = NOISE1 + EFRAIN + NOISE2
+    TARGET = '2_EFRAIN'
+    mcol.set_attention([TARGET])
+    ctree = mcol.compute_convolution_tree(sentence, default_context=[TARGET])
     print("test: compute ctree is done")
     level1 = 0
     level2 = 0
@@ -34,7 +35,9 @@ def test_morse_code():
                     for subsubsubsubitem in subsubsubitem:
                         level5 += 1
     print("Levels: ", level1, level2, level3, level4, level5)
-            
+    with open('tree_of_knowledge.txt', 'w') as target:
+        for line in mcol.output:
+            target.write(line+"\n")
     assert len(ctree) == 20
 
 def test_mini_column():
