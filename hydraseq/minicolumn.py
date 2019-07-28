@@ -88,7 +88,7 @@ class MiniColumn:
             if ret:
                 for idx, item in enumerate(ret):
                     convx = [",".join(c['convo']) for lst in item for c in lst]
-                    self.output.add(str(item) + " : "+ "".join(convx))
+                    self.output.add(str(level)+" "+str(item) + " : "+ "".join(convx))
             
             return ret
 
