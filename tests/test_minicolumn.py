@@ -5,15 +5,36 @@ import hydraseq
 from minicolumn import MiniColumn
 import pytest
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_morse_code():
     source_files = ['linear.0.000', 'linear.1.001', 'linear.2.002']
     data_dir = 'tests/data'
     mcol = MiniColumn(source_files, data_dir)
-
+    sentence = ". . . - - - . . ."
     print(mcol.hydras[2])
-    ctree = mcol.compute_convolution_tree(". . . - - - . . .")
-
+    mcol.set_attention(['2_HELP'])
+    for hydra in mcol.hydras:
+        print(hydra.active_synapses)
+#    ctree = mcol.compute_convolution_tree_from_word("SOS")
+    ctree = mcol.compute_convolution_tree(sentence)
+    print("test: compute ctree is done")
+    level1 = 0
+    level2 = 0
+    level3 = 0
+    level4 = 0
+    level5 = 0
+    for item in ctree:
+        level1 += 1 
+        for subitem in item:
+            level2 += 1
+            for subsubitem in subitem:
+                level3 += 1
+                for subsubsubitem in subsubitem:
+                    level4 += 1
+                    for subsubsubsubitem in subsubsubitem:
+                        level5 += 1
+    print("Levels: ", level1, level2, level3, level4, level5)
+            
     assert len(ctree) == 20
 
 def test_mini_column():

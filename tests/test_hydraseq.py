@@ -16,6 +16,28 @@ def check_next(hdr, num_next_nodes, next_sequences, next_values):
     assert hdr.get_next_sequences() == next_sequences
     assert hdr.get_next_values() == next_values
 
+def test_active_synapses():
+    hdr = Hydraseq('main')
+
+    hdr.insert("a b c d e f")
+    hdr.insert("1 2 3 4 5 6")
+
+    assert hdr.look_ahead("a b c d e").get_active_values() == ['e']
+    assert hdr.look_ahead("1 2 3 4 5").get_active_values() == ['5']
+
+    hdr.set_active_synapses(['f'])
+    
+    assert hdr.look_ahead("a b c d e").get_active_values() == ['e']
+    assert hdr.look_ahead("1 2 3 4 5").get_active_values() == []
+    assert hdr.look_ahead("a b c d").get_active_values() == ['d']
+
+    hdr.reset_active_synapses()
+
+    assert hdr.look_ahead("a b c d e").get_active_values() == ['e']
+    assert hdr.look_ahead("1 2 3 4 5").get_active_values() == ['5']
+    assert hdr.look_ahead("a b c d").get_active_values() == ['d']
+
+
 def test_01_01_sequence():
     hdr = Hydraseq('main')
 

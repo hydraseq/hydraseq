@@ -34,6 +34,16 @@ class MiniColumn:
         self.depth = len(self.hydras)
         self.convolutions = []
 
+    def set_attention(self, words):
+        """Take a list of end words, and propagate synapse activation through all the hydras downward"""
+        activation_words = words
+        for hydra in reversed(self.hydras):
+            activation_words = hydra.set_active_synapses(activation_words) 
+
+    def reset_attention_hydras(self):
+        for hydra in self.hydras:
+            hydra.reset_active_synapses()
+
     def reset(self):  # returns self
         """reset all hydras, and set convolutions, active and predicted arrays to empty"""
         [hydra.reset() for hydra in self.hydras]
@@ -62,11 +72,24 @@ class MiniColumn:
                 convo_path = node[0]
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
+            print("\nself.patterns_only(convo_path): ", self.patterns_only(convo_path))
+            patterns = self.patterns_only(convo_path)
+            convos = hydra.convolutions(patterns)
+            if len(self.hydras) > level+1:
+                next_hydra = self.hydras[level+1]
+                convos = [convo for convo in convos if convo['convo'][0] in next_hydra.active_synapses]
+                print("\n=====next_hydra.active_synapses: ", next_hydra.active_synapses)
+                
+            if convos:
+                print("\n=====ACTIVE SYNAPSES: ", hydra.active_synapses)
+                print("\n=====LELEL: ", level)
+                for convo in convos:
+                    print("==========CONVO: ", convo)
 
-            convos = hydra.convolutions(self.patterns_only(convo_path))
-            #if convos: print("=== LEVEL: ", level)
-            #for convo in convos: print("CONVO: ", convo)
-            return [[convo_path] for convo_path in self.resolve_convolution(convos)]
+            ret =  [[convo_path] for convo_path in self.resolve_convolution(convos)]
+            if ret:
+                print("\n=====GOT RET: ",ret)
+            return ret
 
         def _append_successors(node, level):
             if level >= len(self.hydras): return

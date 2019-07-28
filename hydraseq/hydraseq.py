@@ -70,6 +70,7 @@ class Hydraseq:
         self.next_sequences = set()
         self.surprise = False
         self.rex = rex
+        self.active_synapses = {}
         if hydraseq:
             self.columns = hydraseq.columns
             self.n_init.nexts = hydraseq.n_init.nexts
@@ -77,6 +78,16 @@ class Hydraseq:
         else:
             self.columns = defaultdict(set)
 
+
+    def set_active_synapses(self, out_words):
+        """Set the input filter of input words that are part of the output words"""
+        assert isinstance(out_words, list), "out_words must be a list"
+        assert isinstance(out_words[0], str), "out_words must be list<str> but is {}".format(out_words)
+        self.active_synapses = self.get_downwards(out_words)
+        return self.active_synapses[:] 
+
+    def reset_active_synapses(self):
+        self.active_synapses = {}
 
     def reset(self, lst_inits=[]):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
@@ -94,7 +105,8 @@ class Hydraseq:
             self.reverse_predict(lst_inits)
             self.hard_match = True
         else:
-            print("no lst inits registered", lst_inits)
+            #print("no lst inits registered", lst_inits)
+            pass
         return self
 
     def reverse_predict(self, lst_patterns):
@@ -174,6 +186,7 @@ class Hydraseq:
             self        so we can chain query for active or predicted
         """
         if is_learning: assert len(lst_words) == 1, "lst_words must be singular if is_learning"
+        lst_words = [word for word in lst_words if word in self.active_synapses] if self.active_synapses else lst_words
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
@@ -281,7 +294,9 @@ class Hydraseq:
             a list of words related to the activation of the words given in downwords
         """
         words = words if isinstance(words, list) else self.get_word_array(words)
-        self.reset()
+        assert isinstance(words, list)
+        assert isinstance(words[0], str), "words should be list<str> but is {}".format(words)
+        #self.reset()
         downs = {w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words}
 
         return sorted(downs)
