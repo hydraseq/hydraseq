@@ -70,6 +70,7 @@ class Hydraseq:
         self.next_sequences = set()
         self.surprise = False
         self.rex = rex
+        self.active_synapses = {}
         if hydraseq:
             self.columns = hydraseq.columns
             self.n_init.nexts = hydraseq.n_init.nexts
@@ -77,6 +78,29 @@ class Hydraseq:
         else:
             self.columns = defaultdict(set)
 
+
+    def set_active_synapses(self, out_words):
+        """Set a list of words to be used as a filter to active columns.  Used to simulate expected
+            columns in a context
+        Args:
+            out_words, list<strings>, each string is a word in output layer.  The downward words that are part
+                           triggering it are collected in a set and used as filter.
+                           For example, 2_FACE might be triggered by 1_EYES, 1_NOSE, 1_MOUTH, which would
+                           consitute the words used as filter so we ignore things like 1_ARM.
+        Return:
+            list<string>, a list of the downward words that may trigger the words in out_words, these are also
+                          set in self.active_synapses
+        """
+        assert isinstance(out_words, list), "out_words must be a list"
+        if not out_words: return [] # [] will be ignored and hydra will behave as normal
+        assert isinstance(out_words[0], str), "out_words must be list<str> but is {}".format(out_words)
+        self.active_synapses = self.get_downwards(out_words)
+        return self.active_synapses[:] 
+
+    def reset_active_synapses(self):
+        """Restore the active_synapse variable to an empty set.  Operate as normal"""
+        self.active_synapses = {}
+        return self
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
@@ -138,6 +162,7 @@ class Hydraseq:
         """
         if not str_sentence: return self
         words = str_sentence if isinstance(str_sentence, list) else self.get_word_array(str_sentence)
+        if not words: return self
         assert isinstance(words, list), "words must be a list"
         assert isinstance(words[0], list), "{}=>{} s.b. a list of lists and must be non empty".format(str_sentence, words)
         self.reset()
@@ -154,6 +179,7 @@ class Hydraseq:
             self        so we can chain query for active or predicted
         """
         if is_learning: assert len(lst_words) == 1, "lst_words must be singular if is_learning"
+        lst_words = [word for word in lst_words if word in self.active_synapses] if self.active_synapses else lst_words
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
@@ -235,10 +261,9 @@ class Hydraseq:
         """
         assert isinstance(as_json, bool), "as_json should be a bool value"
         words = words if isinstance(words, list) else self.get_word_array(words)
-
         hydras = []
         results = []
-
+         
         for idx, word in enumerate(words):
             word_results = []
             hydras.append(Hydraseq(idx, self))
@@ -262,7 +287,9 @@ class Hydraseq:
             a list of words related to the activation of the words given in downwords
         """
         words = words if isinstance(words, list) else self.get_word_array(words)
-        self.reset()
+        assert isinstance(words, list)
+        assert isinstance(words[0], str), "words should be list<str> but is {}".format(words)
+        #self.reset()
         downs = {w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words}
 
         return sorted(downs)

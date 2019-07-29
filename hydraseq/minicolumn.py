@@ -33,6 +33,17 @@ class MiniColumn:
             self.hydras.append(h)
         self.depth = len(self.hydras)
         self.convolutions = []
+        self.output = None
+
+    def set_attention(self, words):
+        """Take a list of end words, and propagate synapse activation through all the hydras downward"""
+        activation_words = words
+        for hydra in reversed(self.hydras):
+            activation_words = hydra.set_active_synapses(activation_words)
+
+    def reset_attention_hydras(self):
+        for hydra in self.hydras:
+            hydra.reset_active_synapses()
 
     def reset(self):  # returns self
         """reset all hydras, and set convolutions, active and predicted arrays to empty"""
@@ -43,27 +54,47 @@ class MiniColumn:
         return self
 
 
-    def compute_convolution_tree(self, sentence): # -> list of convo paths
+    def compute_convolution_tree(self, sentence, default_context=[]): # -> list of convo paths
         """Generate the stack of convolutions using this sentence
         Internally calculates the convolution and saves them in self.convolutions.
         Each convolution is then forward fed to the next hydra.
 
         Args:
             sentence: str, A sentence in plain separated words
+            default_context: lst<str>, a list of column names which are active to narrow the search
         Returns:
            list of convo paths
         convos: A list of all unique atomic unit possible
         convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
+        self.output = set()
+        self.set_attention(default_context)
         def _get_successors(node, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
             if isinstance(node[0], list) and isinstance(node[0][0], dict):
                 convo_path = node[0]
             assert isinstance(convo_path, list), "_get_successors: convo_path should be a list of convos"
             hydra = self.hydras[level]
+            patterns = self.patterns_only(convo_path)
+            convos = hydra.convolutions(patterns)
+            if len(self.hydras) > level+1:
+                next_hydra = self.hydras[level+1]
+                context = next_hydra.active_synapses
+            elif default_context:
+                context = default_context
+            else:
+                context = []
 
-            convos = hydra.convolutions(self.patterns_only(convo_path))
-            return [[convo_path] for convo_path in self.resolve_convolution(convos)]
+            if context:
+                convos = [convo for convo in convos if convo['convo'][0] in context]
+
+            ret =  [[convo_path] for convo_path in self.resolve_convolution(convos)]
+            if ret:
+                for idx, item in enumerate(ret):
+                    convx = [",".join(c['convo']) for lst in item for c in lst]
+                    self.output.add(str(level)+" "+str(item) + " : "+ "".join(convx))
+
+            return ret
 
         def _append_successors(node, level):
             if level >= len(self.hydras): return
@@ -89,7 +120,8 @@ class MiniColumn:
 
     def resolve_convolution(self, convos): # list of possible thru paths
         """Take a set of convolutions, and return a list of end to end possible paths"""
-        return self.reconstruct(self.to_tree_nodes(convos))
+        end_nodes = self.to_tree_nodes(convos)
+        return self.reconstruct(end_nodes)
 
     def get_state(self):
         """Return the states of the internal hydras
