@@ -61,7 +61,7 @@ class MiniColumn:
 
         Args:
             sentence: str, A sentence in plain separated words
-            context: lst<str>, a list of column names which are active to narrow the search
+            default_context: lst<str>, a list of column names which are active to narrow the search
         Returns:
            list of convo paths
         convos: A list of all unique atomic unit possible
