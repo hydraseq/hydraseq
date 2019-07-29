@@ -10,35 +10,32 @@ def test_morse_code():
     source_files = ['linear.0.000', 'linear.1.001', 'linear.2.002']
     data_dir = 'tests/data'
     mcol = MiniColumn(source_files, data_dir)
-    SOS = "- . . . - - - . . . . - . - . - - "
-    EFRAIN = ". . . - . . - . . - . . - . "
-    NOISE1 = ". - - . . - - - . - "
-    NOISE2 = " - - - . - . . . . . -"
-    sentence = EFRAIN
-    TARGET = '2_EFRAIN'
-    mcol.set_attention([TARGET])
-    ctree = mcol.compute_convolution_tree(sentence, default_context=[TARGET])
-    print("test: compute ctree is done")
-    level1 = 0
-    level2 = 0
-    level3 = 0
-    level4 = 0
-    level5 = 0
-#    for item in ctree:
-#        level1 += 1 
-#        for subitem in item:
-#            level2 += 1
-#            for subsubitem in subitem:
-#                level3 += 1
-#                for subsubsubitem in subsubitem:
-#                    level4 += 1
-#                    for subsubsubsubitem in subsubsubitem:
-#                        level5 += 1
-#    print("Levels: ", level1, level2, level3, level4, level5)
-    with open('tree_of_knowledge.txt', 'w') as target:
-        for line in mcol.output:
-            target.write(line+"\n")
-    assert len(ctree) == 20
+    SOS =    " . . . - - - . . . "
+    EFRAIN = " . . . - . . - . . - . . - . "
+    OLIV =   " - - -  . - . .  . .  . . . - "
+    NOISE1 = " . - "
+    NOISE2 = " - . "
+    sentence = OLIV
+    TARGET = ['2_EFRAIN']
+
+    ctree = mcol.compute_convolution_tree(OLIV, default_context=TARGET)
+    assert len(mcol.output) == 127
+    assert len([line for line in mcol.output if 'EFRAIN' in line]) == 1
+
+    ctree = mcol.compute_convolution_tree(EFRAIN, default_context=TARGET)
+    assert len(mcol.output) == 502
+    assert len([line for line in mcol.output if 'EFRAIN' in line]) == 1
+
+    ctree = mcol.compute_convolution_tree(SOS, default_context=['2_HELP'])
+    assert len(mcol.output) == 2
+    assert len([line for line in mcol.output if 'HELP' in line]) == 1
+
+    ctree = mcol.compute_convolution_tree(NOISE1+EFRAIN+NOISE2, default_context=TARGET)
+    assert len(mcol.output) == 1825
+    assert len([line for line in mcol.output if 'EFRAIN' in line]) == 1
+#    with open('tree_of_knowledge.txt', 'w') as target:
+#        for line in mcol.output:
+#            target.write(line+"\n")
 
 def test_mini_column():
     sentence = "spring leaves spring"

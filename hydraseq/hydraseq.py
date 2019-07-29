@@ -82,6 +82,7 @@ class Hydraseq:
     def set_active_synapses(self, out_words):
         """Set the input filter of input words that are part of the output words"""
         assert isinstance(out_words, list), "out_words must be a list"
+        if not out_words: return []
         assert isinstance(out_words[0], str), "out_words must be list<str> but is {}".format(out_words)
         self.active_synapses = self.get_downwards(out_words)
         return self.active_synapses[:] 

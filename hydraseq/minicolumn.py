@@ -39,7 +39,7 @@ class MiniColumn:
         """Take a list of end words, and propagate synapse activation through all the hydras downward"""
         activation_words = words
         for hydra in reversed(self.hydras):
-            activation_words = hydra.set_active_synapses(activation_words) 
+            activation_words = hydra.set_active_synapses(activation_words)
 
     def reset_attention_hydras(self):
         for hydra in self.hydras:
@@ -54,7 +54,7 @@ class MiniColumn:
         return self
 
 
-    def compute_convolution_tree(self, sentence, default_context=None): # -> list of convo paths
+    def compute_convolution_tree(self, sentence, default_context=[]): # -> list of convo paths
         """Generate the stack of convolutions using this sentence
         Internally calculates the convolution and saves them in self.convolutions.
         Each convolution is then forward fed to the next hydra.
@@ -68,6 +68,7 @@ class MiniColumn:
         convo_path: A list of SEQUENTIAL atomic units filling out a path
         """
         self.output = set()
+        self.set_attention(default_context)
         def _get_successors(node, level):
             """Return nodes reachable from each of the given nodes in convo_path"""
             if isinstance(node[0], list) and isinstance(node[0][0], dict):
@@ -81,15 +82,18 @@ class MiniColumn:
                 context = next_hydra.active_synapses
             elif default_context:
                 context = default_context
-            
-            convos = [convo for convo in convos if convo['convo'][0] in context]
+            else:
+                context = []
+
+            if context:
+                convos = [convo for convo in convos if convo['convo'][0] in context]
 
             ret =  [[convo_path] for convo_path in self.resolve_convolution(convos)]
             if ret:
                 for idx, item in enumerate(ret):
                     convx = [",".join(c['convo']) for lst in item for c in lst]
                     self.output.add(str(level)+" "+str(item) + " : "+ "".join(convx))
-            
+
             return ret
 
         def _append_successors(node, level):
