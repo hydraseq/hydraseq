@@ -4,7 +4,7 @@ test_run:
 	py.test -v tests
 
 
-release:
+release: clean
 	rm -rf dist
 	mkdir dist
 	python setup.py sdist bdist_wheel
