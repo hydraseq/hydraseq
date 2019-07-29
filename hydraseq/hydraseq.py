@@ -114,18 +114,6 @@ class Hydraseq:
         self.surprise = False
         return self
 
-    def reverse_predict(self, lst_patterns):
-        assert isinstance(lst_patterns, list), "reverse_predict: lst_patterns should be a list"
-        self.next_nodes = set() 
-        for pattern in lst_patterns:
-            for node in self.columns[pattern]:
-                sequence = node.get_sequence_nodes()
-                if sequence and sequence[0] and sequence[0][0]:
-                    self.next_nodes.add(sequence[0][0])
-
-        return self
-                
-                
     def load_from_file(self, fpath):
         with open(fpath, 'r') as source:
             for line in source:
