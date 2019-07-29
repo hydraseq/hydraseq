@@ -39,7 +39,8 @@ def test_two_state():
     current_state = 's1'
     for letter in input_string:
         current_state = 's1' if current_state == 's2' else 's2'
-        assert current_state == dfa.event(letter).get_active_states()[0]
+        dfa.event(letter)
+        assert current_state == dfa.get_active_states().pop()
 
 def test_two_state_accept_odds():
     """Toggle between two states, but accepting only on s2.  Accepts odd length strings"""

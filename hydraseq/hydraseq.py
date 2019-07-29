@@ -180,18 +180,20 @@ class Hydraseq:
         """
         if is_learning: assert len(lst_words) == 1, "lst_words must be singular if is_learning"
         lst_words = [word for word in lst_words if word in self.active_synapses] if self.active_synapses else lst_words
-        lst_words = [word for word in lst_words if word in self.path_nodes] if self.path_nodes else lst_words
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
         self.next_nodes   = self._set_nexts_from_current_actives(self.active_nodes)
+
+        if self.path_nodes:
+            self.active_nodes = self.active_nodes.intersection(self.path_nodes)
 
         if not self.active_nodes and is_learning:
             self.surprise = True
             for letter in lst_words:
                 node =  Node(letter)
                 self.columns[letter].add(node)
-                self.active_nodes.append(node)
+                self.active_nodes.add(node)
 
                 [n.link_nexts(node) for n in last_active]
         elif not self.active_nodes:
@@ -206,7 +208,7 @@ class Hydraseq:
         return self.active_nodes.copy(), self.next_nodes.copy()
 
     def _set_actives_from_last_predicted(self, last_predicted, lst_words):
-        return [node for node in last_predicted if node.key in lst_words]
+        return {node for node in last_predicted if node.key in lst_words}
     def _set_nexts_from_current_actives(self, active_nodes):
         return {nextn for node in active_nodes for nextn in node.nexts}
 
