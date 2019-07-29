@@ -80,17 +80,29 @@ class Hydraseq:
 
 
     def set_active_synapses(self, out_words):
-        """Set the input filter of input words that are part of the output words"""
+        """Set a list of words to be used as a filter to active columns.  Used to simulate expected
+            columns in a context
+        Args:
+            out_words, list<strings>, each string is a word in output layer.  The downward words that are part
+                           triggering it are collected in a set and used as filter.
+                           For example, 2_FACE might be triggered by 1_EYES, 1_NOSE, 1_MOUTH, which would
+                           consitute the words used as filter so we ignore things like 1_ARM.
+        Return:
+            list<string>, a list of the downward words that may trigger the words in out_words, these are also
+                          set in self.active_synapses
+        """
         assert isinstance(out_words, list), "out_words must be a list"
-        if not out_words: return []
+        if not out_words: return [] # [] will be ignored and hydra will behave as normal
         assert isinstance(out_words[0], str), "out_words must be list<str> but is {}".format(out_words)
         self.active_synapses = self.get_downwards(out_words)
         return self.active_synapses[:] 
 
     def reset_active_synapses(self):
+        """Restore the active_synapse variable to an empty set.  Operate as normal"""
         self.active_synapses = {}
+        return self
 
-    def reset(self, lst_inits=[]):
+    def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
         self.next_nodes = set() 
         self.active_nodes = set() 
@@ -100,14 +112,6 @@ class Hydraseq:
         self.next_nodes.update(self.n_init.nexts)
         self.active_nodes.add(self.n_init)
         self.surprise = False
-        self.hard_match = False
-        if lst_inits:
-            print(lst_inits)
-            self.reverse_predict(lst_inits)
-            self.hard_match = True
-        else:
-            #print("no lst inits registered", lst_inits)
-            pass
         return self
 
     def reverse_predict(self, lst_patterns):
@@ -158,10 +162,10 @@ class Hydraseq:
                 ends.append(node)
         return ends
 
-    def look_ahead(self, arr_sequence, lst_inits=[]):
-        return self.insert(arr_sequence, lst_inits, is_learning=False)
+    def look_ahead(self, arr_sequence):
+        return self.insert(arr_sequence, is_learning=False)
 
-    def insert(self, str_sentence, lst_inits=[], is_learning=True):
+    def insert(self, str_sentence, is_learning=True):
         """Generate sdr for what comes next in sequence if we know.  Internally set sdr of actives
         Arguments:
             str_sentence:       Either a list of words, or a single space separated sentence
@@ -173,7 +177,7 @@ class Hydraseq:
         if not words: return self
         assert isinstance(words, list), "words must be a list"
         assert isinstance(words[0], list), "{}=>{} s.b. a list of lists and must be non empty".format(str_sentence, words)
-        self.reset(lst_inits)
+        self.reset()
 
         [self.hit(word, is_learning) for idx, word in enumerate(words)]
 
