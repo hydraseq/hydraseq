@@ -183,10 +183,8 @@ class Hydraseq:
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
+        if self.path_nodes: self.active_nodes = self.active_nodes.intersection(self.path_nodes)
         self.next_nodes   = self._set_nexts_from_current_actives(self.active_nodes)
-
-        if self.path_nodes:
-            self.active_nodes = self.active_nodes.intersection(self.path_nodes)
 
         if not self.active_nodes and is_learning:
             self.surprise = True
@@ -314,6 +312,9 @@ class Hydraseq:
 
         return self
 
+    def reset_node_pathway(self):
+        self.path_nodes = {}
+        return self
 
 
 
