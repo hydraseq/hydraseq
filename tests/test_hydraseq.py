@@ -16,6 +16,30 @@ def check_next(hdr, num_next_nodes, next_sequences, next_values):
     assert hdr.get_next_sequences() == next_sequences
     assert hdr.get_next_values() == next_values
 
+def test_activate_node_pathway():
+    hdr = Hydraseq('main')
+
+    hdr.insert("a b c d e f LETTERS")
+    hdr.insert("1 2 3 4 5 6 NUMBERS")
+    hdr.insert("a1 2b b4 MIXED")
+
+    hdr.activate_node_pathway('LETTERS')
+
+    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f"}
+    assert hdr.look_ahead("a b c d").get_active_values() == ["d"]
+    assert hdr.look_ahead("a b c d").get_next_values() == ["e"]
+    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f"}
+    assert hdr.look_ahead("1 2 3 4").get_active_values() == []
+    assert hdr.look_ahead("1 2 3 4").get_next_values() == []
+
+    hdr.reset_node_pathway()
+    assert {node.key for node in hdr.path_nodes} == set()
+    assert hdr.look_ahead("a b c d").get_active_values() == ["d"]
+    assert hdr.look_ahead("a b c d").get_next_values() == ["e"]
+    assert {node.key for node in hdr.path_nodes} == set()
+    assert hdr.look_ahead("1 2 3 4").get_active_values() == ["4"]
+    assert hdr.look_ahead("1 2 3 4").get_next_values() == ["5"]
+
 def test_active_synapses():
     hdr = Hydraseq('main')
 
@@ -26,7 +50,7 @@ def test_active_synapses():
     assert hdr.look_ahead("1 2 3 4 5").get_active_values() == ['5']
 
     hdr.set_active_synapses(['f'])
-    
+
     assert hdr.look_ahead("a b c d e").get_active_values() == ['e']
     assert hdr.look_ahead("1 2 3 4 5").get_active_values() == []
     assert hdr.look_ahead("a b c d").get_active_values() == ['d']

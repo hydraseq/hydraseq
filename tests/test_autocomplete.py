@@ -27,4 +27,4 @@ def test_autocomplete():
         return hits
     
     hits = autocomp('efra')
-    assert hits == ['efrainium', 'efrain']
+    assert sorted(hits) == sorted(['efrainium', 'efrain'])

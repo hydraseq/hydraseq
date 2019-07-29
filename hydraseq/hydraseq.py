@@ -62,8 +62,8 @@ class Hydraseq:
     def __init__(self, uuid, hydraseq=None, rex=None):
         self.uuid = uuid
         self.n_init = Node('')
-        self.active_nodes = set() 
-        self.active_sequences = set()  
+        self.active_nodes = set()
+        self.active_sequences = set()
         self.last_active_nodes = set()
         self.last_active_sequences = set()
         self.next_nodes = set()
@@ -77,7 +77,7 @@ class Hydraseq:
             self.reset()
         else:
             self.columns = defaultdict(set)
-
+        self.path_nodes = set()
 
     def set_active_synapses(self, out_words):
         """Set a list of words to be used as a filter to active columns.  Used to simulate expected
@@ -95,7 +95,7 @@ class Hydraseq:
         if not out_words: return [] # [] will be ignored and hydra will behave as normal
         assert isinstance(out_words[0], str), "out_words must be list<str> but is {}".format(out_words)
         self.active_synapses = self.get_downwards(out_words)
-        return self.active_synapses[:] 
+        return self.active_synapses[:]
 
     def reset_active_synapses(self):
         """Restore the active_synapse variable to an empty set.  Operate as normal"""
@@ -104,8 +104,8 @@ class Hydraseq:
 
     def reset(self):
         """Clear sdrs and reset neuron states to single init active with it's predicts"""
-        self.next_nodes = set() 
-        self.active_nodes = set() 
+        self.next_nodes = set()
+        self.active_nodes = set()
         self.active_sequences = []
         self.last_active_nodes = set()
         self.last_active_sequences = set()
@@ -183,6 +183,7 @@ class Hydraseq:
         last_active, last_predicted = self._save_current_state()
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
+        if self.path_nodes: self.active_nodes = self.active_nodes.intersection(self.path_nodes)
         self.next_nodes   = self._set_nexts_from_current_actives(self.active_nodes)
 
         if not self.active_nodes and is_learning:
@@ -190,7 +191,7 @@ class Hydraseq:
             for letter in lst_words:
                 node =  Node(letter)
                 self.columns[letter].add(node)
-                self.active_nodes.append(node)
+                self.active_nodes.add(node)
 
                 [n.link_nexts(node) for n in last_active]
         elif not self.active_nodes:
@@ -205,7 +206,7 @@ class Hydraseq:
         return self.active_nodes.copy(), self.next_nodes.copy()
 
     def _set_actives_from_last_predicted(self, last_predicted, lst_words):
-        return [node for node in last_predicted if node.key in lst_words]
+        return {node for node in last_predicted if node.key in lst_words}
     def _set_nexts_from_current_actives(self, active_nodes):
         return {nextn for node in active_nodes for nextn in node.nexts}
 
@@ -263,7 +264,7 @@ class Hydraseq:
         words = words if isinstance(words, list) else self.get_word_array(words)
         hydras = []
         results = []
-         
+
         for idx, word in enumerate(words):
             word_results = []
             hydras.append(Hydraseq(idx, self))
@@ -293,6 +294,29 @@ class Hydraseq:
         downs = {w for word in words for node in self.columns[word] for w in node.get_sequence().split() if w not in words}
 
         return sorted(downs)
+
+
+    def activate_node_pathway(self, top_words):
+        """Create a set of references to the nodes used in the input layer to activate the top words.
+            This includes all paths.  For example, if 2_EFRAIN triggers via 1_E 1_ F R A I N and O L I V, then
+            the return set will include both sets of letters.  This set can then be used to dot product
+            and weed out any paths that are not congruent.
+        """
+        top_words = top_words.split() if isinstance(top_words, str) else top_words
+        assert isinstance(top_words, list), "top_words is a list"
+        assert isinstance(top_words[0], str), "elements of top_words must be strings"
+
+        top_nodes = [node for word in top_words for node in self.columns[word]]
+
+        self.path_nodes = {path_node for node in top_nodes for path_nodes in node.get_sequence_nodes() for path_node in path_nodes}
+
+        return self
+
+    def reset_node_pathway(self):
+        self.path_nodes = {}
+        return self
+
+
 
     def __repr__(self):
         return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
