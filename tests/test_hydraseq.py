@@ -16,6 +16,17 @@ def check_next(hdr, num_next_nodes, next_sequences, next_values):
     assert hdr.get_next_sequences() == next_sequences
     assert hdr.get_next_values() == next_values
 
+def test_activate_node_pathway():
+    hdr = Hydraseq('main')
+
+    hdr.insert("a b c d e f LETTERS")
+    hdr.insert("1 2 3 4 5 6 NUMBERS")
+    hdr.insert("a1 2b b4 MIXED")
+
+    hdr.activate_node_pathway('LETTERS')
+
+    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f"}
+
 def test_active_synapses():
     hdr = Hydraseq('main')
 
