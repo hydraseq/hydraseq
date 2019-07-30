@@ -70,14 +70,16 @@ class Hydraseq:
         self.next_sequences = set()
         self.surprise = False
         self.rex = rex
-        self.active_synapses = {}
         if hydraseq:
             self.columns = hydraseq.columns
             self.n_init.nexts = hydraseq.n_init.nexts
+            self.path_nodes = hydraseq.path_nodes
+            self.active_synapses = hydraseq.active_synapses
             self.reset()
         else:
             self.columns = defaultdict(set)
-        self.path_nodes = set()
+            self.path_nodes = set()
+            self.active_synapses = {}
 
     def set_active_synapses(self, out_words):
         """Set a list of words to be used as a filter to active columns.  Used to simulate expected
@@ -184,7 +186,9 @@ class Hydraseq:
 
         self.active_nodes = self._set_actives_from_last_predicted(last_predicted, lst_words)
         if self.path_nodes: self.active_nodes = self.active_nodes.intersection(self.path_nodes)
+
         self.next_nodes   = self._set_nexts_from_current_actives(self.active_nodes)
+        if self.path_nodes: self.next_nodes = self.next_nodes.intersection(self.path_nodes)
 
         if not self.active_nodes and is_learning:
             self.surprise = True
@@ -302,6 +306,7 @@ class Hydraseq:
             the return set will include both sets of letters.  This set can then be used to dot product
             and weed out any paths that are not congruent.
         """
+        if not top_words: return []
         top_words = top_words.split() if isinstance(top_words, str) else top_words
         assert isinstance(top_words, list), "top_words is a list"
         assert isinstance(top_words[0], str), "elements of top_words must be strings"
@@ -309,8 +314,9 @@ class Hydraseq:
         top_nodes = [node for word in top_words for node in self.columns[word]]
 
         self.path_nodes = {path_node for node in top_nodes for path_nodes in node.get_sequence_nodes() for path_node in path_nodes}
-
-        return self
+        for node in top_nodes:
+            self.path_nodes.add(node)
+        return self.get_downwards(top_words)
 
     def reset_node_pathway(self):
         self.path_nodes = {}

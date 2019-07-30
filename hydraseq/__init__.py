@@ -1,5 +1,5 @@
 name = "hydraseq"
-__version__ = '0.0.23'
+__version__ = '0.0.24'
 from hydraseq.hydraseq import Node
 from hydraseq.hydraseq import Hydraseq
 from hydraseq.hydra import Hydra

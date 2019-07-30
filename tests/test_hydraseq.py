@@ -25,10 +25,10 @@ def test_activate_node_pathway():
 
     hdr.activate_node_pathway('LETTERS')
 
-    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f"}
+    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f", "LETTERS"}
     assert hdr.look_ahead("a b c d").get_active_values() == ["d"]
     assert hdr.look_ahead("a b c d").get_next_values() == ["e"]
-    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f"}
+    assert {node.key for node in hdr.path_nodes} == {"a", "b", "c", "d", "e", "f", "LETTERS"}
     assert hdr.look_ahead("1 2 3 4").get_active_values() == []
     assert hdr.look_ahead("1 2 3 4").get_next_values() == []
 

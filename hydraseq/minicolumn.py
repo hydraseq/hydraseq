@@ -39,7 +39,7 @@ class MiniColumn:
         """Take a list of end words, and propagate synapse activation through all the hydras downward"""
         activation_words = words
         for hydra in reversed(self.hydras):
-            activation_words = hydra.set_active_synapses(activation_words)
+            activation_words = hydra.activate_node_pathway(activation_words)
 
     def reset_attention_hydras(self):
         for hydra in self.hydras:
@@ -92,7 +92,8 @@ class MiniColumn:
             if ret:
                 for idx, item in enumerate(ret):
                     convx = [",".join(c['convo']) for lst in item for c in lst]
-                    self.output.add(str(level)+" "+str(item) + " : "+ "".join(convx))
+                    new_output = str(level)+" "+str(item) + " : "+ "".join(convx)
+                    self.output.add(new_output)
 
             return ret
 

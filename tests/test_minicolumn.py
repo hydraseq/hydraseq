@@ -31,11 +31,11 @@ def test_morse_code():
     assert len([line for line in mcol.output if 'HELP' in line]) == 1
 
     ctree = mcol.compute_convolution_tree(NOISE1+EFRAIN+NOISE2, default_context=TARGET)
+    with open('tree_of_knowledge.txt', 'w') as target:
+        for line in mcol.output:
+            target.write(line+"\n")
     assert len(mcol.output) == 1825
     assert len([line for line in mcol.output if 'EFRAIN' in line]) == 1
-#    with open('tree_of_knowledge.txt', 'w') as target:
-#        for line in mcol.output:
-#            target.write(line+"\n")
 
 def test_mini_column():
     sentence = "spring leaves spring"
