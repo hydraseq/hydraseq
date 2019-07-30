@@ -77,22 +77,12 @@ class MiniColumn:
             hydra = self.hydras[level]
             patterns = self.patterns_only(convo_path)
             convos = hydra.convolutions(patterns)
-            if len(self.hydras) > level+1:
-                next_hydra = self.hydras[level+1]
-                context = next_hydra.active_synapses
-            elif default_context:
-                context = default_context
-            else:
-                context = []
-
-            if context:
-                convos = [convo for convo in convos if convo['convo'][0] in context]
 
             ret =  [[convo_path] for convo_path in self.resolve_convolution(convos)]
             if ret:
                 for idx, item in enumerate(ret):
                     convx = [",".join(c['convo']) for lst in item for c in lst]
-                    new_output = str(level)+" "+str(item) + " : "+ "".join(convx)
+                    new_output = "".join(convx) + " : " + str(level)+" "+str(item)
                     self.output.add(new_output)
 
             return ret
