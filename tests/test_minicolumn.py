@@ -5,6 +5,19 @@ import hydraseq
 from minicolumn import MiniColumn
 import pytest
 
+
+
+def test_objectize_convolution_tree():
+    sentence = "spring leaves spring"
+    source_files = ["seasons.0.txt", "seasons.1.txt", "seasons.2.txt"]
+    mcol = MiniColumn(source_files, "tests/data")
+    assert isinstance(mcol, MiniColumn)
+    
+    ctree = mcol.compute_convolution_tree(sentence)
+#    assert ctree == []
+    objtree = mcol.objectize_convolution_tree(ctree)
+
+
 #@pytest.mark.skip
 def test_morse_code():
     source_files = ['linear.0.000', 'linear.1.001', 'linear.2.002']
