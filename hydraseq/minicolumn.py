@@ -109,6 +109,45 @@ class MiniColumn:
         return head_node
 
 
+    def objectize_convolution_tree(self, ctree):
+        """Take the list of lists format and return a bonafide tree of objects linked
+        Args:
+            ctree, list of nodes, where a node is list<list<convos>, list<nodes>>
+        Returns:
+            an object tree linked so it can be traversed easily.
+        """
+        class Node:
+            def __init__(self, convos=[]):
+                self.convos = convos
+                self.nexts = []
+                self.lasts = []
+            def show(self):
+                for convo in self.convos:
+                    print("    ", convo)
+
+        
+        def create_ntree(ctree):
+            head_node = Node(convos=ctree[0])
+            fringe = [ctree[1]]
+            current_node = head_node
+            for node in fringe:
+                n = Node(convos=node[0])
+                current_node.nexts.append(n)
+                n.lasts.append(current_node)
+            return head_node
+        def process_tp_node(tp_node):
+            """in comes a two lister, returns the new node"""
+            node = Node(tp_node[0])
+            for ns in tp_node[1]:
+                node.nexts.append(process_tp_node(ns[0]))
+
+            return node
+        return create_ntree(ctree)
+
+
+        
+
+            
     def resolve_convolution(self, convos): # list of possible thru paths
         """Take a set of convolutions, and return a list of end to end possible paths"""
         end_nodes = self.to_tree_nodes(convos)
