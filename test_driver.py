@@ -45,7 +45,7 @@ def process_tp_node(tp_node):
     node = Node(tp_node[0])
     if len(tp_node) == 2:
         for ns in tp_node[1]:
-            node.nexts.append(process_tp_node(ns[0]))
+            node.nexts.append(process_tp_node(ns))
 
     return node
 
