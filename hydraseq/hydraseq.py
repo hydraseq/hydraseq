@@ -24,14 +24,18 @@ class Node:
         self.key = key
         self.nexts = []
         self.lasts = []
+        self.depth = 0
 
-    def link_nexts(self, n_next):
+    def link_nexts(self, n_next, d_depths=None):
         """Link a node as being upstream to this one
         Arguments:
             n_next      Node, this will be added to the current 'next' list
         Returns:
             None
         """
+        n_next.depth = self.depth + 1
+
+        if d_depths != None: d_depths[n_next.depth] = d_depths[n_next.depth]
         self.nexts.append(n_next)
         n_next.link_last(self)
 
@@ -70,6 +74,7 @@ class Hydraseq:
         self.next_sequences = set()
         self.surprise = False
         self.rex = rex
+        self.d_depths = defaultdict(set)
         if hydraseq:
             self.columns = hydraseq.columns
             self.n_init.nexts = hydraseq.n_init.nexts
@@ -197,7 +202,7 @@ class Hydraseq:
                 self.columns[letter].add(node)
                 self.active_nodes.add(node)
 
-                [n.link_nexts(node) for n in last_active]
+                [n.link_nexts(node, self.d_depths) for n in last_active]
         elif not self.active_nodes:
             self.surprise = True
 

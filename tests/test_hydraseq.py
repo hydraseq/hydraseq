@@ -16,6 +16,27 @@ def check_next(hdr, num_next_nodes, next_sequences, next_values):
     assert hdr.get_next_sequences() == next_sequences
     assert hdr.get_next_values() == next_values
 
+def test_hydra_depths():
+    hdr = Hydraseq('main')
+
+    assert len(hdr.d_depths) == 0, "Initially a hydraseq should have no depth sets"
+    hdr.insert("one two three four five six seven eight nine ten")
+    assert len(hdr.d_depths) == 10, "there should be one set per depht traversed"
+
+    hdr.look_ahead("one two three four five six seven eight nine")
+    last_node = next(node for node in hdr.next_nodes)
+    assert last_node.depth == 10
+
+    hdr.insert("one two three four five six siete ocho nueve diez")
+    hdr.insert("one two three four five six siete ocho nueve")
+    assert last_node.depth == 10
+
+    hdr.insert("one two three four five six siete")
+    depth_set last_node = next(node for node in hdr.next_nodes)
+    assert last_node.depth == 8
+
+
+
 def test_activate_node_pathway():
     hdr = Hydraseq('main')
 
