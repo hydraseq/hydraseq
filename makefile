@@ -1,4 +1,5 @@
-
+default:
+	cat makefile
 
 test_run:
 	py.test -v tests
