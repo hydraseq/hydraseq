@@ -29,12 +29,12 @@ def test_hydra_depths():
 
     hdr.insert("one two three four five six siete ocho nueve diez")
     hdr.insert("one two three four five six siete ocho nueve")
+    last_node = next(node for node in hdr.next_nodes)
     assert last_node.depth == 10
 
     hdr.insert("one two three four five six siete")
-    depth_set last_node = next(node for node in hdr.next_nodes)
+    last_node = next(node for node in hdr.next_nodes)
     assert last_node.depth == 8
-
 
 
 def test_activate_node_pathway():
