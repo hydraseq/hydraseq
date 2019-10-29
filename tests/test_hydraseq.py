@@ -20,8 +20,13 @@ def test_hydra_depths():
     hdr = Hydraseq('main')
 
     assert len(hdr.d_depths) == 0, "Initially a hydraseq should have no depth sets"
-    hdr.insert("one two three four five six seven eight nine ten")
+    st = "one two three four five six seven eight nine ten"
+    hdr.insert(st)
     assert len(hdr.d_depths) == 10, "there should be one set per depht traversed"
+    st_lst = st.split()
+    for idx, set_item in hdr.d_depths.items():
+        assert len(hdr.d_depths[idx]) == 1, "there should be one item in each depth level"
+        assert next(node for node in hdr.d_depths[idx]).key == st_lst[idx-1], "the nodes should be in depth order"
 
     hdr.look_ahead("one two three four five six seven eight nine")
     last_node = next(node for node in hdr.next_nodes)

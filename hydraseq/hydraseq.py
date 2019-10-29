@@ -35,7 +35,8 @@ class Node:
         """
         n_next.depth = self.depth + 1
 
-        if d_depths != None: d_depths[n_next.depth] = d_depths[n_next.depth]
+        if d_depths != None:
+            d_depths[n_next.depth].add(n_next)
         self.nexts.append(n_next)
         n_next.link_last(self)
 
