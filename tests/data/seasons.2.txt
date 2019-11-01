@@ -1,2 +1,0 @@
-1_NP 1_VP 2_SENT
-1_VP 1_NP 2_SENT

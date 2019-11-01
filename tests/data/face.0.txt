@@ -1,5 +1,0 @@
-o 0_eye
-db 0_nose
-v 0_left_mouth
-u 0_mid_mouth
-v 0_right_mouth

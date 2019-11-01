@@ -1,5 +1,0 @@
-spring 0_ADJ
-spring 0_VER
-spring 0_NOU
-leaves 0_VER
-leaves 0_NOU
