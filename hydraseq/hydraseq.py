@@ -255,7 +255,7 @@ class Hydraseq:
     def convo_as_json(self, lst_convo, words):
         (start, end, convo) = lst_convo
         return {
-            'words': words[start:end],
+            'words': [word[0] for word in words[start:end]],
             'start': start,
             'end': end,
             'convo': convo
@@ -279,12 +279,11 @@ class Hydraseq:
             word_results = []
             hydras.append(Hydraseq(idx, self))
             for depth, _hydra in enumerate(hydras):
-                next_hits = []
                 for next_word in _hydra.hit(word, is_learning=False).get_next_values():
                     if next_word.startswith(self.uuid):
-                        next_hits.append(next_word)
-                if next_hits: word_results.append([depth, idx+1, next_hits])
+                        word_results.append([depth, idx+1, next_word])
             results.extend(word_results)
+
         if as_json:
             return [self.convo_as_json(convo, words) for convo in results]
         else:
