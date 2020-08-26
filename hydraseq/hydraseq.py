@@ -289,6 +289,41 @@ class Hydraseq:
         else:
             return results
 
+
+    def convolutions_dict(self, words):
+        links = defaultdict(list)
+        convos = self.convolutions(words)
+        for convo in convos:
+            links[convo['start']].append(convo)
+        return links
+
+    def get_paths(self, words):
+        tree = self.convolutions_dict(words)
+        paths = []
+        fringe = [[node] for node in tree[0]]
+
+
+        def visit_node(node):
+            #print("NODE",node)
+            successor_nodes = tree.get(node[-1]['end'], None)
+            successors = []
+            if successor_nodes:
+                for sn in successor_nodes:
+                    newnode = node[:]
+                    newnode.append(sn)
+                    successors.append(newnode)
+                return successors
+            else:
+                paths.append(node)
+                return None
+
+        while fringe:
+            cur_node = fringe.pop()
+            successors = visit_node(cur_node)
+            if successors:
+                fringe.extend(successors)
+        return paths
+
     def get_downwards(self, words):
         """Get the words associated with a given output word in a hydra.
         Args:
