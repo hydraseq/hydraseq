@@ -363,6 +363,50 @@ class Hydraseq:
         return self
 
 
+    def end_points(self, sent, stop='0_'):
+        def get_string_path(path):
+            return " ".join([obj['convo'] for obj in path])
+   
+        def _get_next_uuid(sent):
+            current_uuid = sent[:2]
+            digit = current_uuid.split('_')[0]
+            return str(int(digit) + 1) + '_' if digit.isnumeric() else '0_'
+   
+        def _get_list_of_paths(uuid, paths):
+            self.uuid = uuid
+   
+            if isinstance(paths, str):
+                return self.get_paths(paths)
+   
+            new_paths = []
+            for path in paths:
+                convos = [obj['convo'] for obj in path]
+                newwords = " ".join(convos)
+                ps = self.get_paths(newwords)
+                if ps:
+                    new_paths.append(ps)
+            return new_paths
+   
+        #print("ENTRY:", sent)
+        fringe = [(sent, [sent])]
+        endpts = []
+        while fringe:
+            node, hist = fringe.pop()
+            #print('HIST:', hist)
+            assert hist != None, "{} and {}".format(node, hist)
+   
+            for path in _get_list_of_paths(_get_next_uuid(node), node):
+                new_node = get_string_path(path)
+                if path:
+                    #print(new_node)
+                    new_hist = hist[:]
+                    new_hist.append(path)
+                    fringe.append((new_node, new_hist))
+                if new_node.startswith(stop):
+                    new_hist = hist[:]
+                    new_hist.append(path)
+                    endpts.append((new_node, new_hist))
+        return endpts
 
     def __repr__(self):
         return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
