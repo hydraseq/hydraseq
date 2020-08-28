@@ -364,6 +364,10 @@ class Hydraseq:
 
 
     def end_points(self, sent, stop='0_'):
+        """Load spring leaves spring example data.
+        * Call hydra with hq.end_points("spring leaves spring", '2_')
+        * returns full paths after a search, can reconstruct each possible tree from there
+        """
         def get_string_path(path):
             return " ".join([obj['convo'] for obj in path])
    
