@@ -4,6 +4,7 @@ Examples taken from Understanding Computation Chapter 2
 
 Conversion to mermaid cretes directly graphable in html using mermaidjs
 """
+import os
 import hydraseq as hd
 
 class DFAstate:
@@ -30,7 +31,7 @@ class DFAstate:
         self.states.hit([e], is_learning=False)
         self.states.look_ahead([[action.replace('^', '') for action in self.states.get_next_values()]])
         return self
- 
+
     def read_string(self, str):
         self.reset()
         [self.event(char) for char in str]
@@ -46,7 +47,7 @@ class DFAstate:
             else:
                 expanded.append(transition)
         return expanded
-    
+
     def convert_to_mermaid(self):
         """Takes a 'st1 a st2' list of transitions and generates a mermaid compatible
             string like 'st1((st1)) --a--> st2((st2))' """
@@ -61,5 +62,28 @@ class DFAstate:
 
         return "\n".join([_convert_line(line) for line in self.transitions])
 
+    def to_html(self):
+        dfa_converted = self.convert_to_mermaid()
+        cwd = os.path.dirname(__file__)
+        mermaid_min_js = open(cwd+'/js/mermaid.min.js').read()
+        return """\
+<html>
+    <head>
+    </head>
+    <body>
+        <div class="mermaid">
+            graph LR
+                %(dfa_converted)s
+                style s5 fill:#ccf,stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5
+        </div>
+    </body>
+    <script>
+        %(mermaid_min_js)s
+    </script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+</html>""" % locals()
+
     def __str__(self):
         return "DFA state: {}, preds: {}".format(self.states.get_active_values(), self.states.get_next_values())
+
+
