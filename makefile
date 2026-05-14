@@ -1,7 +1,7 @@
 default:
 	cat makefile
 
-test_run:
+test:
 	py.test -v tests
 
 

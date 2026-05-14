@@ -412,6 +412,56 @@ class Hydraseq:
                     endpts.append((new_node, new_hist))
         return endpts
 
+    def infer_by_analogy(self, partial_sequence):
+        """Infer an answer for an unknown sequence by finding similar known entities.
+
+        When a partial sequence triggers surprise (no prediction), profiles the unknown
+        subject via its known properties, finds the most similar known entities by
+        property overlap, and delegates the query to those entities.
+
+        Args:
+            partial_sequence: string like "fox eat" or list of words
+        Returns:
+            list of candidate answers sorted by vote count descending, or [] if unknown
+        """
+        result = self.look_ahead(partial_sequence)
+        if not result.surprise:
+            return result.get_next_values()
+
+        words = partial_sequence.split() if isinstance(partial_sequence, str) else partial_sequence
+        subject = words[0]
+        remainder = " ".join(words[1:])
+
+        # Profile the subject: walk forward from subject to all leaf nodes
+        self.look_ahead(subject)
+        profile_nodes = self.forward_prediction()
+        if not profile_nodes:
+            return []
+
+        # For each profile property, find all other entities that share it
+        entity_counts = defaultdict(int)
+        for node in profile_nodes:
+            for prop_node in self.columns.get(node.key, set()):
+                entity = prop_node.get_sequence().split()[0]
+                if entity != subject:
+                    entity_counts[entity] += 1
+
+        if not entity_counts:
+            return []
+
+        max_count = max(entity_counts.values())
+        similar_entities = [e for e, c in entity_counts.items() if c == max_count]
+
+        # Ask the same question for each similar entity and vote on answers
+        answer_counts = defaultdict(int)
+        for entity in similar_entities:
+            r = self.look_ahead(entity + " " + remainder)
+            if not r.surprise:
+                for val in r.get_next_values():
+                    answer_counts[val] += 1
+
+        return sorted(answer_counts, key=lambda x: -answer_counts[x])
+
     def __repr__(self):
         return "Hydra:\n\tactive nodes: {}\n\tnext nodes: {}".format(
             self.active_nodes,

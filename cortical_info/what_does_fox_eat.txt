@@ -34,4 +34,3 @@ dog likes sleep
 cat eat salmon
 cat likes ball
 cow eat grass
-fox eat
