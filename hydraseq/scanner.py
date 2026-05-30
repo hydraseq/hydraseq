@@ -10,6 +10,7 @@ Usage pattern:
 """
 
 from collections import namedtuple
+import itertools
 
 Marker = namedtuple('Marker', ['start', 'end', 'length', 'labels', 'text'])
 
@@ -42,28 +43,45 @@ class LayeredScanner:
     def scan(self, tokens, final_targets):
         """Run the full layer stack and return top-level Markers.
 
+        When a marker carries multiple labels (ambiguous token), the layer fans out
+        into one interpretation per label combination (cartesian product). All
+        interpretations are carried forward simultaneously so a downstream resolver
+        can select the coherent one. For unambiguous markers (single label) the
+        behaviour is identical to before.
+
         Args:
             tokens:         str or list[str] of raw input tokens
             final_targets:  list[str] of concept labels the top layer should find
 
         Returns:
-            list of Marker namedtuples from the top layer
+            list of Marker namedtuples from the top layer, one per surviving
+            interpretation
         """
-        current = tokens if isinstance(tokens, list) else tokens.lower().split()
+        initial = tokens if isinstance(tokens, list) else tokens.lower().split()
+        # current_list holds one token sequence per live interpretation
+        current_list = [initial]
 
         for scanner, targets in zip(self.layers[:-1], self.intermediate_targets):
-            markers = scanner.get_markers(current, targets)
-            if not markers:
+            next_list = []
+            for current in current_list:
+                markers = scanner.get_markers(current, targets)
+                if not markers:
+                    continue
+                paths = scanner.get_paths(markers)
+                if not paths:
+                    continue
+                best = max(paths, key=lambda p: p[-1].end - p[0].start)
+                # fan out: cartesian product of each marker's label list
+                for label_seq in itertools.product(*[m.labels for m in best]):
+                    next_list.append(list(label_seq))
+            current_list = next_list
+            if not current_list:
                 return []
-            paths = scanner.get_paths(markers)
-            if not paths:
-                return []
-            # pick the path covering the longest span
-            best = max(paths, key=lambda p: p[-1].end - p[0].start)
-            # labels of each marker in the best path become tokens for the next layer
-            current = [m.labels[0] for m in best]
 
-        return self.layers[-1].get_markers(current, final_targets)
+        all_results = []
+        for current in current_list:
+            all_results.extend(self.layers[-1].get_markers(current, final_targets))
+        return all_results
 
 
 class PatternScanner:
