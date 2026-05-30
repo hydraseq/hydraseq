@@ -14,6 +14,58 @@ from collections import namedtuple
 Marker = namedtuple('Marker', ['start', 'end', 'length', 'labels', 'text'])
 
 
+class LayeredScanner:
+    """Stack multiple PatternScanners so each layer's output labels become the
+    next layer's input tokens.
+
+    Usage pattern:
+        1. Build N PatternScanners, each trained on sequences from its level
+        2. Provide intermediate target labels that each layer should resolve to
+        3. Call scan(tokens, final_targets) — output is Markers from the top layer
+
+    The path chosen between layers is the one that covers the longest span,
+    which favours the most complete parse at each level.
+    """
+
+    def __init__(self, layers, intermediate_targets):
+        """
+        Args:
+            layers:                 list of PatternScanner, ordered bottom to top
+            intermediate_targets:   list of target label lists, one per layer except
+                                    the last (those are passed to scan() instead)
+        """
+        assert len(intermediate_targets) == len(layers) - 1, \
+            "Need one intermediate_targets entry per layer except the last"
+        self.layers = layers
+        self.intermediate_targets = intermediate_targets
+
+    def scan(self, tokens, final_targets):
+        """Run the full layer stack and return top-level Markers.
+
+        Args:
+            tokens:         str or list[str] of raw input tokens
+            final_targets:  list[str] of concept labels the top layer should find
+
+        Returns:
+            list of Marker namedtuples from the top layer
+        """
+        current = tokens if isinstance(tokens, list) else tokens.lower().split()
+
+        for scanner, targets in zip(self.layers[:-1], self.intermediate_targets):
+            markers = scanner.get_markers(current, targets)
+            if not markers:
+                return []
+            paths = scanner.get_paths(markers)
+            if not paths:
+                return []
+            # pick the path covering the longest span
+            best = max(paths, key=lambda p: p[-1].end - p[0].start)
+            # labels of each marker in the best path become tokens for the next layer
+            current = [m.labels[0] for m in best]
+
+        return self.layers[-1].get_markers(current, final_targets)
+
+
 class PatternScanner:
     def __init__(self, seq, encoder, tokenizer=None):
         """

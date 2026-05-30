@@ -9,3 +9,7 @@ env/
 **/*.pytest_cache/
 Untitled.ipynb
 hydraseq.egg-INFO/
+fox_eat.ipynb
+fox_eat.py
+toy_retina_htm_model_chat.ipynb
+.vimrc
