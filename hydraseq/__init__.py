@@ -4,4 +4,4 @@ from hydraseq.hydraseq import Node
 from hydraseq.hydraseq import Hydraseq
 from hydraseq.automata import DFAstate
 from hydraseq.scanner import PatternScanner, LayeredScanner, Marker
-from hydraseq.reasoning import forward_chain
+from hydraseq.reasoning import forward_chain, RoleMapper, solve_puzzle
