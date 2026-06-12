@@ -1,0 +1,121 @@
+{
+  "_comment": "Atomic world-knowledge facts for Winograd Schema resolution.",
+  "_format": "Each fact is a sequence string inserted into Hydraseq.",
+  "_organization": "Facts grouped by domain. Load all or select domains.",
+
+  "containment": [
+    "trophy is physical_object",
+    "trophy has fixed_size",
+    "suitcase is container",
+    "table is container",
+    "doorway is opening",
+    "pen is physical_object",
+    "book is physical_object",
+    "glass is container",
+    "cup is container",
+    "bottle is container",
+    "pot is physical_object",
+    "shelf is support_surface",
+    "container has interior_space",
+    "physical_object has size",
+    "opening has fixed_width",
+    "too_large means object_exceeds_container",
+    "too_small means container_insufficient",
+    "too_wide means object_exceeds_opening",
+    "too_narrow means opening_insufficient",
+    "object_exceeds_container object_is_referent",
+    "container_insufficient container_is_referent",
+    "object_exceeds_opening object_is_referent",
+    "opening_insufficient opening_is_referent"
+  ],
+
+  "physical_force": [
+    "ball is physical_object",
+    "table is surface",
+    "steel is hard_material",
+    "styrofoam is soft_material",
+    "hard_material causes_damage_on_impact",
+    "soft_material absorbs_impact",
+    "object crashes_through surface because object_is_hard",
+    "object crashes_through surface because surface_is_weak",
+    "hard_material object_is_referent",
+    "soft_material surface_is_referent",
+    "book is heavy_object",
+    "heavy_object on surface breaks surface",
+    "surface breaks because heavy_object_on_it"
+  ],
+
+  "size_relations": [
+    "larger_than means excess_size",
+    "smaller_than means deficit_size",
+    "too_tall means object_exceeds_height_limit",
+    "too_short means object_below_height_limit",
+    "too_heavy means object_exceeds_weight_limit",
+    "too_light means object_below_weight_limit",
+    "excess_size entity_has_excess is_referent",
+    "deficit_size entity_has_deficit is_referent",
+    "garage is large_space",
+    "sofa is furniture",
+    "backyard is outdoor_space",
+    "outdoor_space larger_than large_space",
+    "large_space larger_than furniture"
+  ],
+
+  "spatial": [
+    "top_of means higher_position",
+    "bottom_of means lower_position",
+    "above means higher_position",
+    "below means lower_position",
+    "higher_position entity_at_top is_referent",
+    "lower_position entity_at_bottom is_referent",
+    "stairs has top",
+    "stairs has bottom",
+    "tree has top",
+    "tree has bottom",
+    "climber reaches top",
+    "waiter reaches bottom"
+  ],
+
+  "social_roles": [
+    "authority_figure can fear_violence",
+    "protester can advocate_violence",
+    "fear_violence implies passive_stance",
+    "advocate_violence implies active_stance",
+    "passive_stance subject_is_authority",
+    "active_stance subject_is_protester",
+    "councilmen is authority_figure",
+    "demonstrators is protester",
+    "employer has authority",
+    "employee receives_direction",
+    "buyer acquires_object",
+    "seller transfers_object",
+    "buyer is_referent when buying_described",
+    "seller is_referent when selling_described"
+  ],
+
+  "cognitive_states": [
+    "successful implies agent_achieved_goal",
+    "available implies target_can_be_reached",
+    "agent_achieved_goal subject_is_referent",
+    "target_can_be_reached object_is_referent",
+    "convinced implies persuader_succeeded",
+    "understood implies listener_comprehended",
+    "persuader_succeeded subject_is_referent",
+    "listener_comprehended object_is_referent",
+    "nosy implies observer_seeks_information",
+    "indiscreet implies revealer_shares_information",
+    "observer_seeks_information observer_is_referent",
+    "revealer_shares_information revealer_is_referent"
+  ],
+
+  "liquid_transfer": [
+    "bottle is container",
+    "cup is container",
+    "liquid fills container",
+    "pouring transfers liquid from source to target",
+    "source empties during pouring",
+    "target fills during pouring",
+    "empty means source_is_referent",
+    "full means target_is_referent"
+  ]
+}
