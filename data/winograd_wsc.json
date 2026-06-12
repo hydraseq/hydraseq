@@ -1,0 +1,2567 @@
+[
+  {
+    "text": "The city councilmen refused the demonstrators a permit because they feared violence.",
+    "pronoun": "they",
+    "option_a": "The city councilmen",
+    "option_b": "The demonstrators",
+    "correct": "A",
+    "discriminator": "feared violence",
+    "source": "(Winograd 1972)"
+  },
+  {
+    "text": "The city councilmen refused the demonstrators a permit because they advocated violence.",
+    "pronoun": "they",
+    "option_a": "The city councilmen",
+    "option_b": "The demonstrators",
+    "correct": "B",
+    "discriminator": "advocated violence",
+    "source": "(Winograd 1972)"
+  },
+  {
+    "text": "The trophy doesn't fit into the brown suitcase because it is too large.",
+    "pronoun": "it",
+    "option_a": "the trophy",
+    "option_b": "the suitcase",
+    "correct": "A",
+    "discriminator": "is too large",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The trophy doesn't fit into the brown suitcase because it is too small.",
+    "pronoun": "it",
+    "option_a": "the trophy",
+    "option_b": "the suitcase",
+    "correct": "B",
+    "discriminator": "is too small",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Joan made sure to thank Susan for all the help she had recieved.",
+    "pronoun": "she",
+    "option_a": "Joan",
+    "option_b": "Susan",
+    "correct": "A",
+    "discriminator": "had received",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Joan made sure to thank Susan for all the help she had given.",
+    "pronoun": "she",
+    "option_a": "Joan",
+    "option_b": "Susan",
+    "correct": "B",
+    "discriminator": "had given",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Paul tried to call George on the phone, but he wasn't successful.",
+    "pronoun": "he",
+    "option_a": "Paul",
+    "option_b": "George",
+    "correct": "A",
+    "discriminator": "wasn't successful.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Paul tried to call George on the phone, but he wasn't available.",
+    "pronoun": "he",
+    "option_a": "Paul",
+    "option_b": "George",
+    "correct": "B",
+    "discriminator": "wasn't available.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The lawyer asked the witness a question, but he was reluctant to repeat it.",
+    "pronoun": "he",
+    "option_a": "the lawyer",
+    "option_b": "the witness",
+    "correct": "A",
+    "discriminator": "was reluctant",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The lawyer asked the witness a question, but he was reluctant to answer it.",
+    "pronoun": "he",
+    "option_a": "the lawyer",
+    "option_b": "the witness",
+    "correct": "B",
+    "discriminator": "was reluctant",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The delivery truck zoomed by the school bus because it was going so fast.",
+    "pronoun": "it",
+    "option_a": "the delivery truck",
+    "option_b": "the school bus",
+    "correct": "A",
+    "discriminator": "was going so fast.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The delivery truck zoomed by the school bus because it was going so slow.",
+    "pronoun": "it",
+    "option_a": "the delivery truck",
+    "option_b": "the school bus",
+    "correct": "B",
+    "discriminator": "was going so slow.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Frank felt vindicated when his longtime rival Bill revealed that he was the winner of the competition.",
+    "pronoun": "he",
+    "option_a": "Frank",
+    "option_b": "Bill",
+    "correct": "A",
+    "discriminator": "was the winner",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Frank felt crushed when his longtime rival Bill revealed that he was the winner of the competition.",
+    "pronoun": "he",
+    "option_a": "Frank",
+    "option_b": "Bill",
+    "correct": "B",
+    "discriminator": "was the winner",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The man couldn't lift his son because he was so weak.",
+    "pronoun": "he",
+    "option_a": "The man",
+    "option_b": "The son",
+    "correct": "A",
+    "discriminator": "was so weak.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The man couldn't lift his son because he was so heavy.",
+    "pronoun": "he",
+    "option_a": "The man",
+    "option_b": "The son",
+    "correct": "B",
+    "discriminator": "was so heavy.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The large ball crashed right through the table because it was made of steel.",
+    "pronoun": "it",
+    "option_a": "The large ball",
+    "option_b": "The table",
+    "correct": "A",
+    "discriminator": "was made of steel.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The large ball crashed right through the table because it was made of styrofoam.",
+    "pronoun": "it",
+    "option_a": "The large ball",
+    "option_b": "The table",
+    "correct": "B",
+    "discriminator": "was made of styrofoam.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "John couldn't see the stage with Billy in front of him because he is so short.",
+    "pronoun": "he",
+    "option_a": "John",
+    "option_b": "Billy",
+    "correct": "A",
+    "discriminator": "is so short.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "John couldn't see the stage with Billy in front of him because he is so tall.",
+    "pronoun": "he",
+    "option_a": "John",
+    "option_b": "Billy",
+    "correct": "B",
+    "discriminator": "is so tall.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Tom threw his schoolbag down to Ray after he reached the top of the stairs.",
+    "pronoun": "he",
+    "option_a": "Tom",
+    "option_b": "Ray",
+    "correct": "A",
+    "discriminator": "reached the top of the stairs.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Tom threw his schoolbag down to Ray after he reached the bottom of the stairs.",
+    "pronoun": "he",
+    "option_a": "Tom",
+    "option_b": "Ray",
+    "correct": "B",
+    "discriminator": "reached the bottom of the stairs.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Although they ran at about the same speed, Sue beat Sally because she had such a good start.",
+    "pronoun": "she",
+    "option_a": "Sue",
+    "option_b": "Sally",
+    "correct": "A",
+    "discriminator": "had such a good start.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Although they ran at about the same speed, Sue beat Sally because she had such a bad start.",
+    "pronoun": "she",
+    "option_a": "Sue",
+    "option_b": "Sally",
+    "correct": "B",
+    "discriminator": "had such a bad start.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The sculpture rolled off the shelf because it wasn't anchored.",
+    "pronoun": "it",
+    "option_a": "The sculpture",
+    "option_b": "The shelf",
+    "correct": "A",
+    "discriminator": "wasn't anchored.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The sculpture rolled off the shelf because it wasn't level.",
+    "pronoun": "it",
+    "option_a": "The sculpture",
+    "option_b": "The shelf",
+    "correct": "B",
+    "discriminator": "wasn't level.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Sam's drawing was hung just above Tina's and it did look much better with another one below it.",
+    "pronoun": "it",
+    "option_a": "Sam's drawing",
+    "option_b": "Tina's drawing",
+    "correct": "A",
+    "discriminator": "did look much better",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Sam's drawing was hung just above Tina's and it did look much better with another one above it.",
+    "pronoun": "it",
+    "option_a": "Sam's drawing",
+    "option_b": "Tina's drawing",
+    "correct": "B",
+    "discriminator": "did look much better",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Anna did a lot better than her good friend Lucy on the test because she had studied so hard.",
+    "pronoun": "she",
+    "option_a": "Anna",
+    "option_b": "Lucy",
+    "correct": "A",
+    "discriminator": "had studied so hard.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Anna did a lot worse than her good friend Lucy on the test because she had studied so hard.",
+    "pronoun": "she",
+    "option_a": "Anna",
+    "option_b": "Lucy",
+    "correct": "B",
+    "discriminator": "had studied so hard.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The firemen arrived after the police because they were coming from so far away.",
+    "pronoun": "they",
+    "option_a": "The firemen",
+    "option_b": "The police",
+    "correct": "A",
+    "discriminator": "were coming from so far away.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The firemen arrived before the police because they were coming from so far away.",
+    "pronoun": "they",
+    "option_a": "The firemen",
+    "option_b": "The police",
+    "correct": "B",
+    "discriminator": "were coming from so far away.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Frank was upset with Tom because the toaster he had bought from him didn't work.",
+    "pronoun": "he",
+    "option_a": "Frank",
+    "option_b": "Tom",
+    "correct": "A",
+    "discriminator": "had bought",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Frank was upset with Tom because the toaster he had sold him didn't work.",
+    "pronoun": "he",
+    "option_a": "Frank",
+    "option_b": "Tom",
+    "correct": "B",
+    "discriminator": "had sold",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Jim yelled at Kevin because he was so upset.",
+    "pronoun": "he",
+    "option_a": "Jim",
+    "option_b": "Kevin",
+    "correct": "A",
+    "discriminator": "was so upset.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Jim comforted Kevin because he was so upset.",
+    "pronoun": "he",
+    "option_a": "Jim",
+    "option_b": "Kevin",
+    "correct": "B",
+    "discriminator": "was so upset.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The sack of potatoes had been placed above the bag of flour, so it had to be moved first.",
+    "pronoun": "it",
+    "option_a": "The sack of potatoes",
+    "option_b": "The bag of flour",
+    "correct": "A",
+    "discriminator": "had to be moved first.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "The sack of potatoes had been placed below the bag of flour, so it had to be moved first.",
+    "pronoun": "it",
+    "option_a": "The sack of potatoes",
+    "option_b": "The bag of flour",
+    "correct": "B",
+    "discriminator": "had to be moved first.",
+    "source": "Hector Levesque"
+  },
+  {
+    "text": "Pete envies Martin although he is very successful.",
+    "pronoun": "he",
+    "option_a": "Pete",
+    "option_b": "Martin",
+    "correct": "A",
+    "discriminator": "is very successful.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Pete envies Martin because he is very successful.",
+    "pronoun": "he",
+    "option_a": "Pete",
+    "option_b": "Martin",
+    "correct": "B",
+    "discriminator": "is very successful.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The older students were bullying the younger ones, so we punished them .",
+    "pronoun": "them",
+    "option_a": "The older students",
+    "option_b": "The younger students",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The older students were bullying the younger ones, so we rescued them .",
+    "pronoun": "them",
+    "option_a": "The older students",
+    "option_b": "The younger students",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I poured water from the bottle into the cup until it was empty.",
+    "pronoun": "it",
+    "option_a": "the bottle",
+    "option_b": "the cup",
+    "correct": "A",
+    "discriminator": "was empty",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I poured water from the bottle into the cup until it was full.",
+    "pronoun": "it",
+    "option_a": "the bottle",
+    "option_b": "the cup",
+    "correct": "B",
+    "discriminator": "was full",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Susan knows all about Ann's personal problems because she is nosy.",
+    "pronoun": "she",
+    "option_a": "Susan",
+    "option_b": "Ann",
+    "correct": "A",
+    "discriminator": "is nosy",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Susan knows all about Ann's personal problems because she is indiscreet.",
+    "pronoun": "she",
+    "option_a": "Susan",
+    "option_b": "Ann",
+    "correct": "B",
+    "discriminator": "is indiscreet",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sid explained his theory to Mark but he couldn't convince him.",
+    "pronoun": "he",
+    "option_a": "Sid",
+    "option_b": "Mark",
+    "correct": "A",
+    "discriminator": "couldn't convince him.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sid explained his theory to Mark but he couldn't understand him.",
+    "pronoun": "he",
+    "option_a": "Sid",
+    "option_b": "Mark",
+    "correct": "B",
+    "discriminator": "couldn't understand him.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Susan knew that Ann's son had been in a car accident, so she told her about it.",
+    "pronoun": "she",
+    "option_a": "Susan",
+    "option_b": "Ann",
+    "correct": "A",
+    "discriminator": "told",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Susan knew that Ann's son had been in a car accident, because she told her about it.",
+    "pronoun": "she",
+    "option_a": "Susan",
+    "option_b": "Ann",
+    "correct": "B",
+    "discriminator": "told",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Joe's uncle can still beat him at tennis, even though he is 30 years younger.",
+    "pronoun": "he",
+    "option_a": "Joe",
+    "option_b": "Joe's uncle",
+    "correct": "A",
+    "discriminator": "is 30 years younger.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Joe's uncle can still beat him at tennis, even though he is 30 years older.",
+    "pronoun": "he",
+    "option_a": "Joe",
+    "option_b": "Joe's uncle",
+    "correct": "B",
+    "discriminator": "is 30 years older.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The painting in Mark's living room shows an oak tree. It is to the right of the bookcase.",
+    "pronoun": "It",
+    "option_a": "The painting",
+    "option_b": "The oak tree",
+    "correct": "A",
+    "discriminator": "is to the right",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The painting in Mark's living room shows an oak tree. It is to the right of a house.",
+    "pronoun": "It",
+    "option_a": "The painting",
+    "option_b": "The oak tree",
+    "correct": "B",
+    "discriminator": "is to the right",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "There is a gap in the wall. You can see the garden through it .",
+    "pronoun": "it",
+    "option_a": "The gap",
+    "option_b": "The wall",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "There is a gap in the wall. You can see the garden behind it .",
+    "pronoun": "it",
+    "option_a": "The gap",
+    "option_b": "The wall",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The drain is clogged with hair. It has to be cleaned.",
+    "pronoun": "It",
+    "option_a": "The drain",
+    "option_b": "The hair",
+    "correct": "A",
+    "discriminator": "has to be cleaned.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The drain is clogged with hair. It has to be removed.",
+    "pronoun": "It",
+    "option_a": "The drain",
+    "option_b": "The hair",
+    "correct": "B",
+    "discriminator": "has to be removed.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "My meeting started at 4:00 and I needed to catch the train at 4:30, so there wasn't much time. Luckily, it was short, so it worked out.",
+    "pronoun": "it",
+    "option_a": "The meeting",
+    "option_b": "The train",
+    "correct": "A",
+    "discriminator": "was short",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "My meeting started at 4:00 and I needed to catch the train at 4:30, so there wasn't much time. Luckily, it was delayed, so it worked out.",
+    "pronoun": "it",
+    "option_a": "The meeting",
+    "option_b": "The train",
+    "correct": "B",
+    "discriminator": "was delayed",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "There is a pillar between me and the stage, and I can't see around it .",
+    "pronoun": "it",
+    "option_a": "The pillar",
+    "option_b": "The stage",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "There is a pillar between me and the stage, and I can't see it .",
+    "pronoun": "it",
+    "option_a": "The pillar",
+    "option_b": "The stage",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "They broadcast an announcement, but a subway came into the station and I couldn't hear it .",
+    "pronoun": "it",
+    "option_a": "The announcement",
+    "option_b": "The subway",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "They broadcast an announcement, but a subway came into the station and I couldn't hear over it .",
+    "pronoun": "it",
+    "option_a": "The announcement",
+    "option_b": "The subway",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In the middle of the outdoor concert, the rain started falling, but it continued until 10.",
+    "pronoun": "it",
+    "option_a": "The concert",
+    "option_b": "The rain",
+    "correct": "A",
+    "discriminator": "continued",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In the middle of the outdoor concert, the rain started falling, and it continued until 10.",
+    "pronoun": "it",
+    "option_a": "The concert",
+    "option_b": "The rain",
+    "correct": "B",
+    "discriminator": "continued",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I used an old rag to clean the knife, and then I put it in the trash.",
+    "pronoun": "it",
+    "option_a": "The rag",
+    "option_b": "The knife",
+    "correct": "A",
+    "discriminator": "in the trash.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I used an old rag to clean the knife, and then I put it in the drawer.",
+    "pronoun": "it",
+    "option_a": "The rag",
+    "option_b": "The knife",
+    "correct": "B",
+    "discriminator": "in the drawer.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Ann asked Mary what time the library closes, because she had forgotten.",
+    "pronoun": "she",
+    "option_a": "Ann",
+    "option_b": "Mary",
+    "correct": "A",
+    "discriminator": "had forgotten.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Ann asked Mary what time the library closes, but she had forgotten.",
+    "pronoun": "she",
+    "option_a": "Ann",
+    "option_b": "Mary",
+    "correct": "B",
+    "discriminator": "had forgotten.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I took the water bottle out of the backpack so that it would be handy.",
+    "pronoun": "it",
+    "option_a": "The water bottle",
+    "option_b": "The backpack",
+    "correct": "A",
+    "discriminator": "would be handy",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I took the water bottle out of the backpack so that it would be lighter.",
+    "pronoun": "it",
+    "option_a": "The water bottle",
+    "option_b": "The backpack",
+    "correct": "B",
+    "discriminator": "would be lighter",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I couldn't put the pot on the shelf because it was too tall.",
+    "pronoun": "it",
+    "option_a": "The pot",
+    "option_b": "The shelf",
+    "correct": "A",
+    "discriminator": "was too tall.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I couldn't put the pot on the shelf because it was too high.",
+    "pronoun": "it",
+    "option_a": "The pot",
+    "option_b": "The shelf",
+    "correct": "B",
+    "discriminator": "was too high.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I'm sure that my map will show this building; it is very good.",
+    "pronoun": "it",
+    "option_a": "The map",
+    "option_b": "The building",
+    "correct": "A",
+    "discriminator": "is very good",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I'm sure that my map will show this building; it is very famous.",
+    "pronoun": "it",
+    "option_a": "The map",
+    "option_b": "The building",
+    "correct": "B",
+    "discriminator": "is very famous",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob paid for Charlie's college education. He is very generous.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Charlie",
+    "correct": "A",
+    "discriminator": "is very generous.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob paid for Charlie's college education. He is very grateful.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Charlie",
+    "correct": "B",
+    "discriminator": "is very grateful.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very hurt.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Charlie",
+    "correct": "A",
+    "discriminator": "is very hurt.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very ungrateful.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Charlie",
+    "correct": "B",
+    "discriminator": "is very ungrateful.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have won.",
+    "pronoun": "he",
+    "option_a": "Bob",
+    "option_b": "Adam",
+    "correct": "A",
+    "discriminator": "would have won.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have lost.",
+    "pronoun": "he",
+    "option_a": "Bob",
+    "option_b": "Adam",
+    "correct": "B",
+    "discriminator": "would have lost.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be gone by this time.",
+    "pronoun": "he",
+    "option_a": "Adam",
+    "option_b": "Bob",
+    "correct": "A",
+    "discriminator": "would be gone",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be here by this time.",
+    "pronoun": "he",
+    "option_a": "Adam",
+    "option_b": "Bob",
+    "correct": "B",
+    "discriminator": "would be here",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "If the con artist has succeeded in fooling Sam, he would have gotten a lot of money.",
+    "pronoun": "he",
+    "option_a": "The con artist",
+    "option_b": "Sam",
+    "correct": "A",
+    "discriminator": "would have gotten a lot of money.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "If the con artist has succeeded in fooling Sam, he would have lost a lot of money.",
+    "pronoun": "he",
+    "option_a": "The con artist",
+    "option_b": "Sam",
+    "correct": "B",
+    "discriminator": "would have lost a lot of money.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was hot.",
+    "pronoun": "it",
+    "option_a": "The dog",
+    "option_b": "The spot under the tree",
+    "correct": "A",
+    "discriminator": "was hot",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was cooler.",
+    "pronoun": "it",
+    "option_a": "The dog",
+    "option_b": "The spot under the tree",
+    "correct": "B",
+    "discriminator": "was cooler",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The cat was lying by the mouse hole waiting for the mouse, but it was too impatient.",
+    "pronoun": "it",
+    "option_a": "The cat",
+    "option_b": "The mouse",
+    "correct": "A",
+    "discriminator": "was too impatient.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The cat was lying by the mouse hole waiting for the mouse, but it was too cautious.",
+    "pronoun": "it",
+    "option_a": "The cat",
+    "option_b": "The mouse",
+    "correct": "B",
+    "discriminator": "was too cautious.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Anne gave birth to a daughter last month. She is a very charming woman.",
+    "pronoun": "She",
+    "option_a": "Anne",
+    "option_b": "Anne's daughter",
+    "correct": "A",
+    "discriminator": "is a very charming woman.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Anne gave birth to a daughter last month. She is a very charming baby.",
+    "pronoun": "She",
+    "option_a": "Anne",
+    "option_b": "Anne's daughter",
+    "correct": "B",
+    "discriminator": "is a very charming baby.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Alice tried frantically to stop her daughter from chatting at the party, leaving us to wonder why she was behaving so strangely.",
+    "pronoun": "she",
+    "option_a": "Alice",
+    "option_b": "Alice's daughter",
+    "correct": "A",
+    "discriminator": "was behaving so strangely.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Alice tried frantically to stop her daughter from barking at the party, leaving us to wonder why she was behaving so strangely.",
+    "pronoun": "she",
+    "option_a": "Alice",
+    "option_b": "Alice's daughter",
+    "correct": "B",
+    "discriminator": "was behaving so strangely.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy.",
+    "pronoun": "he",
+    "option_a": "Jim",
+    "option_b": "the guy in uniform",
+    "correct": "A",
+    "discriminator": "was",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy.",
+    "pronoun": "he",
+    "option_a": "Jim",
+    "option_b": "the guy in uniform",
+    "correct": "B",
+    "discriminator": "was",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The fish ate the worm. It was hungry.",
+    "pronoun": "It",
+    "option_a": "The fish",
+    "option_b": "The worm",
+    "correct": "A",
+    "discriminator": "was hungry.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The fish ate the worm. It was tasty.",
+    "pronoun": "It",
+    "option_a": "The fish",
+    "option_b": "The worm",
+    "correct": "B",
+    "discriminator": "was tasty.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it in.",
+    "pronoun": "it",
+    "option_a": "The key",
+    "option_b": "The chewing gum",
+    "correct": "A",
+    "discriminator": "in.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it out.",
+    "pronoun": "it",
+    "option_a": "The key",
+    "option_b": "The chewing gum",
+    "correct": "B",
+    "discriminator": "out.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The dog chased the cat, which ran up a tree. It waited at the bottom.",
+    "pronoun": "It",
+    "option_a": "The dog",
+    "option_b": "The cat",
+    "correct": "A",
+    "discriminator": "waited",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The dog chased the cat, which ran up a tree. It waited at the top.",
+    "pronoun": "It",
+    "option_a": "The dog",
+    "option_b": "The cat",
+    "correct": "B",
+    "discriminator": "waited",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it removed.",
+    "pronoun": "it",
+    "option_a": "The tree",
+    "option_b": "The roof",
+    "correct": "A",
+    "discriminator": "removed.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it repaired.",
+    "pronoun": "it",
+    "option_a": "The tree",
+    "option_b": "The roof",
+    "correct": "B",
+    "discriminator": "repaired.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the police station.",
+    "pronoun": "He",
+    "option_a": "The customer",
+    "option_b": "The teller",
+    "correct": "A",
+    "discriminator": "was immediately taken",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the hospital.",
+    "pronoun": "He",
+    "option_a": "The customer",
+    "option_b": "The teller",
+    "correct": "B",
+    "discriminator": "was immediately taken",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "John was doing research in the library when he heard a man humming and whistling. He was very annoyed.",
+    "pronoun": "He",
+    "option_a": "John",
+    "option_b": "The man",
+    "correct": "A",
+    "discriminator": "was very annoyed.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "John was doing research in the library when he heard a man humming and whistling. He was very annoying.",
+    "pronoun": "He",
+    "option_a": "John",
+    "option_b": "The man",
+    "correct": "B",
+    "discriminator": "was very annoying.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "John was jogging through the park when he saw a man juggling watermelons. He was very impressed.",
+    "pronoun": "He",
+    "option_a": "John",
+    "option_b": "The juggler",
+    "correct": "A",
+    "discriminator": "was very impressed.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "John was jogging through the park when he saw a man juggling watermelons. He was very impressive.",
+    "pronoun": "He",
+    "option_a": "John",
+    "option_b": "The juggler",
+    "correct": "B",
+    "discriminator": "was very impressive.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very ill.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Carl",
+    "correct": "A",
+    "discriminator": "was very ill",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very concerned.",
+    "pronoun": "He",
+    "option_a": "Bob",
+    "option_b": "Carl",
+    "correct": "B",
+    "discriminator": "was very concerned",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are fifteen.",
+    "pronoun": "they",
+    "option_a": "Sam and Amy",
+    "option_b": "Amy's parents",
+    "correct": "A",
+    "discriminator": "are fifteen.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are snobs.",
+    "pronoun": "they",
+    "option_a": "Sam and Amy",
+    "option_b": "Amy's parents",
+    "correct": "B",
+    "discriminator": "are snobs.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mark told Pete many lies about himself, which Pete included in his book. He should have been more truthful.",
+    "pronoun": "He",
+    "option_a": "Mark",
+    "option_b": "Pete",
+    "correct": "A",
+    "discriminator": "should have been more  truthful.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mark told Pete many lies about himself, which Pete included in his book. He should have been more skeptical.",
+    "pronoun": "He",
+    "option_a": "Mark",
+    "option_b": "Pete",
+    "correct": "B",
+    "discriminator": "should have been more skeptical.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday.",
+    "pronoun": "it",
+    "option_a": "The old house",
+    "option_b": "The new house",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday.",
+    "pronoun": "it",
+    "option_a": "The old house",
+    "option_b": "The new house",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well.",
+    "pronoun": "They",
+    "option_a": "People",
+    "option_b": "Paul's books",
+    "correct": "A",
+    "discriminator": "are gripped",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Many people start to read Paul's books and can't put them down. They are popular because Paul writes so well.",
+    "pronoun": "They",
+    "option_a": "People",
+    "option_b": "Paul's books",
+    "correct": "B",
+    "discriminator": "are popular",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mary took out her flute and played one of her favorite pieces. She has had it since she was a child.",
+    "pronoun": "it",
+    "option_a": "The flute",
+    "option_b": "The piece",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mary took out her flute and played one of her favorite pieces. She has loved it since she was a child.",
+    "pronoun": "it",
+    "option_a": "The flute",
+    "option_b": "The piece",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam pulled up a chair to the piano, but it was broken, so he had to stand instead.",
+    "pronoun": "it",
+    "option_a": "The chair",
+    "option_b": "The piano",
+    "correct": "A",
+    "discriminator": "was broken",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam pulled up a chair to the piano, but it was broken, so he had to sing instead.",
+    "pronoun": "it",
+    "option_a": "The chair",
+    "option_b": "The piano",
+    "correct": "B",
+    "discriminator": "was broken",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Since it was raining, I carried the newspaper in my backpack to keep it dry.",
+    "pronoun": "it",
+    "option_a": "The newspaper",
+    "option_b": "The backpack",
+    "correct": "A",
+    "discriminator": "dry",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Since it was raining, I carried the newspaper over my backpack to keep it dry.",
+    "pronoun": "it",
+    "option_a": "The newspaper",
+    "option_b": "The backpack",
+    "correct": "B",
+    "discriminator": "dry",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work.",
+    "pronoun": "it",
+    "option_a": "The book",
+    "option_b": "The article",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work.",
+    "pronoun": "it",
+    "option_a": "The book",
+    "option_b": "The article",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon the tide knocked it down.",
+    "pronoun": "it",
+    "option_a": "The sand castle",
+    "option_b": "The flag",
+    "correct": "A",
+    "discriminator": "down",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon the wind knocked it down.",
+    "pronoun": "it",
+    "option_a": "The sand castle",
+    "option_b": "The flag",
+    "correct": "B",
+    "discriminator": "down",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jane knocked on Susan's door, but there was no answer. She was disappointed.",
+    "pronoun": "She",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "A",
+    "discriminator": "was disappointed.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jane knocked on Susan's door, but there was no answer. She was out.",
+    "pronoun": "She",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "B",
+    "discriminator": "was out.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jane knocked on the door, and Susan answered it. She invited her to come out.",
+    "pronoun": "She",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "A",
+    "discriminator": "invited",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jane knocked on the door, and Susan answered it. She invited her to come in.",
+    "pronoun": "She",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "B",
+    "discriminator": "invited",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam took French classes from Adam, because he was eager to speak it fluently.",
+    "pronoun": "he",
+    "option_a": "Sam",
+    "option_b": "Adam",
+    "correct": "A",
+    "discriminator": "was eager",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam took French classes from Adam, because he was known to speak it fluently.",
+    "pronoun": "he",
+    "option_a": "Sam",
+    "option_b": "Adam",
+    "correct": "B",
+    "discriminator": "was known to speak it",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The path to the lake was blocked, so we couldn't use it .",
+    "pronoun": "it",
+    "option_a": "The path",
+    "option_b": "The lake",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The path to the lake was blocked, so we couldn't reach it .",
+    "pronoun": "it",
+    "option_a": "The path",
+    "option_b": "The lake",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was out.",
+    "pronoun": "it",
+    "option_a": "The sun",
+    "option_b": "The cloud",
+    "correct": "A",
+    "discriminator": "was out",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was gone.",
+    "pronoun": "it",
+    "option_a": "The sun",
+    "option_b": "The cloud",
+    "correct": "B",
+    "discriminator": "was gone",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "We went to the lake, because a shark had been seen at the ocean beach, so it was a safer place to swim.",
+    "pronoun": "it",
+    "option_a": "The lake",
+    "option_b": "The ocean beach",
+    "correct": "A",
+    "discriminator": "was a safer place",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "We went to the lake, because a shark had been seen at the ocean beach, so it was a dangerous place to swim.",
+    "pronoun": "it",
+    "option_a": "The lake",
+    "option_b": "The ocean beach",
+    "correct": "B",
+    "discriminator": "was a dangerous place",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like golfers.",
+    "pronoun": "they",
+    "option_a": "The shepherds",
+    "option_b": "The sheep",
+    "correct": "A",
+    "discriminator": "ended up looking more like golfers.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like dogs.",
+    "pronoun": "they",
+    "option_a": "The shepherds",
+    "option_b": "The sheep",
+    "correct": "B",
+    "discriminator": "ended up looking more like dogs.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mary tucked her daughter Anne into bed, so that she could work.",
+    "pronoun": "she",
+    "option_a": "Mary",
+    "option_b": "Mary's daughter",
+    "correct": "A",
+    "discriminator": "could work",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Mary tucked her daughter Anne into bed, so that she could sleep.",
+    "pronoun": "she",
+    "option_a": "Mary",
+    "option_b": "Mary's daughter",
+    "correct": "B",
+    "discriminator": "could sleep.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred and Alice had very warm down coats, but they were not prepared for the cold in Alaska.",
+    "pronoun": "they",
+    "option_a": "Fred and Alice",
+    "option_b": "coats",
+    "correct": "A",
+    "discriminator": "were not prepared",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred and Alice had very warm down coats, but they were not enough for the cold in Alaska.",
+    "pronoun": "they",
+    "option_a": "Fred and Alice",
+    "option_b": "coats",
+    "correct": "B",
+    "discriminator": "were not enough",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Thomson visited Cooper's grave in 1765. At that date he had been travelling for five years.",
+    "pronoun": "he",
+    "option_a": "Thomson",
+    "option_b": "Cooper",
+    "correct": "A",
+    "discriminator": "had been travelling",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Thomson visited Cooper's grave in 1765. At that date he had been dead for five years.",
+    "pronoun": "he",
+    "option_a": "Thomson",
+    "option_b": "Cooper",
+    "correct": "B",
+    "discriminator": "had been dead",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jackson was greatly influenced by Arnold, though he lived two centuries later.",
+    "pronoun": "he",
+    "option_a": "Jackson",
+    "option_b": "Arnold",
+    "correct": "A",
+    "discriminator": "lived two centuries later.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jackson was greatly influenced by Arnold, though he lived two centuries earlier.",
+    "pronoun": "he",
+    "option_a": "Jackson",
+    "option_b": "Arnold",
+    "correct": "B",
+    "discriminator": "lived two centuries earlier.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I can't cut that tree down with that axe; it is too thick.",
+    "pronoun": "it",
+    "option_a": "The tree",
+    "option_b": "The axe",
+    "correct": "A",
+    "discriminator": "is too thick.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I can't cut that tree down with that axe; it is too small.",
+    "pronoun": "it",
+    "option_a": "The tree",
+    "option_b": "The axe",
+    "correct": "B",
+    "discriminator": "is too small.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The foxes are getting in at night and attacking the chickens. I shall have to kill them .",
+    "pronoun": "them",
+    "option_a": "The foxes",
+    "option_b": "The chickens",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The foxes are getting in at night and attacking the chickens. I shall have to guard them .",
+    "pronoun": "them",
+    "option_a": "The foxes",
+    "option_b": "The chickens",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The foxes are getting in at night and attacking the chickens. They have gotten very bold.",
+    "pronoun": "They",
+    "option_a": "The foxes",
+    "option_b": "The chickens",
+    "correct": "A",
+    "discriminator": "have gotten very bold.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The foxes are getting in at night and attacking the chickens. They have gotten very nervous.",
+    "pronoun": "They",
+    "option_a": "The foxes",
+    "option_b": "The chickens",
+    "correct": "B",
+    "discriminator": "have gotten very nervous.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred covered his eyes with his hands, because the wind was blowing sand around. He opened them when the wind stopped.",
+    "pronoun": "them",
+    "option_a": "His eyes",
+    "option_b": "His hands",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred covered his eyes with his hands, because the wind was blowing sand around. He lowered them when the wind stopped.",
+    "pronoun": "them",
+    "option_a": "His eyes",
+    "option_b": "His hands",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was too hard to pronounce.",
+    "pronoun": "it",
+    "option_a": "Terpsichore",
+    "option_b": "Tina",
+    "correct": "A",
+    "discriminator": "was too hard",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was easier to pronounce.",
+    "pronoun": "it",
+    "option_a": "Terpsichore",
+    "option_b": "Tina",
+    "correct": "B",
+    "discriminator": "was easier",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred watched TV while George went out to buy groceries. After an hour he got up.",
+    "pronoun": "he",
+    "option_a": "Fred",
+    "option_b": "George",
+    "correct": "A",
+    "discriminator": "got up.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred watched TV while George went out to buy groceries. After an hour he got back.",
+    "pronoun": "he",
+    "option_a": "Fred",
+    "option_b": "George",
+    "correct": "B",
+    "discriminator": "got back.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it on.",
+    "pronoun": "it",
+    "option_a": "The dishwasher",
+    "option_b": "The TV",
+    "correct": "A",
+    "discriminator": "on",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it off.",
+    "pronoun": "it",
+    "option_a": "The dishwasher",
+    "option_b": "The TV",
+    "correct": "B",
+    "discriminator": "off",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred is the only man still alive who remembers my great-grandfather. He is a remarkable man.",
+    "pronoun": "He",
+    "option_a": "Fred",
+    "option_b": "My great-grandfather",
+    "correct": "A",
+    "discriminator": "is a remarkable man.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred is the only man still alive who remembers my great-grandfather. He was a remarkable man.",
+    "pronoun": "He",
+    "option_a": "Fred",
+    "option_b": "My great-grandfather",
+    "correct": "B",
+    "discriminator": "was a remarkable man.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve years old.",
+    "pronoun": "he",
+    "option_a": "Fred",
+    "option_b": "My father",
+    "correct": "A",
+    "discriminator": "was twelve years old.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve months old.",
+    "pronoun": "he",
+    "option_a": "Fred",
+    "option_b": "My father",
+    "correct": "B",
+    "discriminator": "was twelve months old.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were defeated within weeks.",
+    "pronoun": "they",
+    "option_a": "Kamchatka",
+    "option_b": "Yakutsk",
+    "correct": "A",
+    "discriminator": "were defeated",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were victorious within weeks.",
+    "pronoun": "they",
+    "option_a": "Kamchatka",
+    "option_b": "Yakutsk",
+    "correct": "B",
+    "discriminator": "were victorious",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Look! There is a minnow swimming right below that duck! It had better get away to safety fast!",
+    "pronoun": "It",
+    "option_a": "The minnow",
+    "option_b": "The duck",
+    "correct": "A",
+    "discriminator": "had better get away",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Look! There is a shark swimming right below that duck! It had better get away to safety fast!",
+    "pronoun": "It",
+    "option_a": "The shark",
+    "option_b": "The duck",
+    "correct": "B",
+    "discriminator": "had better get away",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for evidence on the river banks.",
+    "pronoun": "They",
+    "option_a": "Archaeologists",
+    "option_b": "Prehistoric humans",
+    "correct": "A",
+    "discriminator": "hunted for evidence",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for deer on the river banks.",
+    "pronoun": "They",
+    "option_a": "Archaeologists",
+    "option_b": "Prehistoric humans",
+    "correct": "B",
+    "discriminator": "hunted for deer",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They began two years ago.",
+    "pronoun": "They",
+    "option_a": "The scientists",
+    "option_b": "The fish",
+    "correct": "A",
+    "discriminator": "began two years ago.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They appeared two years ago.",
+    "pronoun": "They",
+    "option_a": "The scientists",
+    "option_b": "The fish",
+    "correct": "B",
+    "discriminator": "appeared two years ago.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The journalists interviewed the stars of the new movie. They were very persistent, so the interview lasted for a long time.",
+    "pronoun": "They",
+    "option_a": "The journalists",
+    "option_b": "The stars",
+    "correct": "A",
+    "discriminator": "were very persistent",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The journalists interviewed the stars of the new movie. They were very cooperative, so the interview lasted for a long time.",
+    "pronoun": "They",
+    "option_a": "The journalists",
+    "option_b": "The stars",
+    "correct": "B",
+    "discriminator": "were very cooperative",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The police arrested all of the gang members. They were trying to stop the drug trade in the neighborhood.",
+    "pronoun": "They",
+    "option_a": "The police",
+    "option_b": "The gang members",
+    "correct": "A",
+    "discriminator": "were trying to stop the drug trade.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The police arrested all of the gang members. They were trying to run the drug trade in the neighborhood.",
+    "pronoun": "They",
+    "option_a": "The police",
+    "option_b": "The gang members",
+    "correct": "B",
+    "discriminator": "were trying to run the drug trade.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I put the cake away in the refrigerator. It has a lot of butter in it.",
+    "pronoun": "It",
+    "option_a": "The cake",
+    "option_b": "The refrigerator",
+    "correct": "A",
+    "discriminator": "has a lot of butter",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I put the cake away in the refrigerator. It has a lot of leftovers in it.",
+    "pronoun": "It",
+    "option_a": "The cake",
+    "option_b": "The refrigerator",
+    "correct": "B",
+    "discriminator": "has a lot of leftovers",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be better.",
+    "pronoun": "they",
+    "option_a": "The ankles",
+    "option_b": "The crutches",
+    "correct": "A",
+    "discriminator": "should be better",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be unnecessary.",
+    "pronoun": "they",
+    "option_a": "The ankles",
+    "option_b": "The crutches",
+    "correct": "B",
+    "discriminator": "should be unnecessary",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority.",
+    "pronoun": "They",
+    "option_a": "The sponsors",
+    "option_b": "The opponents",
+    "correct": "A",
+    "discriminator": "were very much in the minority.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the majority.",
+    "pronoun": "They",
+    "option_a": "The sponsors",
+    "option_b": "The opponents",
+    "correct": "B",
+    "discriminator": "were very much in the majority.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make more of them .",
+    "pronoun": "them",
+    "option_a": "The oatmeal cookies",
+    "option_b": "The chocolate chip cookies",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make fewer of them .",
+    "pronoun": "them",
+    "option_a": "The oatmeal cookies",
+    "option_b": "The chocolate chip cookies",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply not enough of them .",
+    "pronoun": "them",
+    "option_a": "copies of the newsletter",
+    "option_b": "chairs",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply too many of them .",
+    "pronoun": "them",
+    "option_a": "copies of the newsletter",
+    "option_b": "chairs",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I stuck a pin through a carrot. When I pulled the pin out, it left a hole.",
+    "pronoun": "it",
+    "option_a": "The pin",
+    "option_b": "The carrot",
+    "correct": "A",
+    "discriminator": "left a hole",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I stuck a pin through a carrot. When I pulled the pin out, it had a hole.",
+    "pronoun": "it",
+    "option_a": "The pin",
+    "option_b": "The carrot",
+    "correct": "B",
+    "discriminator": "had a hole",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of coffee.",
+    "pronoun": "it",
+    "option_a": "The pen",
+    "option_b": "The coffee",
+    "correct": "A",
+    "discriminator": "got full of coffee.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of ink.",
+    "pronoun": "it",
+    "option_a": "The pen",
+    "option_b": "The coffee",
+    "correct": "B",
+    "discriminator": "got full of ink.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Steve follows Fred's example in everything. He admires him hugely.",
+    "pronoun": "He",
+    "option_a": "Steve",
+    "option_b": "Fred",
+    "correct": "A",
+    "discriminator": "admires him hugely.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Steve follows Fred's example in everything. He influences him hugely.",
+    "pronoun": "He",
+    "option_a": "Steve",
+    "option_b": "Fred",
+    "correct": "B",
+    "discriminator": "influences him hugely.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The table won't fit through the doorway because it is too wide.",
+    "pronoun": "it",
+    "option_a": "The table",
+    "option_b": "The doorway",
+    "correct": "A",
+    "discriminator": "is too wide.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "The table won't fit through the doorway because it is too narrow.",
+    "pronoun": "it",
+    "option_a": "The table",
+    "option_b": "The doorway",
+    "correct": "B",
+    "discriminator": "is too narrow.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Grace was happy to trade me her sweater for my jacket. She thinks it looks dowdy on her.",
+    "pronoun": "it",
+    "option_a": "The sweater",
+    "option_b": "The jacket",
+    "correct": "A",
+    "discriminator": "looks dowdy on her.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Grace was happy to trade me her sweater for my jacket. She thinks it looks great on her.",
+    "pronoun": "it",
+    "option_a": "The sweater",
+    "option_b": "The jacket",
+    "correct": "B",
+    "discriminator": "looks great on her.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "John hired Bill to take care of him .",
+    "pronoun": "him",
+    "option_a": "John",
+    "option_b": "Bill",
+    "correct": "A",
+    "discriminator": "",
+    "source": "Ray Jackendoff"
+  },
+  {
+    "text": "John hired himself out to Bill to take care of him .",
+    "pronoun": "him",
+    "option_a": "John",
+    "option_b": "Bill",
+    "correct": "B",
+    "discriminator": "",
+    "source": "Ray Jackendoff"
+  },
+  {
+    "text": "John promised Bill to leave, so an hour later he left.",
+    "pronoun": "he",
+    "option_a": "John",
+    "option_b": "Bill",
+    "correct": "A",
+    "discriminator": "left",
+    "source": "Ray Jackendoff"
+  },
+  {
+    "text": "John ordered Bill to leave, so an hour later he left.",
+    "pronoun": "he",
+    "option_a": "John",
+    "option_b": "Bill",
+    "correct": "B",
+    "discriminator": "left",
+    "source": "Ray Jackendoff"
+  },
+  {
+    "text": "Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his research.",
+    "pronoun": "he",
+    "option_a": "Goodman",
+    "option_b": "Xenophanes",
+    "correct": "A",
+    "discriminator": "faced",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood.",
+    "pronoun": "he",
+    "option_a": "Goodman",
+    "option_b": "Xenophanes",
+    "correct": "B",
+    "discriminator": "faced",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Emma's mother had died long ago, and her education had been managed by an excellent woman as governess.",
+    "pronoun": "her",
+    "option_a": "Emma",
+    "option_b": "Emma's mother",
+    "correct": "A",
+    "discriminator": "education",
+    "source": "Ernest Davis, adapted from Emma by Jane Austen"
+  },
+  {
+    "text": "Emma's mother had died long ago, and her place had been taken by an excellent woman as governess.",
+    "pronoun": "her",
+    "option_a": "Emma",
+    "option_b": "Emma's mother",
+    "correct": "B",
+    "discriminator": "place",
+    "source": "Ernest Davis, adapted from Emma by Jane Austen"
+  },
+  {
+    "text": "Jane knocked on Susan's door but she did not get an answer.",
+    "pronoun": "she",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "A",
+    "discriminator": "did not get an answer.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Jane knocked on Susan's door but she did not answer.",
+    "pronoun": "she",
+    "option_a": "Jane",
+    "option_b": "Susan",
+    "correct": "B",
+    "discriminator": "did not answer.",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "Joe paid the detective after he received the final report on the case.",
+    "pronoun": "he",
+    "option_a": "Joe",
+    "option_b": "the detective",
+    "correct": "A",
+    "discriminator": "received the final report",
+    "source": "David Bender"
+  },
+  {
+    "text": "Joe paid the detective after he delivered the final report on the case.",
+    "pronoun": "he",
+    "option_a": "Joe",
+    "option_b": "the detective",
+    "correct": "B",
+    "discriminator": "delivered the final report",
+    "source": "David Bender"
+  },
+  {
+    "text": "Beth didn't get angry with Sally, who had cut her off, because she stopped and counted to ten.",
+    "pronoun": "she",
+    "option_a": "Beth",
+    "option_b": "Sally",
+    "correct": "A",
+    "discriminator": "stopped",
+    "source": "David Bender"
+  },
+  {
+    "text": "Beth didn't get angry with Sally, who had cut her off, because she stopped and apologized.",
+    "pronoun": "she",
+    "option_a": "Beth",
+    "option_b": "Sally",
+    "correct": "B",
+    "discriminator": "stopped",
+    "source": "David Bender"
+  },
+  {
+    "text": "Jim signaled the barman and gestured toward his empty glass",
+    "pronoun": "his",
+    "option_a": "Jim",
+    "option_b": "The barman",
+    "correct": "A",
+    "discriminator": "empty glass",
+    "source": "David Bender"
+  },
+  {
+    "text": "Jim signaled the barman and gestured toward his bathroom key.",
+    "pronoun": "his",
+    "option_a": "Jim",
+    "option_b": "The barman",
+    "correct": "B",
+    "discriminator": "bathroom key",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dan took the rear seat while Bill claimed the front because his \"Dibs!\" was slow.",
+    "pronoun": "his",
+    "option_a": "Dan",
+    "option_b": "Bill",
+    "correct": "A",
+    "discriminator": "\"Dibs!\"",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dan took the rear seat while Bill claimed the front because his \"Dibs!\" was quicker.",
+    "pronoun": "his",
+    "option_a": "Dan",
+    "option_b": "Bill",
+    "correct": "B",
+    "discriminator": "\"Dibs!\"",
+    "source": "David Bender"
+  },
+  {
+    "text": "Tom said \"Check\" to Ralph as he moved his bishop.",
+    "pronoun": "his",
+    "option_a": "Tom",
+    "option_b": "Ralph",
+    "correct": "A",
+    "discriminator": "bishop",
+    "source": "David Bender"
+  },
+  {
+    "text": "Tom said \"Check\" to Ralph as he took his bishop.",
+    "pronoun": "his",
+    "option_a": "Tom",
+    "option_b": "Ralph",
+    "correct": "B",
+    "discriminator": "bishop",
+    "source": "David Bender"
+  },
+  {
+    "text": "As Andrea in the crop duster passed over Susan, she could see the landing strip.",
+    "pronoun": "she",
+    "option_a": "Andrea",
+    "option_b": "Susan",
+    "correct": "A",
+    "discriminator": "could see",
+    "source": "David Bender"
+  },
+  {
+    "text": "As Andrea in the crop duster passed over Susan, she could see the landing gear.",
+    "pronoun": "she",
+    "option_a": "Andrea",
+    "option_b": "Susan",
+    "correct": "B",
+    "discriminator": "could see",
+    "source": "David Bender"
+  },
+  {
+    "text": "Tom gave Ralph a lift to school so he wouldn't have to drive alone.",
+    "pronoun": "he",
+    "option_a": "Tom",
+    "option_b": "Ralph",
+    "correct": "A",
+    "discriminator": "wouldn't have to drive alone.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Tom gave Ralph a lift to school so he wouldn't have to walk.",
+    "pronoun": "he",
+    "option_a": "Tom",
+    "option_b": "Ralph",
+    "correct": "B",
+    "discriminator": "wouldn't have to walk.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Bill passed the half-empty plate to John because he was full.",
+    "pronoun": "he",
+    "option_a": "Bill",
+    "option_b": "John",
+    "correct": "A",
+    "discriminator": "was full.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Bill passed the half-empty plate to John because he was hungry.",
+    "pronoun": "he",
+    "option_a": "Bill",
+    "option_b": "John",
+    "correct": "B",
+    "discriminator": "was hungry",
+    "source": "David Bender"
+  },
+  {
+    "text": "Bill passed the gameboy to John because his turn was over.",
+    "pronoun": "his",
+    "option_a": "Bill",
+    "option_b": "John",
+    "correct": "A",
+    "discriminator": "turn",
+    "source": "David Bender"
+  },
+  {
+    "text": "Bill passed the gameboy to John because his turn was next.",
+    "pronoun": "his",
+    "option_a": "Bill",
+    "option_b": "John",
+    "correct": "B",
+    "discriminator": "turn",
+    "source": "David Bender"
+  },
+  {
+    "text": "The man lifted the boy onto his shoulders.",
+    "pronoun": "his",
+    "option_a": "The man",
+    "option_b": "The boy",
+    "correct": "A",
+    "discriminator": "shoulders",
+    "source": "David Bender"
+  },
+  {
+    "text": "The man lifted the boy onto his bunk bed.",
+    "pronoun": "his",
+    "option_a": "The man",
+    "option_b": "The boy",
+    "correct": "B",
+    "discriminator": "bunk bed.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Stretching her back, the woman smiled at the girl.",
+    "pronoun": "her",
+    "option_a": "The woman",
+    "option_b": "The girl",
+    "correct": "A",
+    "discriminator": "back",
+    "source": "David Bender"
+  },
+  {
+    "text": "Patting her back, the woman smiled at the girl.",
+    "pronoun": "her",
+    "option_a": "The woman",
+    "option_b": "The girl",
+    "correct": "B",
+    "discriminator": "back",
+    "source": "David Bender"
+  },
+  {
+    "text": "Billy cried because Toby wouldn't accept his toy.",
+    "pronoun": "his",
+    "option_a": "Billy",
+    "option_b": "Toby",
+    "correct": "A",
+    "discriminator": "toy",
+    "source": "David Bender"
+  },
+  {
+    "text": "Billy cried because Toby wouldn't share his toy.",
+    "pronoun": "his",
+    "option_a": "Billy",
+    "option_b": "Toby",
+    "correct": "B",
+    "discriminator": "toy",
+    "source": "David Bender"
+  },
+  {
+    "text": "Lily spoke to Donna, breaking her silence.",
+    "pronoun": "her",
+    "option_a": "Lily",
+    "option_b": "Donna",
+    "correct": "A",
+    "discriminator": "silence.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Lily spoke to Donna, breaking her concentration.",
+    "pronoun": "her",
+    "option_a": "Lily",
+    "option_b": "Donna",
+    "correct": "B",
+    "discriminator": "concentration.",
+    "source": "David Bender"
+  },
+  {
+    "text": "When Tommy dropped his ice cream, Timmy giggled, so father gave him a sympathetic look.",
+    "pronoun": "him",
+    "option_a": "Tommy",
+    "option_b": "Timmy",
+    "correct": "A",
+    "discriminator": "",
+    "source": "David Bender"
+  },
+  {
+    "text": "When Tommy dropped his ice cream, Timmy giggled, so father gave him a stern look.",
+    "pronoun": "him",
+    "option_a": "Tommy",
+    "option_b": "Timmy",
+    "correct": "B",
+    "discriminator": "",
+    "source": "David Bender"
+  },
+  {
+    "text": "As Ollie carried Tommy up the long winding steps, his legs ached.",
+    "pronoun": "his",
+    "option_a": "Ollie",
+    "option_b": "Tommy",
+    "correct": "A",
+    "discriminator": "legs ached.",
+    "source": "David Bender"
+  },
+  {
+    "text": "As Ollie carried Tommy up the long winding steps, his legs dangled.",
+    "pronoun": "his",
+    "option_a": "Ollie",
+    "option_b": "Tommy",
+    "correct": "B",
+    "discriminator": "legs dangled.",
+    "source": "David Bender"
+  },
+  {
+    "text": "The father carried the sleeping boy in his arms",
+    "pronoun": "his",
+    "option_a": "The father",
+    "option_b": "The boy",
+    "correct": "A",
+    "discriminator": "arms",
+    "source": "David Bender"
+  },
+  {
+    "text": "The father carried the sleeping boy in his bassinet.",
+    "pronoun": "his",
+    "option_a": "The father",
+    "option_b": "The boy",
+    "correct": "B",
+    "discriminator": "bassinet.",
+    "source": "David Bender"
+  },
+  {
+    "text": "The woman held the girl against her chest",
+    "pronoun": "her",
+    "option_a": "The woman",
+    "option_b": "The girl",
+    "correct": "A",
+    "discriminator": "chest.",
+    "source": "David Bender"
+  },
+  {
+    "text": "The woman held the girl against her will.",
+    "pronoun": "her",
+    "option_a": "The woman",
+    "option_b": "The girl",
+    "correct": "B",
+    "discriminator": "will",
+    "source": "David Bender"
+  },
+  {
+    "text": "Pam's parents came home and found her having sex with her boyfriend, Paul. They were furious about it.",
+    "pronoun": "They",
+    "option_a": "Pam's parents",
+    "option_b": "Pam and Paul",
+    "correct": "A",
+    "discriminator": "were furious",
+    "source": "David Bender"
+  },
+  {
+    "text": "Pam's parents came home and found her having sex with her boyfriend, Paul. They were embarrassed about it.",
+    "pronoun": "They",
+    "option_a": "Pam's parents",
+    "option_b": "Pam and Paul",
+    "correct": "B",
+    "discriminator": "were embarrassed",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dr. Adams informed Kate that she had retired and presented several options for future treatment.",
+    "pronoun": "she",
+    "option_a": "Dr. Adams",
+    "option_b": "Kate",
+    "correct": "A",
+    "discriminator": "had retired",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dr. Adams informed Kate that she had cancer and presented several options for future treatment.",
+    "pronoun": "she",
+    "option_a": "Dr. Adams",
+    "option_b": "Kate",
+    "correct": "B",
+    "discriminator": "had cancer",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dan had to stop Bill from toying with the injured bird. He is very compassionate.",
+    "pronoun": "He",
+    "option_a": "Dan",
+    "option_b": "Bill",
+    "correct": "A",
+    "discriminator": "is very compassionate.",
+    "source": "David Bender"
+  },
+  {
+    "text": "Dan had to stop Bill from toying with the injured bird. He is very cruel.",
+    "pronoun": "He",
+    "option_a": "Dan",
+    "option_b": "Bill",
+    "correct": "B",
+    "discriminator": "is very cruel.",
+    "source": "David Bender"
+  },
+  {
+    "text": "George got free tickets to the play, but he gave them to Eric, even though he was particularly eager to see it.",
+    "pronoun": "he",
+    "option_a": "George",
+    "option_b": "Eric",
+    "correct": "A",
+    "discriminator": "was particularly eager",
+    "source": "David Bender"
+  },
+  {
+    "text": "George got free tickets to the play, but he gave them to Eric, because he was particularly eager to see it.",
+    "pronoun": "he",
+    "option_a": "George",
+    "option_b": "Eric",
+    "correct": "B",
+    "discriminator": "was particularly eager",
+    "source": "David Bender"
+  },
+  {
+    "text": "George got free tickets to the play, but he gave them to Eric, because he was not particularly eager to see it.",
+    "pronoun": "he",
+    "option_a": "George",
+    "option_b": "Eric",
+    "correct": "A",
+    "discriminator": "was not particularly eager",
+    "source": "David Bender"
+  },
+  {
+    "text": "Jane gave Joan candy because she wasn't hungry.",
+    "pronoun": "she",
+    "option_a": "Jane",
+    "option_b": "Joan",
+    "correct": "A",
+    "discriminator": "wasn't hungry.",
+    "source": "\"Linguistic Problems and Complexities\" \nhttp://www.csi.uottawa.ca/tanka/files/complexities.html"
+  },
+  {
+    "text": "Jane gave Joan candy because she was hungry.",
+    "pronoun": "she",
+    "option_a": "Jane",
+    "option_b": "Joan",
+    "correct": "B",
+    "discriminator": "was hungry.",
+    "source": "\"Linguistic Problems and Complexities\" \nhttp://www.csi.uottawa.ca/tanka/files/complexities.html"
+  },
+  {
+    "text": "I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like light bulbs.",
+    "pronoun": "they",
+    "option_a": "lemons",
+    "option_b": "lemon trees",
+    "correct": "A",
+    "discriminator": "came out",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like telephone poles.",
+    "pronoun": "they",
+    "option_a": "lemons",
+    "option_b": "lemon trees",
+    "correct": "B",
+    "discriminator": "came out",
+    "source": "Ernest Davis"
+  },
+  {
+    "text": "James asked Robert for a favor but he was refused.",
+    "pronoun": "he",
+    "option_a": "James",
+    "option_b": "Robert",
+    "correct": "A",
+    "discriminator": "was refused.",
+    "source": "From (Rahman and Ng 2012)"
+  },
+  {
+    "text": "James asked Robert for a favor but he refused.",
+    "pronoun": "he",
+    "option_a": "James",
+    "option_b": "Robert",
+    "correct": "B",
+    "discriminator": "refused.",
+    "source": "From (Rahman and Ng 2012)"
+  },
+  {
+    "text": "Kirilov ceded the presidency to Shatov because he was less popular.",
+    "pronoun": "he",
+    "option_a": "Kirilov",
+    "option_b": "Shatov",
+    "correct": "A",
+    "discriminator": "was less popular.",
+    "source": "Modified from (Rahman and Ng 2012)"
+  },
+  {
+    "text": "Kirilov ceded the presidency to Shatov because he was more popular.",
+    "pronoun": "he",
+    "option_a": "Kirilov",
+    "option_b": "Shatov",
+    "correct": "B",
+    "discriminator": "was more popular.",
+    "source": "Modified from (Rahman and Ng 2012)"
+  },
+  {
+    "text": "Emma did not pass the ball to Janie although she saw that she was open.",
+    "pronoun": "she",
+    "option_a": "Emma",
+    "option_b": "Janie",
+    "correct": "A",
+    "discriminator": "saw",
+    "source": "Modified from (Rahman and Ng 2012)"
+  },
+  {
+    "text": "Emma did not pass the ball to Janie although she was open.",
+    "pronoun": "she",
+    "option_a": "Emma",
+    "option_b": "Janie",
+    "correct": "B",
+    "discriminator": "was open",
+    "source": "Modified from (Rahman and Ng 2012)"
+  },
+  {
+    "text": "I put the butterfly wing on the table and it broke.",
+    "pronoun": "it",
+    "option_a": "The butterfly wing",
+    "option_b": "The table",
+    "correct": "A",
+    "discriminator": "broke.",
+    "source": "(Winograd 1971)"
+  },
+  {
+    "text": "I put the heavy book on the table and it broke.",
+    "pronoun": "it",
+    "option_a": "The heavy book",
+    "option_b": "The table",
+    "correct": "B",
+    "discriminator": "broke.",
+    "source": "(Winograd 1971)"
+  },
+  {
+    "text": "Madonna fired her trainer because she couldn't stand her boyfriend.",
+    "pronoun": "she",
+    "option_a": "Madonna",
+    "option_b": "The trainer",
+    "correct": "A",
+    "discriminator": "couldn't stand",
+    "source": "Modified from a headline in People Magazine\nhttp://www.people.com/article/madonna-fired-trainer-slept-with-boyfriend-manila-tour-stop"
+  },
+  {
+    "text": "Madonna fired her trainer because she slept with her boyfriend.",
+    "pronoun": "she",
+    "option_a": "Madonna",
+    "option_b": "The trainer",
+    "correct": "B",
+    "discriminator": "slept",
+    "source": "Modified from a headline in People Magazine\nhttp://www.people.com/article/madonna-fired-trainer-slept-with-boyfriend-manila-tour-stop"
+  },
+  {
+    "text": "Madonna fired her trainer because she slept with her boyfriend.",
+    "pronoun": "her",
+    "option_a": "Madonna",
+    "option_b": "The trainer",
+    "correct": "A",
+    "discriminator": "boyfriend",
+    "source": "Modified from a headline in People Magazine\nhttp://www.people.com/article/madonna-fired-trainer-slept-with-boyfriend-manila-tour-stop"
+  },
+  {
+    "text": "Madonna fired her trainer because she couldn't stand her boyfriend.",
+    "pronoun": "her",
+    "option_a": "Madonna",
+    "option_b": "The trainer",
+    "correct": "B",
+    "discriminator": "boyfriend",
+    "source": "Modified from a headline in People Magazine\nhttp://www.people.com/article/madonna-fired-trainer-slept-with-boyfriend-manila-tour-stop"
+  },
+  {
+    "text": "Carol believed that Rebecca suspected that she had stolen the watch.",
+    "pronoun": "she",
+    "option_a": "Carol",
+    "option_b": "Rebecca",
+    "correct": "A",
+    "discriminator": "had stolen the watch.",
+    "source": "Leora Morgenstern"
+  },
+  {
+    "text": "Carol believed that Rebecca regretted that she had stolen the watch.",
+    "pronoun": "she",
+    "option_a": "Carol",
+    "option_b": "Rebecca",
+    "correct": "B",
+    "discriminator": "had stolen the watch.",
+    "source": "Leora Morgenstern"
+  },
+  {
+    "text": "This book introduced Shakespeare to Ovid; it was a major influence on his writing.",
+    "pronoun": "his",
+    "option_a": "Shakespeare",
+    "option_b": "Ovid",
+    "correct": "A",
+    "discriminator": "writing.",
+    "source": "Ernest Davis (coming out of a Facebook discussion with Michael \nWitbrock)"
+  },
+  {
+    "text": "This book introduced Shakespeare to Goethe; it was a major influence on his writing.",
+    "pronoun": "his",
+    "option_a": "Shakespeare",
+    "option_b": "Goethe",
+    "correct": "B",
+    "discriminator": "writing.",
+    "source": "Ernest Davis (coming out of a Facebook discussion with Michael \nWitbrock)"
+  },
+  {
+    "text": "This book introduced Shakespeare to Ovid; it was a fine selection of his writing.",
+    "pronoun": "his",
+    "option_a": "Shakespeare",
+    "option_b": "Ovid",
+    "correct": "B",
+    "discriminator": "writing.",
+    "source": "Ernest Davis (coming out of a Facebook discussion with Michael \nWitbrock)"
+  },
+  {
+    "text": "This book introduced Shakespeare to Goethe; it was a fine selection of his writing.",
+    "pronoun": "his",
+    "option_a": "Shakespeare",
+    "option_b": "Goethe",
+    "correct": "A",
+    "discriminator": "writing.",
+    "source": "Ernest Davis (coming out of a Facebook discussion with Michael \nWitbrock)"
+  },
+  {
+    "text": "Alice looked for her friend Jade in the crowd. Since she always has good luck, Alice spotted her quickly.",
+    "pronoun": "she",
+    "option_a": "Alice",
+    "option_b": "Jade",
+    "correct": "A",
+    "discriminator": "always has good luck.",
+    "source": "Sabri Meeran and Ernest Davis"
+  },
+  {
+    "text": "Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly.",
+    "pronoun": "she",
+    "option_a": "Alice",
+    "option_b": "Jade",
+    "correct": "B",
+    "discriminator": "always wears a red turban",
+    "source": "Sabri Meeran and Ernest Davis"
+  },
+  {
+    "text": "During a game of tag, Ethan chased Luke because he was \"it\".",
+    "pronoun": "he",
+    "option_a": "Ethan",
+    "option_b": "Luke",
+    "correct": "A",
+    "discriminator": "was \"it\".",
+    "source": "Sabri Meeran"
+  },
+  {
+    "text": "During a game of tag, Ethan ran from Luke because he was \"it\".",
+    "pronoun": "he",
+    "option_a": "Ethan",
+    "option_b": "Luke",
+    "correct": "B",
+    "discriminator": "was \"it\".",
+    "source": "Sabri Meeran"
+  },
+  {
+    "text": "At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so stupid.",
+    "pronoun": "they",
+    "option_a": "the judges",
+    "option_b": "the chatbots",
+    "correct": "A",
+    "discriminator": "were so stupid.",
+    "source": "Sabri Meeran"
+  },
+  {
+    "text": "At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so advanced.",
+    "pronoun": "they",
+    "option_a": "the judges",
+    "option_b": "the chatbots",
+    "correct": "B",
+    "discriminator": "were so advanced.",
+    "source": "Sabri Meeran"
+  },
+  {
+    "text": "The user changed his password from \"GrWQWu8JyC\" to\u00c2 \"willow-towered Canopy Huntertropic wrestles\" as it was easy to forget.",
+    "pronoun": "it",
+    "option_a": "GrWQWu8JyC",
+    "option_b": "willow-towered Canopy\nHuntertropic wrestles",
+    "correct": "A",
+    "discriminator": "was easy to forget.",
+    "source": "Sabri Meeran"
+  },
+  {
+    "text": "The user changed his password from \"GrWQWu8JyC\" to\u00c2 \"willow-towered Canopy Huntertropic wrestles\" as it was easy to remember.",
+    "pronoun": "it",
+    "option_a": "GrWQWu8JyC",
+    "option_b": "willow-towered Canopy\nHuntertropic wrestles",
+    "correct": "B",
+    "discriminator": "was easy to remember.",
+    "source": "Sabri Meeran"
+  }
+]
