@@ -20,9 +20,10 @@ the default.
 
 Cross-validation is used to measure true generalization (held-out pairs).
 """
+import json
 import re
+from pathlib import Path
 from hydraseq import Hydraseq
-
 
 _STOP = {'the', 'a', 'an', 'is', 'was', 'were', 'had', 'have', 'has', 'be',
          'to', 'of', 'in', 'on', 'at', 'it', 'he', 'she', 'they', 'we',
@@ -39,6 +40,13 @@ _STOP = {'the', 'a', 'an', 'is', 'was', 'were', 'had', 'have', 'has', 'be',
 
 def clean_word(w):
     return re.sub(r"[^a-z'_-]", '', w.lower())
+
+
+def raw_words(text):
+    """All words with punctuation stripped, but stop words kept.
+    Used for phrase matching against facts like 'too tall', 'was hungry'.
+    """
+    return [w for w in (clean_word(t) for t in text.split()) if w]
 
 
 def content_words(text):
@@ -185,6 +193,73 @@ def evaluate(resolver, schemas):
         correct += ok
         results.append({'schema': s, 'pred': pred, 'ok': ok})
     return correct / len(schemas), results
+
+
+def resolve(schema, world):
+    """
+    Resolve a Winograd schema using a pre-trained world model.
+
+    Resolution order (most specific → least specific):
+      0. Raw bigram pass — catches stop-word-containing phrases ("too tall", "was hungry")
+      1. Content-word bigram pass — two-word context phrases
+      2. Single word, post-pronoun clause only
+      3. Single word, full sentence (includes curated pre-pronoun discriminators)
+      4. First-mentioned fallback
+
+    Args:
+        schema: a dict with 'text', 'pronoun', 'option_a', 'option_b', 'correct'
+        world:  a Hydraseq instance loaded via load_world()
+
+    Returns:
+        tuple (answer, reason) where answer is 'A' or 'B', and reason is the
+        triggering word/phrase or None if the fallback was used.
+    """
+    fm   = first_mentioned(schema)
+    flip = 'B' if fm == 'A' else 'A'
+    text = schema['text']
+    raw  = raw_words(text)
+    cw   = content_words(text)
+    post = post_pronoun_words(schema)
+
+    # pass 0: raw bigrams (keep stop words like "too", "was", "so")
+    for i in range(len(raw) - 1):
+        phrase = f"{raw[i]} {raw[i+1]}"
+        preds  = world.look_ahead(phrase).get_next_values()
+        if 'FIRST_REFERENT'  in preds: return fm,   phrase
+        if 'SECOND_REFERENT' in preds: return flip,  phrase
+
+    # pass 1: content-word bigrams
+    for i in range(len(cw) - 1):
+        phrase = f"{cw[i]} {cw[i+1]}"
+        preds  = world.look_ahead(phrase).get_next_values()
+        if 'FIRST_REFERENT'  in preds: return fm,   phrase
+        if 'SECOND_REFERENT' in preds: return flip,  phrase
+
+    # pass 2: single word, post-pronoun clause
+    for w in post:
+        preds = world.look_ahead(w).get_next_values()
+        if 'FIRST_REFERENT'  in preds: return fm,   w
+        if 'SECOND_REFERENT' in preds: return flip,  w
+
+    # pass 3: single word, full sentence (curated pre-pronoun discriminators also here)
+    for w in cw:
+        preds = world.look_ahead(w).get_next_values()
+        if 'FIRST_REFERENT'  in preds: return fm,   w
+        if 'SECOND_REFERENT' in preds: return flip,  w
+
+    # fallback: first-mentioned
+    return fm, None
+
+
+def evaluate_world(world, schemas):
+    """Evaluate resolve() on a list of schemas. Returns (accuracy, results)."""
+    results = []
+    for s in schemas:
+        pred, reason = resolve(s, world)
+        ok = pred == s['correct']
+        results.append({'schema': s, 'pred': pred, 'reason': reason, 'ok': ok})
+    accuracy = sum(r['ok'] for r in results) / len(results)
+    return accuracy, results
 
 
 def leave_one_out_cv(schemas):

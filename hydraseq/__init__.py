@@ -6,3 +6,4 @@ from hydraseq.automata import DFAstate
 from hydraseq.scanner import PatternScanner, LayeredScanner, Marker
 from hydraseq.reasoning import forward_chain, RoleMapper, solve_puzzle
 from hydraseq.world import load_world, list_domains, fact_count
+from hydraseq.winograd import resolve, evaluate_world
