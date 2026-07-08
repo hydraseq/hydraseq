@@ -266,9 +266,26 @@ disambiguator. The structure does it.
 
 ## 12. Deduction by forward chaining
 
-Train deduction steps as `"premise premise conclusion"` sequences. `forward_chain`
-then queries every ordered subset of known facts, adds new predictions, and repeats
-until stable — multi-step proofs with no manual chaining.
+**The word problem:**
+
+> Alice, Bob, and Carol each have one pet (a cat, a dog, or a fish) and one drink
+> (tea, coffee, or milk). You know three things:
+> 1. Alice has the cat.
+> 2. Bob drinks coffee.
+> 3. The dog owner drinks milk.
+>
+> Who has which pet, and who drinks what?
+
+A human solves this by elimination: Alice has the cat, so she doesn't have the dog.
+Bob drinks coffee, so he doesn't drink milk — and since the dog owner drinks milk,
+Bob doesn't have the dog either. That leaves Carol with the dog, and therefore the
+milk. Bob and coffee plus Carol and milk leave tea for Alice, and the cat and dog
+being taken leave the fish for Bob.
+
+Facts are written as `person=thing` (has/drinks) and `person!=thing` (ruled out).
+Each elimination step above becomes one trained sequence: premises, then conclusion.
+`forward_chain` then queries every ordered subset of known facts, adds new
+predictions, and repeats until stable — multi-step proofs with no manual chaining.
 
 ```python
 from hydraseq import Hydraseq, forward_chain
@@ -288,23 +305,65 @@ known, iterations = forward_chain(logic, {'alice=cat', 'bob=coffee', 'dog=milk'}
 # known ⊇ {'alice=tea', 'bob=fish', 'carol=dog', 'carol=milk', ...}   in 2 iterations
 ```
 
-Three clues in, the full puzzle solution out — and no wrong facts appear.
+Three clues in, the full solution out — Alice: cat and tea, Bob: fish and coffee,
+Carol: dog and milk — and no wrong facts appear.
+
+**Where did those rules come from?** A human solved the puzzle and wrote each
+elimination step down as a sequence — `forward_chain` automates the *chaining*
+(which facts to combine, in what order, when to stop), not the discovery of the
+steps. Written like this they are also puzzle-specific: alice/bob/carol only. The
+repo climbs away from that in two rungs:
+
+1. **Generate the chains from a template.** The same ten deductions hold for any
+   3×3 puzzle with this clue structure, so a function can emit them for any
+   vocabulary — see `make_chains()` in
+   [test_generalization.py](../tests/test_generalization.py), which solves three
+   differently-named puzzles from one template.
+2. **Don't use concrete names at all** — train the rules once on abstract roles and
+   translate per puzzle. That's recipe 13, next.
 
 ## 13. Variables via role mapping
 
-The generalization of recipe 12: train the reasoner ONCE on abstract roles
+**The word problem:**
+
+> Xavier, Yvonne, and Zara each have one pet (a parrot, a snake, or a turtle) and one
+> drink (juice, soda, or water). You know three things:
+> 1. Xavier has the parrot.
+> 2. Yvonne drinks soda.
+> 3. The snake owner drinks water.
+>
+> Who has which pet, and who drinks what?
+
+Notice this is the *same puzzle* as recipe 12 with the names swapped — Xavier is
+Alice, the parrot is the cat, soda is coffee. The reasoning never changes; only the
+fillers do. That observation is the whole recipe.
+
+So instead of retraining, train the reasoner ONCE on abstract roles
 (`PERSON1=PET1 PERSON1!=PET2` ...), and use a `RoleMapper` to translate any concrete
 puzzle in and out. The reasoner never sees the specific names — that's variable
 binding with learned sequences.
 
 ```python
-from hydraseq import solve_puzzle
+from hydraseq import Hydraseq, solve_puzzle
 
+# trained once — these are recipe 12's elimination steps with roles instead of names
+abstract = Hydraseq('abstract')
+for rule in ["PERSON1=PET1", "PERSON2=DRINK2", "PET2=DRINK3",
+             "PERSON1=PET1 PERSON1!=PET2",
+             "PERSON2=DRINK2 PERSON2!=DRINK3",
+             "PERSON2!=DRINK3 PET2=DRINK3 PERSON2!=PET2",
+             "PERSON1!=PET2 PERSON2!=PET2 PERSON3=PET2",
+             "PERSON3=PET2 PET2=DRINK3 PERSON3=DRINK3",
+             "PERSON2=DRINK2 PERSON3=DRINK3 PERSON1=DRINK1",
+             "PERSON1=PET1 PERSON3=PET2 PERSON2=PET3"]:
+    abstract.insert(rule)
+
+# the only per-puzzle work: say who plays which role
 role_map = {'xavier': 'PERSON1', 'yvonne': 'PERSON2', 'zara':   'PERSON3',
             'parrot': 'PET1',    'snake':  'PET2',    'turtle': 'PET3',
             'juice':  'DRINK1',  'soda':   'DRINK2',  'water':  'DRINK3'}
 
-solve_puzzle(abstract_reasoner, role_map,
+solve_puzzle(abstract, role_map,
              {'xavier=parrot', 'yvonne=soda', 'snake=water'})
 # {'xavier=juice', 'yvonne=turtle', 'zara=snake', 'zara=water', ...}
 ```
@@ -314,6 +373,16 @@ differently-named puzzles with the same untouched reasoner instance.
 
 **Use it for:** any problem family with fixed structure and varying fillers — the
 role map is the only per-instance work.
+
+**Honest limits.** The abstract rules are written once, but they are still written
+by a person, and they cover exactly this clue structure — a puzzle with a different
+clue shape (say, "Carol doesn't drink tea") needs chains nobody has authored. The
+open frontier is one level up: learning the *principles* — exclusivity (X=a implies
+X≠b for the rest of the category) and elimination (all-but-one ruled out implies
+assignment) — from worked examples instead of authoring them. Those quantify over
+categories, not just names, which is the variable-binding problem noted in
+[CLAUDE.md](../CLAUDE.md). `make_chains()` from recipe 12 can mass-produce worked
+examples to train on, which makes this a runnable experiment, not just a wish.
 
 ## 14. Inference by analogy
 
