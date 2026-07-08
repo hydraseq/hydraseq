@@ -1,58 +1,77 @@
-hydraseq
---------
-Simple data structure to remember sequences
+# hydraseq
 
-Data structure composed of a trie embedded in dictiories for easy lookup.  Keep track of sequences given and then return the next expected in a sequence if already seen.
+A trie-based sequence memory. Train it on sequences of tokens; it predicts
+continuations, holds ambiguous interpretations simultaneously, and flags novelty.
+
+The guiding principle: **no special rules, only learned sequences**. Logic gates,
+deduction, analogy, parsing, pronoun resolution — every behavior below emerges from
+the same trie structure and trained sequences, not from hard-coded logic.
 
 ## Installation
-`pip install hydraseq`
 
-## Example usage
-Insert a sentence, and the query to see what the next word is if you submit part of the sentence.  This basically rewinds the sentence up to that point and looks up what the next word would be.
+```
+pip install hydraseq
+```
+
+## Quick start
+
 ```python
 from hydraseq import Hydraseq
 
 hdr = Hydraseq('main')
-
 hdr.insert("The quick brown fox jumped over the lazy dog")
 
-print(hdr.look_ahead("The quick brown").get_next_values())
-> ['fox']
+hdr.look_ahead("The quick brown").get_next_values()
+# ['fox']
 ```
 
-If you now insert a similar sentence, say use `wolf` instead of `fox`, the look ahead will return both.
-```python
+Insert a second sentence with `wolf` in place of `fox` and the prediction branches:
 
+```python
 hdr.insert("The quick brown wolf jumped over the lazy dog")
 
-print(hdr.look_ahead("The quick brown").get_next_values())
-
-> ['fox', 'wolf']
+hdr.look_ahead("The quick brown").get_next_values()
+# ['fox', 'wolf']
 ```
 
-## Stepping through word by word
-The look_ahead rewinds from the start and stops at the last word, this is not too efficient.  You can do a reset, rewinding the start and setp through word by word recovering which words are next.
+`insert` learns; `look_ahead` queries without learning. Step token-by-token with
+`hit()`, check the `surprise` flag for novelty, and pass a list of alternatives at any
+position to hold multiple interpretations at once — see the docs below.
 
-```python
-word = ["The"]
-hdr.reset()
-while word:
-    print(word)
-    word = hdr.hit(word[0]).get_next_values()
+## Documentation
 
-print(".")
->
->['The']
->['quick']
->['brown']
->['fox', 'wolf']
->['jumped']
->['over']
->['the']
->['lazy']
->['dog']
->.
+- **[docs/API.md](docs/API.md)** — every atomic call (`insert`, `hit`, `look_ahead`,
+  `forward_prediction`, `convolutions`, ...) with verified examples.
+- **[docs/RECIPES.md](docs/RECIPES.md)** — the meaningful combinations, each backed by
+  a test file: what to build with the atoms.
+
+## What it can do
+
+Each capability is a recipe in [docs/RECIPES.md](docs/RECIPES.md), proven by tests:
+
+| Capability | In short |
+|---|---|
+| Sequence memory | train on sequences, predict continuations |
+| Streaming | advance one token at a time, predictions always current |
+| Novelty detection | `surprise` flag — binary familiarity, no threshold |
+| Autocomplete | roll predictions forward to all reachable completions |
+| Held ambiguity | multiple interpretations alive until context resolves them |
+| Logic gates | AND/OR/XOR/NAND as trained sequences (NAND ⇒ Turing-complete ingredients) |
+| Comparison | describe what changed between two states |
+| Pattern scanning | find typed spans in token streams (`PatternScanner`) |
+| Layered parsing | stack scanners: lexical → syntactic → semantic (`LayeredScanner`) |
+| Semantic resolution | incoherent parses die in the structure — no filter code |
+| Forward chaining | multi-step deduction from trained inference rules |
+| Variables | abstract role reasoner + `RoleMapper` solves whole puzzle families |
+| Analogy | unknown subject? profile it, ask its nearest known neighbors |
+| State machines | DFAs as trained transition sequences |
+| Winograd schemas | pronoun resolution from a learned world model — 84.6% on WSC |
+
+## Running the tests
+
+```
+pytest
 ```
 
-## Checking state, without actually inserting new words.
-Every time you use `insert` the sequence is remembered.  If you just want to check what is next but make sure the insert doesn't cause new words to get remembered use the `is_learning=False` flag for both `insert` and `hit`
+The tests double as executable documentation — each file in
+[tests/](tests/) demonstrates one surface of the structure.
